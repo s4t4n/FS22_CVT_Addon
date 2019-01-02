@@ -1,15 +1,16 @@
 -- Original version ls15: less engine braking effect
 -- by slin2R
--- Vielen Dank für die Freigabe!
+-- Vielen Dank fÃ¼r die Freigabe!
 
 -- Modification to: more engine braking effect by twizzle
 -- LS 17 by s4t4n less effect
 
--- s4t4n Motorbremse auf ein reales Maß erstellt
+-- s4t4n Motorbremse auf ein reales MaÃŸ erstellt
 
--- local version = "1.0.3 beta (02.12.2018)";
--- local version = "1.0.5 beta (28.12.2018)";
--- local version = "1.0.6 beta (01.01.2019)";
+-- local version = "1.0.3   beta (02.12.2018)";
+-- local version = "1.0.5.0 beta (28.12.2018)";
+-- local version = "1.0.6.0 beta (01.01.2019)";
+-- local version = "1.0.6.1 beta (02.01.2019)";
 
 VehicleMotor = {};
 VehicleMotor.dir = g_currentModDirectory;
@@ -24,14 +25,14 @@ LS19_enginebrake.modDirectory = g_currentModDirectory;
 
 
 	print("   _________________________________________________________");
-	print("_-¯ Engine braking effect Ver.:" .. self.version .. ", by s4t4n ¯-_");
-	print("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
+	print("_-Â¯ Engine braking effect Ver.:" .. self.version .. ", by s4t4n Â¯-_");
+	print("Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯");
 
 
 function VehicleMotor:setLowBrakeForce(lowBrakeForceScale, lowBrakeForceSpeedLimit, brakeForce)
 
 	if fh then
-		print("_-¯ KeyboardSteer mod by mogli12 found, reb will adjust enginebrakes")
+		print("_-Â¯ KeyboardSteer mod by mogli12 found, reb will adjust enginebrakes")
 		--self.handbrake = false;
 		if lowBrakeForceScale <= 0.001 then
 			self.lowBrakeForceScale = 0.144
@@ -44,7 +45,7 @@ function VehicleMotor:setLowBrakeForce(lowBrakeForceScale, lowBrakeForceSpeedLim
 		end
 
 	else
-		print("_-¯ REB will work normally")
+		print("_-Â¯ REB will work normally")
 		if lowBrakeForceScale <= 0.001 then
 			self.lowBrakeForceScale = 0.00000457
 			-- self.lowBrakeForceScale = 0.044

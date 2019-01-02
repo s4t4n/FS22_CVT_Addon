@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="40">
+<!-- LS 13 Version 1.1 von slin2R --> 
+<!-- LS 15 Version 1.2 von twizzle -->
+<!-- LS 17 Version 2.0 von s4t4n -->
+<!-- LS 17 Version 2.1 von s4t4n -->
+<!-- LS 17 Version 2.2 von s4t4n -->
+<!-- LS 19 Version 1.0.x von s4t4n -->
+	<author>s4t4n</author>
+	<version>1.0.6.1</version>
+	<title>
+		<de>Motorbremsen Effekt</de> 
+		<en>engine braking effect</en>
+	</title>
+	<description>
+		<de><![CDATA[Realere Auswirkung der Motorbremse]]></de>
+		<en><![CDATA[real engine braking effect]]></en>
+	</description>
+	<iconFilename>store.dds</iconFilename>
+	<multiplayer supported="true"/>
+	<extraSourceFiles>
+		<sourceFile filename="enginebrakingeffect.lua"/>
+	</extraSourceFiles>
+	<inputBindings>		
+    </inputBindings>
+	<l10n>		
+    </l10n>
+</modDesc> 

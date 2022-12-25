@@ -1,28 +1,52 @@
-<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="40">
-<!-- LS 13 Version 1.1 von slin2R --> 
-<!-- LS 15 Version 1.2 von twizzle -->
-<!-- LS 17 Version 2.0 von s4t4n -->
-<!-- LS 17 Version 2.1 von s4t4n -->
-<!-- LS 17 Version 2.2 von s4t4n -->
-<!-- LS 19 Version 1.0.x von s4t4n -->
-	<author>s4t4n</author>
-	<version>1.0.6.1</version>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="72">
+    <author>s4t4n, Danielmodding</author>
+	<version>1.0.0.2</version>
 	<title>
-		<de>Motorbremsen Effekt</de> 
-		<en>engine braking effect</en>
-	</title>
-	<description>
-		<de><![CDATA[Realere Auswirkung der Motorbremse]]></de>
-		<en><![CDATA[real engine braking effect]]></en>
-	</description>
-	<iconFilename>store.dds</iconFilename>
-	<multiplayer supported="true"/>
-	<extraSourceFiles>
-		<sourceFile filename="enginebrakingeffect.lua"/>
-	</extraSourceFiles>
-	<inputBindings>		
-    </inputBindings>
-	<l10n>		
-    </l10n>
-</modDesc> 
+        <en>Reduced Engine Braking Force</en>
+        <de>Verringerte Motorbremswirkung</de>
+        <fr>Effet De Frein Moteur Réduit</fr>
+    </title>
+
+    <description>
+        <en>
+<![CDATA[This script reduces the engine braking effect of all vehicles to 55%.
+
+List of changes / Changelog
+Version 1.0.0.0 - Modhub release
+Version 1.0.0.1 - Script adaptation to version 1.2.0.2
+Version 1.0.0.2 - Script adaptation to patch 1.8.2.x
+				- moddesc increased
+				- further script optimization
+GitHub: https://github.com/s4t4n/LS22_enginebrake
+]]></en>
+        <de>
+<![CDATA[Dieses Skript verringert von allen Fahrzeugen die Motorbremswirkung auf 55%.
+
+Änderungsliste / Changelog
+Version 1.0.0.0 - Veröffentlichung Modhub
+Version 1.0.0.1 - Scriptanpassung an Version 1.2.0.2
+Version 1.0.0.2 - Scriptanpassung an Patch 1.8.2.x
+				- moddesc erhöht
+				- weitere Script optimierung
+GitHub: https://github.com/s4t4n/LS22_enginebrake
+]]></de>
+        <fr>
+<![CDATA[Ce script réduit l'effet de freinage moteur de tous les véhicules à 55 %.
+
+Liste des modifications / Journal des modifications
+Version 1.0.0.0 - Version Modhub
+Version 1.0.0.1 - Adaptation du script à la version 1.2.0.2
+Version 1.0.0.2 - Adaptation du script au patch 1.8.2.x
+				- moddesc augmenté
+				- optimisation supplémentaire du script
+GitHub: https://github.com/s4t4n/LS22_enginebrake
+]]></fr>
+    </description> 
+
+    <iconFilename>modIcon.dds</iconFilename>
+	<multiplayer supported="true" />
+    <extraSourceFiles>
+        <sourceFile filename="LessMotorBrakeForce.lua" />
+    </extraSourceFiles>
+</modDesc>

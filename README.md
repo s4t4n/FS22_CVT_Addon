@@ -1,4 +1,4 @@
-# LS19_enginebrake
+# LS22_LessEngineBrake
 Realistic Enginebrake Effect
 (Betaphase Aufgrund von einflussnehmenden Mods)
 
@@ -12,7 +12,5 @@ Sobald Drivecontrol und andere Realistic Mod raus kommen, wird das script noch a
 es könnte gut sein, daß durch rm mods noch Rollwiderstand Faktoren etc. dazu kommen.
 Ggf. wird dieser Mod hier auch überflüßig, wenn er bei einem der Mods, z.B. DC mit integriert wird.
 
-- Aktuell wird an dem Zusammenspiel mit KeyboardSteer gearbeitet.
-- Desweiteren ist der Mod TSX_EnhancedVehicle neu raus gekommen,
-  ob hierfür Anpassungen notwendig sind wird noch geprüft.
-  
+- Aktuell wird an dem Zusammenspiel mit realismAddon_Gearbox von modelleicher gearbeitet.
+- 

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="72">
     <author>s4t4n, Danielmodding</author>
-	<version>1.0.0.2</version>
+	<version>1.0.0.3</version>
 	<title>
         <en>Reduced Engine Braking Force</en>
         <de>Verringerte Motorbremswirkung</de>
@@ -29,6 +29,9 @@ Version 1.0.0.1 - Scriptanpassung an Version 1.2.0.2
 Version 1.0.0.2 - Scriptanpassung an Patch 1.8.2.x
 				- moddesc erhöht
 				- weitere Script optimierung
+Version 1.0.0.3	- Anpassung an FS22_realismAddon_gearbox von modelleicher
+				- Verhalten bei Variogetriebe geändert
+				
 GitHub: https://github.com/s4t4n/LS22_enginebrake
 ]]></de>
         <fr>

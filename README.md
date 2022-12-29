@@ -3,7 +3,7 @@ Realistic Enginebrake Effect
 (Betaphase Aufgrund von einflussnehmenden Mods)
 
 Realere Auswirkung der Motorbremse
-z.B. Berg ab muss man schon man die Bremse benutzen ;)
+z.B. Berg ab muss man schon mal die Bremse benutzen ;)
 
 Die erste & zweite Testbeta gibt es schon auf Modhoster.
 

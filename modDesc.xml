@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="72">
-    <author>s4t4n, Danielmodding</author>
+    <author>s4t4n</author>
 	<version>1.0.0.3</version>
 	<title>
         <en>Reduced Engine Braking Force</en>
@@ -52,4 +52,58 @@ GitHub: https://github.com/s4t4n/LS22_enginebrake
     <extraSourceFiles>
         <sourceFile filename="LessMotorBrakeForce.lua" />
     </extraSourceFiles>
+	
+	<l10n>
+		<text name="txt_VarioOne">
+			<de>Fahrstufe: 1</de>
+			<en>Driving level: 1</en>
+		</text>
+		<text name="txt_VarioTwo">
+            <de>Fahrstufe: 2</de>
+			<en>Driving level: 2</en>
+        </text>
+		<text name="input_SETVARIOONE">
+			<de>Fahrstufe 1</de>
+			<en>Driving level 1</en>
+		</text>
+		<text name="input_SETVARIOTWO">
+            <de>Fahrstufe 2</de>
+			<en>Driving level 2</en>
+        </text>
+		<text name="input_LMBF_TOGGLE_RAMP">
+			<de>Beschleunigungsrampe wechseln</de>
+			<en>Toggle Accelerationramp</en>
+		</text>
+		<text name="txt_accRamp1">
+			<de>Beschl. Rampe: 1</de>
+			<en>Acc. Ramp: 1</en>
+		</text>
+		<text name="txt_accRamp2">
+			<de>Beschl. Rampe: 2</de>
+			<en>Acc. Ramp: 2</en>
+		</text>
+		<text name="txt_accRamp3">
+			<de>Beschl. Rampe: 3</de>
+			<en>Acc. Ramp: 3</en>
+		</text>
+		<text name="txt_accRamp4">
+			<de>Beschl. Rampe: 4</de>
+			<en>Acc. Ramp: 4</en>
+		</text>
+		
+	</l10n>
+	<actions>
+        <action name="LMBF_TOGGLE_RAMP" />
+        <action name="SETVARIOONE" />
+        <action name="SETVARIOTWO" />
+    </actions>
+	<inputBinding>
+		<actionBinding action="SETVARIOONE">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_k" />
+		</actionBinding>
+		<actionBinding action="SETVARIOTWO">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_l" />
+		</actionBinding>
+	</inputBinding>
+	
 </modDesc>

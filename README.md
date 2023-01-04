@@ -1,6 +1,12 @@
 # FS22_CVT_Addon
 
+
 multiplayer not tested yet !
+LessMotorBrakeforce to new Edition CVT_Addon
+by SbSh(s4t4n) and Frvetz
+also in credits: modelleicher
+
+
 
 
 This script reduces the engine brake effect depending on the setting

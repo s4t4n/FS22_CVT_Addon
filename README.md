@@ -1,12 +1,11 @@
 # FS22_CVT_Addon
 
-
 multiplayer not tested yet !
-LessMotorBrakeforce to new Edition CVT_Addon
+
+LessMotorBrakeforce to new Edition CVT_Addon 
 by SbSh(s4t4n) and Frvetz
+
 also in credits: modelleicher
-
-
 
 
 This script reduces the engine brake effect depending on the setting
@@ -25,13 +24,27 @@ My script "LessMotorBrakeforce" is no longer required with this new edition, or 
 
 
 Change list / changelog
-Version 0.1.0.0 - Publication Modhub - as LessMotorBrakeforce
-Version 0.1.0.1 - Scripture adjustment to version 1.2.0.2
-Version 0.1.0.2 - Scripture adjustment to Patch 1.8.2.X
+
+Version 0.1.0.0 
+
+- Publication Modhub - as LessMotorBrakeforce
+
+Version 0.1.0.1 
+
+- Scripture adjustment to version 1.2.0.2
+
+Version 0.1.0.2 
+
+- Scripture adjustment to Patch 1.8.2.X
+
 - Modes increased
+
 - Further script optimization
+
 Version 1.0.0.0 - New edition with CVT Addon
+
 - Adaptation to FS22_REALISMADDON_GEARBOX from Modelleicher
+
 - behavior changed in vario gearboxes
 
 
@@ -52,11 +65,22 @@ Mein Skript "Verringerte Motorbremswirkung" wird mit dieser Neuauflage nicht meh
 
 
 Änderungsliste / Changelog
-Version 0.1.0.0 - Veröffentlichung Modhub - als LessMotorBrakeforce
-Version 0.1.0.1 - Scriptanpassung an Version 1.2.0.2
-Version 0.1.0.2 - Scriptanpassung an Patch 1.8.2.x
-				- moddesc erhöht
-				- weitere Script optimierung
+
+Version 0.1.0.0 
+- Veröffentlichung Modhub - als LessMotorBrakeforce
+
+Version 0.1.0.1 
+- Scriptanpassung an Version 1.2.0.2
+
+Version 0.1.0.2 
+- Scriptanpassung an Patch 1.8.2.x
+
+- moddesc erhöht
+
+- weitere Script optimierung
+
 Version 1.0.0.0	- Neuauflage mit CVT Addon
-				- Anpassung an FS22_realismAddon_gearbox von modelleicher
-				- Verhalten bei Variogetriebe geändert
+
+- Anpassung an FS22_realismAddon_gearbox von modelleicher
+
+- Verhalten bei Variogetriebe geändert

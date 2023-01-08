@@ -44,8 +44,8 @@ Stufe I. eher für schwere Feldarbeiten und schwere Transporte. Hierbei wird auc
 Für jede Stufe ist eine Tastenbelegung zu vergeben.
 Desweiteren gibt es nun eine Beschleunigungsrampe in 4 Stufen, die mit einer Taste durchgeschaltet werden können.
 Hier werden das Anzugverhalten beim Beschleunigen und reduzieren der Fahrgeschwindigkeit beeinflusst. Sanft und mit Gefühlt oder volle Power und ruppig.
-Um Komfortable Einstellungsmöglichkeiten nicht auszulasen, kann man ebenfalls noch die Bremsrampe verändern.
-Hierzu gibt es auch wieder eine Taste mit der in 5 Stufen umgeshaltet werden kann. Die Bremsrampe in unterschiedlichen Geschwindigkeitsstufen von 1 km/h bis 17 km/h
+Um Komfortable Einstellungsmöglichkeiten nicht auszulassen, kann man ebenfalls noch die Bremsrampe verändern.
+Hierzu gibt es auch wieder eine Taste mit der in 5 Stufen umgeschaltet werden kann. Die Bremsrampe in unterschiedlichen Geschwindigkeitsstufen von 1 km/h bis 17 km/h
 bewirken, daß beim loslassen des Fahrpedals oder Fahrjoysticks die Motorbremswirkung ab der eingestellten Bremsrampe unterstützt.
 Dies kann hilfreich bei Rangier- oder Frontladerarbeiten sein - oder einfach bei Stop&Go Straßenfahrten.
 Manuell geschaltete Getriebe werden nicht beeinflusst.
@@ -65,15 +65,32 @@ Version 1.0.0.0	- Neuauflage mit CVT Addon
 GitHub: https://github.com/s4t4n/FS22_CVT_Addon
 ]]></de>
         <fr>
-<![CDATA[Ce script réduit l'effet de freinage moteur de tous les véhicules à 55 %.
+<![CDATA[Ce script réduit l'effet de freinage du moteur en fonction du réglage
+Et ajoute diverses options pour Vario et CVT Gearbox.
+Il y a 2 vitesses, II. Est destinée aux voyages en route, aux transports et aux travaux faciles.
+Niveau I. plutôt pour les travaux importants sur le terrain et les transports lourds. La vitesse maximale est également réduite.
+Une affectation de clé doit être attribuée pour chaque étape.
+De plus, il existe maintenant une rampe d'accélération en 4 étapes qui peuvent être commutées avec un bouton.
+Ici, le comportement de la combinaison lors de l'accélération et de la réduction de la vitesse de conduite est influencé. Doux et avec du feutre ou de pleine puissance et rugueux.
+Afin de ne pas se livrer à des options de réglage confortables, vous pouvez également modifier la rampe de frein.
+Il y a aussi un bouton avec lequel peut être converti en 5 étapes. La rampe de frein à différents niveaux de vitesse de 1 km / h à 17 km / h
+Faites le support de l'effet de freinage du moteur à partir de la rampe de frein définie lorsque la pédale de conduite ou le bâton de joie de conduite est libéré.
+Cela peut être utile pour les manœuvres ou les travaux de chargement frontal - ou simplement avec des voyages en route Stop & GO.
+Les engrenages commutés manuellement ne sont pas influencés.
+Mon script "réduit l'effet de freinage du moteur" n'est plus requis avec cette nouvelle édition, ou ne doit pas être utilisé ensemble.
 
-Liste des modifications / Journal des modifications
-Version 1.0.0.0 - Version Modhub
-Version 1.0.0.1 - Adaptation du script à la version 1.2.0.2
-Version 1.0.0.2 - Adaptation du script au patch 1.8.2.x
-				- moddesc augmenté
-				- optimisation supplémentaire du script
-GitHub: https://github.com/s4t4n/LS22_enginebrake
+
+Changer la liste / ChangeLog
+Version 0.1.0.0 - Publication ModHub - comme une force de frein moins moteur
+Version 0.1.0.1 - Réglage des Écritures à la version 1.2.0.2
+Version 0.1.0.2 - Réglage des Écritures au patch 1.8.2.x
+- Les modes ont augmenté
+- Optimisation plus approfondie du script
+Version 1.0.0.0 - Nouvelle édition avec CVT Addon
+- Adaptation à fs22_remismaddon_gearbox de Modelleicher
+- comportement modifié dans les boîtes de vitesses vario
+
+Github: https://github.com/s4t4n/fs22_cvt_addon
 ]]></fr>
     </description> 
 
@@ -85,65 +102,78 @@ GitHub: https://github.com/s4t4n/LS22_enginebrake
 	
 	<l10n>
 		<text name="txt_VarioOne">
-			<de>Fahrstufe: 1</de>
-			<en>Driving level: 1</en>
+			<de><![CDATA[D  I.]]></de> <en><![CDATA[D  I.]]></en> <fr><![CDATA[D  I.]]></fr>
 		</text>
 		<text name="txt_VarioTwo">
-            <de>Fahrstufe: 2</de>
-			<en>Driving level: 2</en>
+            <de><![CDATA[D II.]]></de> <en><![CDATA[D II.]]></en> <fr><![CDATA[D II.]]></fr>
+        </text>
+		<text name="txt_VarioN">
+            <de><![CDATA[D N]]></de> <en><![CDATA[D N]]></en> <fr><![CDATA[D N]]></fr>
+        </text>
+		<text name="txt_VarioRpmPlus">
+            <de>UPM +</de> <en>rpm +</en> <fr>rpm +</fr>
+        </text>
+		<text name="txt_VarioRpmMinus">
+            <de>UPM -</de> <en>rpm -</en> <fr>rpm -</fr>
         </text>
 		<text name="input_SETVARIOONE">
-			<de>Fahrstufe 1</de>
-			<en>Driving level 1</en>
+			<de>CVTa: Fahrstufe 1</de> <en>CVTa: Driving level 1</en> <fr>CVTa: Niveau de levage: 1</fr>
 		</text>
 		<text name="input_SETVARIOTWO">
-            <de>Fahrstufe 2</de>
-			<en>Driving level 2</en>
+            <de>CVTa: Fahrstufe 2</de> <en>CVTa: Driving level 2</en> <fr>CVTa: Niveau de levage: 2</fr>
+        </text>
+		<text name="input_SETVARION">
+            <de>CVTa: Neutral</de> <en>CVTa: neutral</en> <fr>CVTa: neutral</fr>
+        </text>
+		<text name="input_SETVARIORPMP">
+            <de>CVTa: Motordrehzahl erhöhen</de> <en>CVTa: Increase engine rpm</en> <fr>CVTa: rpm +</fr>
+        </text>
+		<text name="input_SETVARIORPMM">
+            <de>CVTa: Motordrehzahl verringern</de> <en>CVTa: Decrease engine rpm</en> <fr>CVTa: rpm -</fr>
         </text>
 		<text name="input_LMBF_TOGGLE_RAMP">
-			<de>Beschleunigungsrampe wechseln</de>
-			<en>Toggle Accelerationramp</en>
+			<de>CVTa: Beschleunigungsrampe wechseln</de> <en>CVTa: Toggle Accelerationramp</en> <fr>CVTa: Changer la rampe d'accélération</fr>
 		</text>
 		<text name="input_LMBF_TOGGLE_BRAMP">
-			<de>Bremsrampe ändern</de>
-			<en>Change brakeramp</en>
+			<de>CVTa: Bremsrampe ändern</de> <en>CVTa: Change brakeramp</en> <fr>CVTa: Changer la rampe de frein</fr>
 		</text>
 		<text name="txt_accRamp1">
-			<de>Beschl. Rampe: 1</de>
-			<en>Acc. Ramp: 1</en>
+			<de><![CDATA[AR 1]]></de> <en>AR 1</en> <fr>AR 1</fr>
 		</text>
 		<text name="txt_accRamp2">
-			<de>Beschl. Rampe: 2</de>
-			<en>Acc. Ramp: 2</en>
+			<de><![CDATA[AR 2]]></de> <en>AR 2</en> <fr>AR 2</fr>
 		</text>
 		<text name="txt_accRamp3">
-			<de>Beschl. Rampe: 3</de>
-			<en>Acc. Ramp: 3</en>
+			<de><![CDATA[AR 3]]></de> <en>AR 3</en> <fr>AR 3</fr>
 		</text>
 		<text name="txt_accRamp4">
-			<de>Beschl. Rampe: 4</de>
-			<en>Acc. Ramp: 4</en>
+			<de><![CDATA[AR 4]]></de> <en>AR 4</en> <fr>AR 4</fr>
 		</text>
 		
 		<text name="txt_bRamp1">
-			<de>Brems Rampe: AUS</de>
-			<en>Brake Ramp: OFF</en>
+			<de><![CDATA[BR aus]]></de> <en>BR OFF</en> <fr>BR DÉS</fr>
 		</text>
 		<text name="txt_bRamp2">
-			<de>Brems Rampe: 4 km/h</de>
-			<en>Brake Ramp: 4 kph</en>
+			<de>BR  4 km/h</de> <en>BR  4 kmph</en> <fr>BR  4 km/h</fr>
 		</text>
 		<text name="txt_bRamp3">
-			<de>Brems Rampe: 8 km/h</de>
-			<en>Brake Ramp: 8 kph</en>
+			<de>BR 8 km/h</de> <en>BR  8 kmph</en> <fr>BR  8 km/h</fr>
 		</text>
 		<text name="txt_bRamp4">
-			<de>Brems Rampe: 15 km/h</de>
-			<en>Brake Ramp: 15 kph</en>
+			<de>BR 15 km/h</de> <en>BR 15 kmph</en> <fr>BR 15 km/h</fr>
 		</text>
 		<text name="txt_bRamp5">
-			<de>Brems Rampe: 17 km/h</de>
-			<en>Brake Ramp: 17 kph</en>
+			<de>BR 17 km/h</de> <en>BR 17 kmph</en> <fr>BR 17 km/h</fr>
+		</text>
+		<text name="txt_warn_tofastDn">
+			<de>Zu schnell! Fahrstufenwechsel maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</de>
+			<en>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</en>
+			<fr>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</fr>
+		</text>
+		<text name="txt_warn_tofastUp">
+			<de>Vorsicht! Fahrstufen maximal mit 10 km/h wechseln, am besten kurz stehen bleiben.</de>
+			<en>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</en>
+			<fr>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</fr>
 		</text>
 		
 	</l10n>
@@ -152,6 +182,9 @@ GitHub: https://github.com/s4t4n/LS22_enginebrake
 		<action name="LMBF_TOGGLE_BRAMP" />
         <action name="SETVARIOONE" />
         <action name="SETVARIOTWO" />
+        <action name="SETVARION" />
+        <action name="SETVARIORPMP" />
+        <action name="SETVARIORPMM" />
     </actions>
 	<inputBinding>
 		<actionBinding action="SETVARIOONE">
@@ -164,6 +197,15 @@ GitHub: https://github.com/s4t4n/LS22_enginebrake
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 		<actionBinding action="LMBF_TOGGLE_BRAMP">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="SETVARION">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="SETVARIORPMP">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="SETVARIORPMM">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 	</inputBinding>

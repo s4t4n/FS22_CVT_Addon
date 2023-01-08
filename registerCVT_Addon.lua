@@ -6,6 +6,7 @@
 
 
 g_specializationManager:addSpecialization("CVTaddon", "CVTaddon", g_currentModDirectory.."CVT_Addon.lua")
+-- g_specializationManager:addSpecialization("CVTaddonHUD", "CVTaddonHUD", g_currentModDirectory.."CVT_AddonHUD.lua")
 
 LMBFRegister = {}
 
@@ -19,6 +20,7 @@ function LMBFRegister:register(name)
             
             local motorized = false;
             local CVTaddon = false;
+            -- local CVTaddonHUD = false;
             
             for _, spec in pairs(vehicle.specializationNames) do
             
@@ -28,6 +30,9 @@ function LMBFRegister:register(name)
                 if spec == "CVTaddon" then -- don't insert if already inserted
                     CVTaddon = true;
                 end
+				-- if spec == "CVTaddonHUD" then -- don't insert if already inserted
+                    -- CVTaddonHUD = true;
+                -- end
                 
             end    
             if motorized and not CVTaddon then
@@ -38,5 +43,5 @@ function LMBFRegister:register(name)
         LMBFRegister.done = true
     end
 end
-
+LMBFRegister:register()
 TypeManager.finalizeTypes = Utils.prependedFunction(TypeManager.finalizeTypes, LMBFRegister.register)

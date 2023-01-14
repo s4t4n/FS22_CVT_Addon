@@ -10,26 +10,13 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
--- Script Ver	0.2.0.59
--- last update	11.01.23
+-- Script Ver	0.2.0.67
+-- last update	14.01.23
 
 
 -- source(g_currentModDirectory .. "CVT_Addon_HUD.lua")
 CVTaddon = {};
--- local spec = spec_CVTaddon
--- spec.eventActiveV1 = true
--- spec.eventActiveV2 = false
--- spec.eventActiveV3 = true
--- spec.eventActiveV4 = true
--- spec.eventIdV1 = nil
--- spec.eventIdV2 = nil
--- spec.eventIdV3 = nil
--- spec.eventIdV4 = nil
--- spec.vOne = 1
--- spec.vTwo = 4
--- spec.vThree = 2
--- CVT_Addon.insTextV = ""
--- CVT_Addon.genText = ""
+CVTaddon.modDirectory = g_currentModDirectory;
 
 -- local sbshDebugOn = true;
 -- local sbshFlyDebugOn = true;
@@ -37,6 +24,10 @@ CVTaddon = {};
 function CVTaddon.prerequisitesPresent(specializations) 
     return true
 end 
+
+-- function Cylindered.prerequisitesPresent(specializations)
+    -- return SpecializationUtil.hasSpecialization(VehicleSettings, specializations)
+-- end
 
 function CVTaddon.registerEventListeners(vehicleType) 
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CVTaddon) 
@@ -53,6 +44,7 @@ function CVTaddon:onRegisterActionEvents()
 	spec.BackupMaxFwSpd = tostring(self.spec_motorized.motor.maxForwardSpeedOrigin)
 	spec.BackupMaxBwSpd = tostring(self.spec_motorized.motor.maxBackwardSpeedOrigin)
 	spec.calcBrakeForce = string.format("%.2f", spec.BackupMaxFwSpd/100)
+	-- spec.currentDirection = self.spec_motorized.motor.currentDirection
     if self.getIsEntered ~= nil and self:getIsEntered() then
         spec.actionEventsV1 = {}
         spec.actionEventsV2 = {}
@@ -62,6 +54,8 @@ function CVTaddon:onRegisterActionEvents()
         spec.actionEventsV6 = {}
         spec.actionEventsV7 = {}
         spec.actionEventsV8 = {}
+		local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName) -- debug
+		print("storeItem.categoryName: " .. tostring(storeItem.categoryName)) -- debug
 		if spec.vOne == nil then
 			spec.vOne = 1
 		end
@@ -178,7 +172,12 @@ end
 function CVTaddon:onLoad()
 	self.spec_CVTaddon = {}
 	local spec = self.spec_CVTaddon
-
+	spec.BG1width, spec.BG1height = 0.005, 0.09;
+	spec.currBGcolor = { 0.02, 0.02, 0.02, 0.7 }
+	-- spec.currentModDirectory = g_currentModDirectory
+	CVTaddon.CVTIconBg = Overlay.new(Utils.getFilename("CVTaddon_HUDbg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconFb = Overlay.new(Utils.getFilename("CVTaddon_HUDfb.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	print("CVT Dir: "..tostring(CVTaddon.modDirectory))
 	if spec.vOne == nil then
 			spec.vOne = 1
 		end
@@ -231,7 +230,8 @@ function CVTaddon:onLoad()
 	spec.eventIdV8 = nil
 	spec.BackupMaxFwSpd = ""
 	spec.calcBrakeForce = ""
-	CVTaddon.modDirectory = g_currentModDirectory
+	
+	-- spec.currentModDirectory = g_currentModDirectory
 	CVTaddon:VarioOne()
 	CVTaddon:VarioTwo()
 	CVTaddon:BrakeRamps()
@@ -518,30 +518,23 @@ function CVTaddon:VarioOne() -- field
 	if not spec.eventActiveV1 then
         return
     end
+	currentDirection = self.spec_motorized.motor.currentDirection
 	if isEntered and spec.isMotorOn then
-		if self:getLastSpeed() >= 11 then
+		if self:getLastSpeed() >= 11 and spec.vFour == 1 then
 			g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastDn"), 3072)
-			self:addDamageAmount(spec.retrpm)
+			self:addDamageAmount(math.min(0.0002*(self:getOperatingTime()/1000000)+(self:getLastSpeed()/100), 1))
 			spec.eventActiveV1 = true
 			spec.eventActiveV2 = false
 		end
 		-- if (spec.vOne == 1) then
 		if (spec.vOne == 1) then
 			if self:getLastSpeed() <=10 then
-				if self:getLastSpeed() >=1 then
-					self:addDamageAmount(0.5*spec.retrpm)  -- factor age
+				if self:getLastSpeed() >1 and spec.vFour == 1 then
+					self:addDamageAmount(math.min(0.00008*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000)+(self:getLastSpeed()/100), 1))
 				end
 				-- spec.vOne = 3.2
 				spec.vOne = 2
-				spec.vFour = 1
-				-- local spec.spiceDFWspeed = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 5.09), 7.94)
-				-- local spec.spiceDBWspeed = math.min(math.max(spec.BackupMaxBwSpd / 1.4, 3.81), 7.36)
-				-- self.spec_motorized.motor.maxForwardSpeed = spiceDFWspeed
-				-- self.spec_motorized.motor.maxBackwardSpeed = spiceDBWspeed
-				-- self.spec_motorized.motor.lowBrakeForceScale = (spec.calcBrakeForce+0.04)
-				-- self.spec_motorized.motor.rpmLimit = inf
-				-- g_inputBinding:setActionEventTextVisibility(spec.eventIdV1, false)
-				-- g_inputBinding:setActionEventTextVisibility(spec.eventIdV2, true)
+				-- spec.vFour = 1
 				spec.eventActiveV1 = false
 				spec.eventActiveV2 = true
 				if sbshDebugOn then
@@ -550,7 +543,11 @@ function CVTaddon:VarioOne() -- field
 				end
 			end
 		end
+		if currentDirection ~= self.spec_motorized.motor.currentDirection then
+			spec.vFour = 1
+		end
 	end
+	
 	if sbshDebugOn then
 		print("VarioOne Taste losgelassen vOne: "..spec.vOne)
 		print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
@@ -571,16 +568,17 @@ function CVTaddon:VarioTwo() -- street
 	if not spec.eventActiveV2 then
         return
     end
+	currentDirection = self.spec_motorized.motor.currentDirection
 	if isEntered and spec.isMotorOn then
-		if self:getLastSpeed() >= 10 then
+		if self:getLastSpeed() > 10 then
 			g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastUp"), 3072)
-			self:addDamageAmount(0.1)
+			self:addDamageAmount(math.min(0.00015*(self:getOperatingTime()/1000000), 1)) -- 3.6
 		end
 		-- if (spec.vOne ~= 1) then
 		if (spec.vOne == 2) then
 			-- spec.vOne = 1
 			spec.vOne = 1
-			spec.vFour = 1
+			-- spec.vFour = 1
 			local SpeedScale = spec.PedalResolution
 			self.spec_motorized.motor.maxForwardSpeed = spec.BackupMaxFwSpd
 			self.spec_motorized.motor.maxBackwardSpeed = spec.BackupMaxBwSpd
@@ -594,6 +592,9 @@ function CVTaddon:VarioTwo() -- street
 				print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
 				print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
 			end
+		end
+		if currentDirection ~= self.spec_motorized.motor.currentDirection then
+			spec.vFour = 1
 		end
 	end
 	if sbshDebugOn then
@@ -614,11 +615,17 @@ function CVTaddon:VarioN() -- neutral
 	if isEntered and spec.isMotorOn then
 		if (spec.vFour == 0) then
 			spec.eventActiveV5 = true
-			print("Neutral AN")
+			print("Neutral AN") -- debug
+			if self:getLastSpeed() > 5 then
+				self:addDamageAmount(math.min(0.00015*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000)+(self:getLastSpeed()/100), 1))
+			end
 		end
 		if (spec.vFour == 1) then
 			spec.eventActiveV5 = true
-			print("Neutral AUS")
+			print("Neutral AUS") -- debug
+			if self.spec_motorized.motor.lastMotorRpm > self.spec_motorized.motor.minRpm+150 then
+				self:addDamageAmount(math.min(0.00005*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000), 1))
+			end
 		end
 		if spec.vFour == 1 then
 			spec.vFour = 0
@@ -640,16 +647,43 @@ end
 		print("VarioN : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
 	end
 	local spec.PedalResolution = inputValue
+	-- self.spec_motorized.motor:getUseAutomaticGearShifting()
+end]]--
+
+--[[local function isConfigImplement(implement)
+	--return implement.spec_workArea ~= nil or implement.spec_combine ~= nil or implement.spec_forageWagon ~= nil or implement.spec_baler ~= nil
+	local returnType
+	
+	if implement.spec_plow ~= nil then returnType = "Plow"
+		elseif implement.spec_combine ~= nil then returnType = "Combine"
+		elseif implement.spec_sowingMachine ~= nil then returnType = "Sowingmachine"
+		elseif implement.spec_cultivator ~= nil then returnType = "Cultivator"
+		elseif implement.spec_mulcher ~= nil then returnType = "Mulcher"
+		elseif implement.spec_roller ~= nil then returnType = "Roller"
+		elseif implement.spec_forageWagon ~= nil then returnType = "Foragewagon"
+		elseif implement.spec_baler ~= nil then returnType = "Baler"
+	end
+	
+	return returnType
 end]]--
 
 function CVTaddon:onUpdate(dt)
 	local spec = self.spec_CVTaddon
 	local isEntered = self.getIsEntered ~= nil and self:getIsEntered()
+	local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
+	local StI = storeItem.categoryName
+	local isTractor = StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL"
+	local isErnter = StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES"
+	local isLoader = StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES"
+	local isPKWLKW = StI == "CARS" or StI == "TRUCKS"
+	local isWoodWorker = storeItem.categoryName == "WOODHARVESTING"
+	local isFFF = storeItem.categoryName == "FORKLIFTS"
 	spec.isMotorOn = self.spec_motorized.motor.lastMotorRpm > 0 and self.spec_motorized.motor.lastMotorRpm ~= nil
 	spec.retrpm = string.format("%.2f", self.spec_motorized.motor.lastMotorRpm/10000)
 	spec.isVarioTM = self.spec_motorized.motor.lastManualShifterActive == false and self.spec_motorized.motor.groupType == 1 and self.spec_motorized.motor.gearType == 1 and self.spec_motorized.motor.forwardGears == nil
 	local currentSpeedDrv = tonumber(string.format("%.2f", self:getLastSpeed()))
-	if isEntered and spec.isVarioTM then
+	spec.HydrostatPedal = math.abs(self.spec_motorized.motor.lastAcceleratorPedal)
+	if isEntered and spec.isVarioTM and not isPKWLKW then
 		if self.CVTaddon == nil then
 			self.CVTaddon = true
 
@@ -660,7 +694,7 @@ function CVTaddon:onUpdate(dt)
 			end;
 		end;
 		
-		-- Acceleration ramps - Beschleunigungsrampen
+		-- ACCELERATION RAMPS - BESCHLEUNIGUNGSRAMPEN
 		if spec.isMotorOn then
 			-- print("CVT_Addon: Motor AN")
 		
@@ -691,7 +725,7 @@ function CVTaddon:onUpdate(dt)
 				end
 			end
 			
-			-- Brake ramps - Bremsrampen
+			-- BRAKE RAMPS - BREMSRAMPEN
 			if spec.vThree == 1 and spec.isVarioTM then
 				-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_bRamp5")) -- #l10n
 				self.spec_motorized.motor.lowBrakeForceSpeedLimit = 0.00500 -- 17 kmh
@@ -722,7 +756,7 @@ function CVTaddon:onUpdate(dt)
 			spec.spiceRPM = self.spec_motorized.motor.lastMotorRpm
 			spec.spiceMaxSpd = self.spec_motorized.motor.maxForwardSpeed
 			
-			-- Neutral
+			-- NEUTRAL
 			if spec.vFour == 0 then
 				self.spec_motorized.motor.minForwardGearRatio = 0
 				self.spec_motorized.motor.maxForwardGearRatio = 0
@@ -734,6 +768,9 @@ function CVTaddon:onUpdate(dt)
 				self.spec_motorized.motor.accelerationLimit = 0
 				self.spec_motorized.motor.lowBrakeForceSpeedLimit = 0 -- 0
 				self.spec_motorized.motor.maxBackwardSpeed = 0
+				-- self.spec_motorized.motor.currentDirection = 0
+				-- need to unlock AccelerationPedal when direction is 0 as neutral
+				
 				local loadsetXP
 				local accPedal = self.spec_motorized.motor.lastAcceleratorPedal
 				local loadDrive = 0
@@ -759,7 +796,7 @@ function CVTaddon:onUpdate(dt)
 				--
 			end
 			
-			-- Motordrehzahl (Handgas-digital)    min
+			-- MOTORDREHZAHL (Handgas-digital)    min
 			if self.spec_motorized.motor.lastPtoRpm == nil then
 				self.spec_motorized.motor.lastPtoRpm = 0
 			end
@@ -812,16 +849,30 @@ function CVTaddon:onUpdate(dt)
 			
 			
 			
-			-- -- Fahrstufe I. 
+			
+			-- -- FAHRSTUFE I. 
 			-- if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM then
-			if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM and spec.vFour ~= 0 then
+			if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM and self.spec_motorized.motor.maxForwardSpeedOrigin > 6.68 then
 				spec.spiceDFWspeed = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 4.49), 6.94)
 				spec.spiceDBWspeed = math.min(math.max(spec.BackupMaxFwSpd / 1.4, 3.21), 6.36)
+				-- spec.spiceDFWspeedT = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 4.49), 6.94) * spec.HydrostatPedal
+				-- spec.spiceDBWspeedT = math.min(math.max(spec.BackupMaxFwSpd / 1.4, 3.21), 6.36) * spec.HydrostatPedal
+				-- if spec.HydrostatPedal >= 0.25 then
+					-- self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeedT
+					-- self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeedT
+					-- g_currentMission:addExtraPrintText("TMS Antrieb")
+				-- end
+				-- if spec.HydrostatPedal < 0.25 then
+					-- self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeed
+					-- self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeed
+					-- g_currentMission:addExtraPrintText("TMS byPass")
+				-- end
+				
 				self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeed
 				self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeed
 				-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_VarioOne")) -- #l10n
 				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.4
-				if spec.spiceRPM > self.spec_motorized.motor.minRpm + 150 and spec.vFive <= 7 then
+				if spec.spiceRPM > self.spec_motorized.motor.minRpm + 150 then
 					if self.spec_motorized.motor.smoothedLoadPercentage < 0.6 then
 						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.975), self.spec_motorized.motor.lastPtoRpm)
 						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
@@ -847,14 +898,64 @@ function CVTaddon:onUpdate(dt)
 						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * math.min(0.97+spec.spiceLoad, 1)), self.spec_motorized.motor.lastPtoRpm)
 					end
 				end
+			-- end
+			-- HYDROSTAT
+			elseif spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM and self.spec_motorized.motor.maxForwardSpeedOrigin <= 6.68 and not isTractor and isWoodWorker then
+				-- spec.HydrostatPedal = math.abs(self.spec_motorized.motor.lastAcceleratorPedal) -- nach oben verschoben
+				spec.spiceDFWspeedHs = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 2.8), 3.16)
+				spec.spiceDBWspeedHs = math.min(math.max(spec.BackupMaxFwSpd / 1.4, 2.8), 3.16)
+				spec.spiceDFWspeedH = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 2.8), 3.16) * spec.HydrostatPedal
+				spec.spiceDBWspeedH = math.min(math.max(spec.BackupMaxFwSpd / 1.4, 2.8), 3.16) * spec.HydrostatPedal
+				if spec.HydrostatPedal >= 0.2 then
+					self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeedH
+					self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeedH
+					g_currentMission:addExtraPrintText("Hydrostat Antrieb")
+				end
+				if spec.HydrostatPedal < 0.2 then
+					self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeedHs
+					self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeedHs
+					g_currentMission:addExtraPrintText("Hydrostat byPass")
+				end
+				
+				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 2.1
+				if spec.spiceRPM > self.spec_motorized.motor.minRpm + 150 then
+					if self.spec_motorized.motor.smoothedLoadPercentage < 0.4 then
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.98), self.spec_motorized.motor.lastPtoRpm)
+						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
+					end
+					if self.spec_motorized.motor.smoothedLoadPercentage > 0.6 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.8 then
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.99), self.spec_motorized.motor.lastPtoRpm)
+						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
+					end
+					if self.spec_motorized.motor.smoothedLoadPercentage > 0.8 then
+						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * 0.92
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * math.min(0.97+spec.spiceLoad, 1)), self.spec_motorized.motor.lastPtoRpm)
+					end
+				end
 			end
 			
-			-- -- Fahrstufe II. (Street/light weight transport or work) inputbinding
-			if spec.vOne == 1 and spec.vOne ~= nil and spec.isVarioTM and spec.vFour ~= 0 then
+			-- -- FAHRSTUFE II. (Street/light weight transport or work) inputbinding
+			if spec.vOne == 1 and spec.vOne ~= nil and spec.isVarioTM then
 				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 0.76
+				-- pedal TMS tryout
+				-- spec.spiceDFWspeed = spec.BackupMaxFwSpd
+				-- spec.spiceDBWspeed = spec.BackupMaxFwSpd
+				-- spec.spiceDFWspeedT = spec.BackupMaxFwSpd * spec.HydrostatPedal
+				-- spec.spiceDBWspeedT = spec.BackupMaxFwSpd * spec.HydrostatPedal
+				-- if spec.HydrostatPedal >= 0.25 then -- need to smoothe downspeed
+					-- self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeedT
+					-- self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeedT
+					-- g_currentMission:addExtraPrintText("TMS Antrieb")
+				-- end
+				-- if spec.HydrostatPedal < 0.25 then
+					-- self.spec_motorized.motor.maxForwardSpeed = spec.BackupMaxFwSpd
+					-- self.spec_motorized.motor.maxBackwardSpeed = spec.BackupMaxBwSpd
+					-- g_currentMission:addExtraPrintText("TMS byPass")
+				-- end
+				
 				-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_VarioTwo")) -- #l10n
 							
-				if spec.spiceRPM > self.spec_motorized.motor.minRpm + 150  and spec.vFive <= 7 then
+				if spec.spiceRPM > self.spec_motorized.motor.minRpm + 150 then
 					if self.spec_motorized.motor.smoothedLoadPercentage < 0.4 then
 						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.97), self.spec_motorized.motor.lastPtoRpm)
 						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
@@ -883,16 +984,30 @@ function CVTaddon:onUpdate(dt)
 			end
 		end
 	end
-	g_currentMission:addExtraPrintText("moveTime: " .. tostring(self.spec_attacherJointControl.jointDesc.moveTime))
+	-- for vehicleType, vehicle in pairs(g_vehicleTypeManager.types) do
+	-- and vehicleType ~= "locomotive" and vehicleType ~= "ConveyorBelt" and vehicleType ~= "woodCrusherTrailerDrivable"
+		-- if vehicle ~= nil then
+			-- print("CVT VT: "..self:vehicle.vehicleType)
+		-- end
+	-- end
+	-- g_currentMission:addExtraPrintText("moveTime: " .. tostring(self.spec_attacherJointControl.jointDesc.moveTime))
+	-- g_currentMission:addExtraPrintText("operatingTime: " .. tostring(self:getOperatingTime()/100000))
+	g_currentMission:addExtraPrintText("lastAcceleratorPedal: " .. tostring(self.spec_motorized.motor.lastAcceleratorPedal))
+	-- g_currentMission:addExtraPrintText("getTypeByName: " .. tostring(self.spec_motorized.vehicle.vehicleType))
+	-- g_vehicleTypeManager:getTypeByName(self.typeName)))
+		
+	g_currentMission:addExtraPrintText("storeItem.categoryName: " .. tostring(storeItem.categoryName))
+	-- g_currentMission:addExtraPrintText("lastRotSpeed: " .. tostring(tool.lastRotSpeed))
+	
 	if sbshFlyDebugOn then
 	-- -- Dev Text Help Zeug -------------------------------------------------------------------------------------------------------------------------------
-			-- g_currentMission:addExtraPrintText("groupType: " .. tostring(self.spec_motorized.motor.groupType))
+			
 			-- g_currentMission:addExtraPrintText("lastManualShifterActive: " .. tostring(self.spec_motorized.motor.lastManualShifterActive))
 			-- g_currentMission:addExtraPrintText("lowBrakeForceSpeedLimit: " .. tostring(self.spec_motorized.motor.lowBrakeForceSpeedLimit))
 			-- g_currentMission:addExtraPrintText("forwardGears: " .. tostring(self.spec_motorized.motor.forwardGears)) -- works for isVarioTM
 			-- print("lowBrakeForceSpeedLimit: " .. tostring(self.spec_motorized.motor.lowBrakeForceSpeedLimit))
 			-- print("lowBrakeForceScale: " .. tostring(self.spec_motorized.motor.lowBrakeForceScale))
-			-- g_currentMission:addExtraPrintText("Damage: " .. self.spec_motorized.motor.gearShiftMode)
+			
 			-- g_currentMission:addExtraPrintText("gearRatio: " .. self.spec_motorized.motor.gearRatio)
 			-- g_currentMission:addExtraPrintText("differentialRotSpeed: " .. self.spec_motorized.motor.differentialRotSpeed)
 			-- g_currentMission:addExtraPrintText("clutchSlippingTimer: " .. self.spec_motorized.motor.clutchSlippingTimer)
@@ -908,67 +1023,161 @@ function CVTaddon:onUpdate(dt)
 			g_currentMission:addExtraPrintText("lastAcceleratorPedal: " .. tostring(self.spec_motorized.motor.lastAcceleratorPedal))
 			-- g_currentMission:addExtraPrintText("age: " .. tostring(Vehicle.getSpecValueOperatingTime))
 			-- g_currentMission:addExtraPrintText("age: " .. tostring(Vehicle.operatingTime))
+			g_currentMission:addExtraPrintText("groupType: " .. tostring(self.spec_motorized.motor.groupType))
+			g_currentMission:addExtraPrintText("gearType: " .. tostring(self.spec_motorized.motor.gearType))
+			g_currentMission:addExtraPrintText("gearShiftMode: " .. tostring(self.spec_motorized.motor.gearShiftMode))
 			
 	--------------------------------------------------------------------------------------------------------------------------------------------------------------
 	end
+	g_currentMission:addExtraPrintText("isTractor: "..tostring(isTractor))
+	g_currentMission:addExtraPrintText("isErnter: "..tostring(isErnter))
+	g_currentMission:addExtraPrintText("isLoader: "..tostring(isLoader))
+	g_currentMission:addExtraPrintText("isPKWLKW: "..tostring(isPKWLKW))
+	g_currentMission:addExtraPrintText("isWoodWorker: "..tostring(isWoodWorker))
+	g_currentMission:addExtraPrintText("isFFF: "..tostring(isFFF))
+	g_currentMission:addExtraPrintText("StI: "..tostring(StI))
+
 end
 
-function CVTaddon:onDraw()
+-- function CVTaddon.createBackground()
+	-- local width, height = getNormalizedScreenValues(unpack(CVTaddon.BGSIZE.BACKGROUND))
+	-- local backgroundOverlay = Overlay.new(nil, 0.2, 0.9542, width, height)
+	-- -- local boxOverlay = Overlay.new(_, 0.2, 0.9542, 0.04, 0.0358)
+
+	-- backgroundOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_CENTER)
+
+	-- return backgroundOverlay
+-- end
+
+function CVTaddon:onDraw(vehicle, dt)
 	local spec = self.spec_CVTaddon
+	local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
+	local StI = storeItem.categoryName
+	local isTractor = StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL"
+	local isErnter = StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES"
+	local isLoader = StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES"
+	local isPKWLKW = StI == "CARS" or StI == "TRUCKS"
+	local isWoodWorker = storeItem.categoryName == "WOODHARVESTING"
+	local isFFF = storeItem.categoryName == "FORKLIFTS"
+	
 	if g_currentMission.hud.isVisible and spec.isVarioTM then
-	-- self.spec_motorized.motor.lastManualShifterActive == false and self.spec_motorized.motor.groupType == 1 and self.spec_motorized.motor.gearType == 1 then
+	
 
         -- calculate position and size
-		
+		-- render BG
 		-- h -
-        local AR_posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.2) -0.015
-        local BR_posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.2) -0.015
-        local D_posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.2) -0.015
+        -- local D_posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.3) -0.018
+        local posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.3) - 0.015
 		
 		-- v |
-		local D_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY + 0.015
+		local D_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY + 0.02
         local AR_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY
-        local BR_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - 0.015
+        local BR_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - 0.02
         
+		local BG_PosX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.2) - 0.01
+		local BG_PosY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - 0.019
+		
+        -- local SpeedMeterDisplay = g_currentMission.inGameMenu.hud.speedMeter
+		-- local width, height = getNormalizedScreenValues(unpack(CVTaddon.BGSIZE.BACKGROUND))
+		local BGcvt = 1
+		local overlayP = 1
+		-- local overlay.overlay = 1
+		local Transparancy = 0.6
+		-- local CVTaddon.overlayP = overlayP
+		-- if CVTaddon.overlay[overlay] == nil then
+
         local size = 0.014 * g_gameSettings.uiScale
 		local drawHgStep = ""
 		for i=1, spec.vFive-1 do
-			drawHgStep = drawHgStep .."|"
+			drawHgStep = drawHgStep .."["
 		end
 		-- if spec.vOne == 3.2 then
-		if spec.vOne == 2 and spec.vFour ~= 0 then
+		if spec.vOne == 2 then
 			spec.D_insTextV = "txt_VarioOne"
 		end
 		-- if spec.vOne == 1 then
-		if spec.vOne == 1 and spec.vFour ~= 0 then
+		if spec.vOne == 1 then
 			spec.D_insTextV = "txt_VarioTwo"
 		end
 		if spec.vFour == 0 then
-			spec.D_insTextV = "txt_VarioN"
+			spec.N_insTextV = "txt_VarioN"
+		elseif spec.vFour == 1 then
+			if self.spec_motorized.motor.currentDirection == 1 then
+				spec.N_insTextV = "txt_VarioD"
+			elseif self.spec_motorized.motor.currentDirection == -1 then
+				spec.N_insTextV = "txt_VarioR"
+			end
 		end
         -- add current driving level to table
         spec.D_genText = tostring(g_i18n:getText(spec.D_insTextV))
+        spec.N_genText = tostring(g_i18n:getText(spec.N_insTextV))
         -- render
-        setTextColor(0.3,1.0,0.1,1.0)
+		if spec.transparendSpd == nil then
+			spec.transparendSpd = 0.6
+			spec.transparendSpdT = 1
+		end
+		if self:getLastSpeed() > 20 then
+			spec.transparendSpd = (1- (self:getLastSpeed()/20-1))
+			spec.transparendSpdT = (1- (self:getLastSpeed()/20-1))
+		elseif self:getLastSpeed() <= 20 or self:getLastSpeed() == nil then
+			spec.transparendSpdT = 1
+		end
+		setTextColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+		-- setOverlayColor(CVTaddon.overlayP, 0.5, 1, 0, 0.6)
         -- setTextColor(1,1,1,1)
         setTextAlignment(RenderText.ALIGN_LEFT)
         setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
         setTextBold(false)
-		if spec.AR_genText ~= nil and spec.BR_genText ~= nil and spec.D_genText ~= nil and spec.isMotorOn then
-			renderText(AR_posX, AR_posY, size, spec.AR_genText)
-			renderText(BR_posX, BR_posY, size, spec.BR_genText)
-			renderText(D_posX, D_posY, size, spec.D_genText)
+		
+		-- add background overlay box ----------------------------------------------------------------------------------
+		-- local fontName = self.xmlFile:getValue(spec.D_genText .. "#font", "DIGIT"):upper();
+        -- local fontMaterial = g_materialManager:getFontMaterial(fontName, self.customEnvironment);
+		-----------------------------------------------------------------------------------------------------------------
+		if spec.AR_genText ~= nil and spec.BR_genText ~= nil and spec.D_genText ~= nil then
+			if not isPKWLKW then
+				spec.currBGcolor = { 0.02, 0.02, 0.02, math.max(math.min(spec.transparendSpd, 0.6), 0.2) }
+				CVTaddon.CVTIconBg:setColor(unpack(spec.currBGcolor))
+				CVTaddon.CVTIconFb:setColor(0, 0, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				-- CVTaddon.CVTIcon:setColor(unpack(SpeedMeterDisplay.COLOR.GEARS_BG));
+				CVTaddon.CVTIconBg:setPosition(posX-0.01, BR_posY-0.032)
+				CVTaddon.CVTIconFb:setPosition(posX-0.01, BR_posY-0.032)
+				CVTaddon.CVTIconBg:setScale(0.04, 0.094)
+				CVTaddon.CVTIconFb:setScale(0.04, 0.094)
+				-- CVTaddon.CVTIcon:setDimension(0.4, 0.8)
+				CVTaddon.CVTIconBg:render()
+				CVTaddon.CVTIconFb:render()
+				if spec.isMotorOn then
+					setTextBold(true)
+					renderText(posX, D_posY+0.03, size+0.025, spec.D_genText)
+					renderText(posX-0.01, D_posY, size, spec.N_genText)
+					setTextBold(false)
+					renderText(posX, AR_posY-0.005, size, spec.AR_genText)
+					renderText(posX, BR_posY-0.012, size, spec.BR_genText)
+					setTextAlignment(RenderText.ALIGN_RIGHT)
+					renderText(posX+0.015, D_posY+0.016, size-0.006, drawHgStep)
+				end
+			end
 			
-			setTextAlignment(RenderText.ALIGN_RIGHT)
-			renderText(D_posX+0.015, D_posY+0.015, size-0.004, drawHgStep)
+----------------------------------------------------------------------------------------------------------------------			
+----------------------------------------------------------------------------------------------------------------------	
+			
+----------------------------------------------------------------------------------------------------------------------			
+----------------------------------------------------------------------------------------------------------------------			
+			
 		end
+		
  		-- Back to roots
         setTextColor(1,1,1,1)
         setTextAlignment(RenderText.ALIGN_LEFT)
         setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_BASELINE)
         setTextBold(false)
+
+		setTextLineHeightScale(RenderText.DEFAULT_LINE_HEIGHT_SCALE)
+		setTextLineBounds(0, 0)
+		setTextWrapWidth(0)
 	end
 end
+
 
 -- Drivable = true
 -- addModEventListener(CVTaddon)

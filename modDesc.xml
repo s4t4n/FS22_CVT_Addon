@@ -39,7 +39,7 @@ GITHUB: https://github.com/s4t4n/FS22_CVT_Addon
         <de>
 <![CDATA[Dieses Skript verringert je nach Einstellung die Motorbremswirkung
 und fügt diverse Optionen für Vario und CVT Getriebe hinzu.
-Es gibt 2 Fahrstufen, II. ist für Straßenfahrten, Transport und leichte Arbeiten gedacht.
+Es gibt 2 Fahrbereiche, II. ist für Straßenfahrten, Transport und leichte Arbeiten gedacht.
 Stufe I. eher für schwere Feldarbeiten und schwere Transporte. Hierbei wird auch die Maximalgeschwindigkeit reduziert.
 Für jede Stufe ist eine Tastenbelegung zu vergeben.
 Desweiteren gibt es nun eine Beschleunigungsrampe in 4 Stufen, die mit einer Taste durchgeschaltet werden können.
@@ -102,13 +102,20 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 	
 	<l10n>
 		<text name="txt_VarioOne">
-			<de><![CDATA[D  I.]]></de> <en><![CDATA[D  I.]]></en> <fr><![CDATA[D  I.]]></fr>
+			<!-- <de><![CDATA[D  I.]]></de> <en><![CDATA[D  I.]]></en> <fr><![CDATA[D  I.]]></fr> -->
+			<de><![CDATA[ .  ]]></de> <en><![CDATA[D .  ]]></en> <fr><![CDATA[D .  ]]></fr>
 		</text>
 		<text name="txt_VarioTwo">
-            <de><![CDATA[D II.]]></de> <en><![CDATA[D II.]]></en> <fr><![CDATA[D II.]]></fr>
+            <de><![CDATA[    .]]></de> <en><![CDATA[D     .]]></en> <fr><![CDATA[D     .]]></fr>
         </text>
 		<text name="txt_VarioN">
-            <de><![CDATA[D N]]></de> <en><![CDATA[D N]]></en> <fr><![CDATA[D N]]></fr>
+            <de><![CDATA[  N]]></de> <en><![CDATA[  N]]></en> <fr><![CDATA[  N]]></fr>
+        </text>
+		<text name="txt_VarioR">
+            <de>↓</de> <en> </en> <fr> </fr>
+        </text>
+		<text name="txt_VarioD">
+            <de>↑</de> <en> </en> <fr> </fr>
         </text>
 		<text name="txt_VarioRpmPlus">
             <de>UPM +</de> <en>rpm +</en> <fr>rpm +</fr>
@@ -117,10 +124,10 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
             <de>UPM -</de> <en>rpm -</en> <fr>rpm -</fr>
         </text>
 		<text name="input_SETVARIOONE">
-			<de>CVTa: Fahrstufe 1</de> <en>CVTa: Driving level 1</en> <fr>CVTa: Niveau de levage: 1</fr>
+			<de>CVTa: Fahrbereich 1</de> <en>CVTa: Driving level 1</en> <fr>CVTa: Niveau de levage: 1</fr>
 		</text>
 		<text name="input_SETVARIOTWO">
-            <de>CVTa: Fahrstufe 2</de> <en>CVTa: Driving level 2</en> <fr>CVTa: Niveau de levage: 2</fr>
+            <de>CVTa: Fahrbereich 2</de> <en>CVTa: Driving level 2</en> <fr>CVTa: Niveau de levage: 2</fr>
         </text>
 		<text name="input_SETVARION">
             <de>CVTa: Neutral</de> <en>CVTa: neutral</en> <fr>CVTa: neutral</fr>
@@ -154,16 +161,16 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 			<de><![CDATA[BR aus]]></de> <en>BR OFF</en> <fr>BR DÉS</fr>
 		</text>
 		<text name="txt_bRamp2">
-			<de>BR  4 km/h</de> <en>BR  4 kmph</en> <fr>BR  4 km/h</fr>
+			<de>BR  4</de> <en>BR  4</en> <fr>BR  4</fr>
 		</text>
 		<text name="txt_bRamp3">
-			<de>BR 8 km/h</de> <en>BR  8 kmph</en> <fr>BR  8 km/h</fr>
+			<de>BR 8</de> <en>BR  8</en> <fr>BR  8</fr>
 		</text>
 		<text name="txt_bRamp4">
-			<de>BR 15 km/h</de> <en>BR 15 kmph</en> <fr>BR 15 km/h</fr>
+			<de>BR 15</de> <en>BR 15</en> <fr>BR 15</fr>
 		</text>
 		<text name="txt_bRamp5">
-			<de>BR 17 km/h</de> <en>BR 17 kmph</en> <fr>BR 17 km/h</fr>
+			<de>BR 17</de> <en>BR 17</en> <fr>BR 17</fr>
 		</text>
 		<text name="txt_warn_tofastDn">
 			<de>Zu schnell! Fahrstufenwechsel maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</de>
@@ -185,6 +192,8 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
         <action name="SETVARION" />
         <action name="SETVARIORPMP" />
         <action name="SETVARIORPMM" />
+        <action name="SETVARIORPM_AXIS" />
+        <action name="SETPEDALWAY_AXIS" />
     </actions>
 	<inputBinding>
 		<actionBinding action="SETVARIOONE">
@@ -206,6 +215,12 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 		<actionBinding action="SETVARIORPMM">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="SETVARIORPM_AXIS">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="SETPEDALWAY_AXIS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 	</inputBinding>

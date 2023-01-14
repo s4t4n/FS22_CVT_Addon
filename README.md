@@ -87,5 +87,5 @@ Version 1.0.0.0	- Neuauflage mit CVT Addon
 - Verhalten bei Variogetriebe geändert
 
 
+[![Watch the video](https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg)](https://www.youtube.com/watch?v=rdKwO8u5Zd0)
 
-https://www.youtube.com/watch?v=rdKwO8u5Zd0

@@ -1,5 +1,6 @@
 # FS22_CVT_Addon
 ![CVTaddon_icon](https://user-images.githubusercontent.com/4678246/212495819-836ffed8-f2c6-4a86-bf72-44b624b703eb.png)
+https://discord.gg/mktV7jpNzp
 
 multiplayer not tested yet !
 

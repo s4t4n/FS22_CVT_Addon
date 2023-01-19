@@ -10,9 +10,9 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
--- Script Ver	0.2.0.67
--- last update	14.01.23
-
+-- Script Ver	0.2.0.75
+-- last update	19.01.23
+-- last changed	hud scale and speedIndicatorRadiusY without multiplikator
 
 -- source(g_currentModDirectory .. "CVT_Addon_HUD.lua")
 CVTaddon = {};
@@ -44,7 +44,7 @@ function CVTaddon:onRegisterActionEvents()
 	spec.BackupMaxFwSpd = tostring(self.spec_motorized.motor.maxForwardSpeedOrigin)
 	spec.BackupMaxBwSpd = tostring(self.spec_motorized.motor.maxBackwardSpeedOrigin)
 	spec.calcBrakeForce = string.format("%.2f", spec.BackupMaxFwSpd/100)
-	-- spec.currentDirection = self.spec_motorized.motor.currentDirection
+	
     if self.getIsEntered ~= nil and self:getIsEntered() then
         spec.actionEventsV1 = {}
         spec.actionEventsV2 = {}
@@ -55,7 +55,9 @@ function CVTaddon:onRegisterActionEvents()
         spec.actionEventsV7 = {}
         spec.actionEventsV8 = {}
 		local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName) -- debug
-		print("storeItem.categoryName: " .. tostring(storeItem.categoryName)) -- debug
+		if sbshDebugOn then
+			print("storeItem.categoryName: " .. tostring(storeItem.categoryName)) -- debug
+		end
 		if spec.vOne == nil then
 			spec.vOne = 1
 		end
@@ -116,29 +118,29 @@ function CVTaddon:onRegisterActionEvents()
 		-- D1
         _, spec.eventIdV1 = self:addActionEvent(spec.actionEventsV1, 'SETVARIOONE', self, CVTaddon.VarioOne, false, true, false, true)
         g_inputBinding:setActionEventTextPriority(spec.eventIdV1, GS_PRIO_NORMAL)
-        g_inputBinding:setActionEventTextVisibility(spec.eventIdV1, spec.eventActiveV1)
+        g_inputBinding:setActionEventTextVisibility(spec.eventIdV1, false)
         -- g_inputBinding:setActionEventTextVisibility(spec.eventIdV1, true) -- test if works
 		
 		-- D2
 		_, spec.eventIdV2 = self:addActionEvent(spec.actionEventsV2, 'SETVARIOTWO', self, CVTaddon.VarioTwo, false, true, false, true)
         g_inputBinding:setActionEventTextPriority(spec.eventIdV2, GS_PRIO_NORMAL)
-        g_inputBinding:setActionEventTextVisibility(spec.eventIdV2, spec.eventActiveV2)
+        g_inputBinding:setActionEventTextVisibility(spec.eventIdV2, false)
         -- g_inputBinding:setActionEventTextVisibility(spec.eventIdV2, true) -- test if works
 		
 		-- AR
 		_, spec.eventIdV3 = self:addActionEvent(spec.actionEventsV3, 'LMBF_TOGGLE_RAMP', self, CVTaddon.AccRamps, false, true, false, true)
         g_inputBinding:setActionEventTextPriority(spec.eventIdV3, GS_PRIO_NORMAL)
-        g_inputBinding:setActionEventTextVisibility(spec.eventIdV3, spec.eventActiveV3)
+        g_inputBinding:setActionEventTextVisibility(spec.eventIdV3, false)
 		
 		-- BR
 		_, spec.eventIdV4 = self:addActionEvent(spec.actionEventsV4, 'LMBF_TOGGLE_BRAMP', self, CVTaddon.BrakeRamps, false, true, false, true)
         g_inputBinding:setActionEventTextPriority(spec.eventIdV4, GS_PRIO_NORMAL)
-        g_inputBinding:setActionEventTextVisibility(spec.eventIdV4, spec.eventActiveV4)
+        g_inputBinding:setActionEventTextVisibility(spec.eventIdV4, false)
 		
 		-- neutral
 		_, spec.eventIdV5 = self:addActionEvent(spec.actionEventsV5, 'SETVARION', self, CVTaddon.VarioN, false, true, false, true)
         g_inputBinding:setActionEventTextPriority(spec.eventIdV5, GS_PRIO_NORMAL)
-        g_inputBinding:setActionEventTextVisibility(spec.eventIdV5, spec.eventActiveV5)
+        g_inputBinding:setActionEventTextVisibility(spec.eventIdV5, false)
 		
 		-- rpmUP
 		_, spec.eventIdV6 = self:addActionEvent(spec.actionEventsV6, 'SETVARIORPMP', self, CVTaddon.VarioRpmPlus, false, true, false, true)
@@ -152,7 +154,7 @@ function CVTaddon:onRegisterActionEvents()
 		-- Fahrpedalauflösung
 		_, spec.eventIdV8 = self:addActionEvent(spec.actionEventsV8, 'SETPEDALWAY_AXIS', self, CVTaddon.VarioPedalRes, false, false, true, true)
         g_inputBinding:setActionEventTextPriority(spec.eventIdV8, GS_PRIO_NORMAL)
-        g_inputBinding:setActionEventTextVisibility(spec.eventIdV8, spec.eventActiveV8)
+        g_inputBinding:setActionEventTextVisibility(spec.eventIdV8, false)
 		
 		-- CVTaddon.updateActionEvents(self)
 		--  local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.LOWER_IMPLEMENT, self, Pickup.actionEventTogglePickup, triggerUp, triggerDown, triggerAlways, startActive, callbackState, customIconName)
@@ -174,10 +176,24 @@ function CVTaddon:onLoad()
 	local spec = self.spec_CVTaddon
 	spec.BG1width, spec.BG1height = 0.005, 0.09;
 	spec.currBGcolor = { 0.02, 0.02, 0.02, 0.7 }
+	if spec.currentDirection == nil then
+		spec.lastDirection = 1
+	end
 	-- spec.currentModDirectory = g_currentModDirectory
-	CVTaddon.CVTIconBg = Overlay.new(Utils.getFilename("CVTaddon_HUDbg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-	CVTaddon.CVTIconFb = Overlay.new(Utils.getFilename("CVTaddon_HUDfb.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-	print("CVT Dir: "..tostring(CVTaddon.modDirectory))
+	CVTaddon.CVTIconBg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDbg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconFb = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfb.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconFs1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconFs2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconHg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconAr1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconAr2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconAr3 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar3.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconAr4 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar4.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconHydro = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhydro.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconN = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconN2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconR = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDr.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+	CVTaddon.CVTIconV = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDv.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
 	if spec.vOne == nil then
 			spec.vOne = 1
 		end
@@ -518,7 +534,7 @@ function CVTaddon:VarioOne() -- field
 	if not spec.eventActiveV1 then
         return
     end
-	currentDirection = self.spec_motorized.motor.currentDirection
+	-- currentDirection = self.spec_motorized.motor.currentDirection
 	if isEntered and spec.isMotorOn then
 		if self:getLastSpeed() >= 11 and spec.vFour == 1 then
 			g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastDn"), 3072)
@@ -543,9 +559,6 @@ function CVTaddon:VarioOne() -- field
 				end
 			end
 		end
-		if currentDirection ~= self.spec_motorized.motor.currentDirection then
-			spec.vFour = 1
-		end
 	end
 	
 	if sbshDebugOn then
@@ -568,7 +581,7 @@ function CVTaddon:VarioTwo() -- street
 	if not spec.eventActiveV2 then
         return
     end
-	currentDirection = self.spec_motorized.motor.currentDirection
+	-- currentDirection = self.spec_motorized.motor.currentDirection
 	if isEntered and spec.isMotorOn then
 		if self:getLastSpeed() > 10 then
 			g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastUp"), 3072)
@@ -593,9 +606,7 @@ function CVTaddon:VarioTwo() -- street
 				print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
 			end
 		end
-		if currentDirection ~= self.spec_motorized.motor.currentDirection then
-			spec.vFour = 1
-		end
+		-- spec.vFour = 1
 	end
 	if sbshDebugOn then
 		print("VarioTwo Taste losgelassen vOne: "..spec.vOne)
@@ -607,6 +618,7 @@ end
 function CVTaddon:VarioN() -- neutral
 	local spec = self.spec_CVTaddon
 	local isEntered = self.getIsEntered ~= nil and self:getIsEntered()
+	
 	if sbshDebugOn then
 		print("VarioN Taste gedrückt vFour: "..spec.vFour)
 		print("VarioN : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
@@ -614,17 +626,39 @@ function CVTaddon:VarioN() -- neutral
 	end
 	if isEntered and spec.isMotorOn then
 		if (spec.vFour == 0) then
+			if self.spec_motorized.motor.currentDirection ~= spec.lastDirection then
+				self.spec_motorized.motor.currentDirection = spec.lastDirection
+				-- spec.vFour = 1 -- keeps N on
+				if sbshFlyDebugOn then
+					print("Erster cD")
+				end
+			end
 			spec.eventActiveV5 = true
-			print("Neutral AN") -- debug
+			if sbshFlyDebugOn then
+				print("Neutral AN") -- debug
+			end
 			if self:getLastSpeed() > 5 then
 				self:addDamageAmount(math.min(0.00015*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000)+(self:getLastSpeed()/100), 1))
 			end
 		end
 		if (spec.vFour == 1) then
 			spec.eventActiveV5 = true
-			print("Neutral AUS") -- debug
+			if sbshFlyDebugOn then
+				print("Neutral AUS") -- debug
+			end
 			if self.spec_motorized.motor.lastMotorRpm > self.spec_motorized.motor.minRpm+150 then
 				self:addDamageAmount(math.min(0.00005*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000), 1))
+			end
+			-- if spec.wasFwd then 
+				-- self.spec_motorized.motor.currentDirection = 1
+			-- elseif not spec.wasFwd then
+				-- self.spec_motorized.motor.currentDirection = -1
+			-- end
+			if self.spec_motorized.motor.currentDirection ~= spec.lastDirection then
+				spec.lastDirection = self.spec_motorized.motor.currentDirection
+				if sbshFlyDebugOn then
+					print("Zweiter cD")
+				end
 			end
 		end
 		if spec.vFour == 1 then
@@ -635,7 +669,7 @@ function CVTaddon:VarioN() -- neutral
 	end
 end
 
---[[function CVTaddon:VarioPedalRes(inputValue) -- Pedal Resolution
+--[[function CVTaddon:VarioPedalRes(inputValue, isActiveForInput, isActiveForInputIgnoreSelection, isSelected) -- Pedal Resolution
 	local spec = self.spec_CVTaddon
 	-- local vehicle = self.vehicle
 	local vehicle = self.vehicle
@@ -667,7 +701,7 @@ end]]--
 	return returnType
 end]]--
 
-function CVTaddon:onUpdate(dt)
+function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
 	local spec = self.spec_CVTaddon
 	local isEntered = self.getIsEntered ~= nil and self:getIsEntered()
 	local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
@@ -689,12 +723,12 @@ function CVTaddon:onUpdate(dt)
 
 			if self.spec_motorized ~= nil then
 				if self.spec_motorized.motor ~= nil then
-					print("CVT_Addon: Motorized eingestiegen")
+					-- print("CVT_Addon: Motorized eingestiegen")
 				end;
 			end;
 		end;
 		
-		-- ACCELERATION RAMPS - BESCHLEUNIGUNGSRAMPEN
+-- ACCELERATION RAMPS - BESCHLEUNIGUNGSRAMPEN
 		if spec.isMotorOn then
 			-- print("CVT_Addon: Motor AN")
 		
@@ -725,7 +759,7 @@ function CVTaddon:onUpdate(dt)
 				end
 			end
 			
-			-- BRAKE RAMPS - BREMSRAMPEN
+-- BRAKE RAMPS - BREMSRAMPEN
 			if spec.vThree == 1 and spec.isVarioTM then
 				-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_bRamp5")) -- #l10n
 				self.spec_motorized.motor.lowBrakeForceSpeedLimit = 0.00500 -- 17 kmh
@@ -756,47 +790,72 @@ function CVTaddon:onUpdate(dt)
 			spec.spiceRPM = self.spec_motorized.motor.lastMotorRpm
 			spec.spiceMaxSpd = self.spec_motorized.motor.maxForwardSpeed
 			
-			-- NEUTRAL
+-- NEUTRAL
 			if spec.vFour == 0 then
+				self.spec_motorized.motor.currentDirection = 0
 				self.spec_motorized.motor.minForwardGearRatio = 0
 				self.spec_motorized.motor.maxForwardGearRatio = 0
 				self.spec_motorized.motor.minBackwardGearRatio = 0
-				self.spec_motorized.motor.minBackwardGearRatio = 0
+				self.spec_motorized.motor.maxBackwardGearRatio = 0
 				self.spec_motorized.motor.manualClutchValue = 1
-				self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1
-				self.spec_motorized.motor.lowBrakeForceScale = 0
+				self.spec_motorized.motor.lowBrakeForceScale = 0.03
 				self.spec_motorized.motor.accelerationLimit = 0
 				self.spec_motorized.motor.lowBrakeForceSpeedLimit = 0 -- 0
 				self.spec_motorized.motor.maxBackwardSpeed = 0
-				-- self.spec_motorized.motor.currentDirection = 0
+				self.spec_motorized.motor.maxForwardSpeed = 0
 				-- need to unlock AccelerationPedal when direction is 0 as neutral
+				--done
 				
 				local loadsetXP
-				local accPedal = self.spec_motorized.motor.lastAcceleratorPedal
+				local accPedal = math.max(0, self.spec_drivable.axisForward)
 				local loadDrive = 0
 				loadDrive = math.max(0, accPedal)
-				if (self.spec_motorized.motor.lastMotorRpm / self.spec_motorized.motor.maxRpm) < loadDrive then
+				if (self.spec_motorized.motor.lastMotorRpm / self.spec_motorized.motor.maxRpm) < loadDrive and spec.spiceRPM > self.spec_motorized.motor.minRpm+25 then
 					loadsetXP = 1;
 				else
 					loadsetXP = 0;
 				end;
-				self.spec_motorized.motor.rawLoadPercentage = math.min(math.max(self.spec_motorized.motor.rawLoadPercentage, loadsetXP)*1.8,1)
-				self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + math.abs(accPedal) *80, self.spec_motorized.motor.maxRpm)
-				-- g_currentMission:addExtraPrintText(tostring(math.abs(accPedal)))
-				-- self.spec_motorized.motor.currentDirection = 0
+				self.spec_motorized.motor.rawLoadPercentage = math.max(self.spec_motorized.motor.rawLoadPercentage, loadsetXP)*1.8
+				self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + accPedal *66*math.pi, self.spec_motorized.motor.maxRpm)
+				-- g_currentMission:addExtraPrintText("brakePedal: "..tostring(self.spec_motorized.motor.brakePedal))
+				-- if self.spec_motorized.motor.currentDirection == 0 then
+					-- spec.vFour = 1
+				-- end
+				self.spec_motorized.motor.currentDirection = 0
 			end
 			if spec.vFour == 1 then
 				self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatioOrigin
 				self.spec_motorized.motor.maxForwardGearRatio = self.spec_motorized.motor.maxForwardGearRatioOrigin
 				self.spec_motorized.motor.minBackwardGearRatio = self.spec_motorized.motor.minBackwardGearRatioOrigin
-				self.spec_motorized.motor.minBackwardGearRatio = self.spec_motorized.motor.minBackwardGearRatioOrigin
+				self.spec_motorized.motor.maxBackwardGearRatio = self.spec_motorized.motor.minBackwardGearRatioOrigin
 				self.spec_motorized.motor.maxBackwardSpeed = self.spec_motorized.motor.maxBackwardSpeedOrigin
+				self.spec_motorized.motor.maxForwardSpeed = self.spec_motorized.motor.maxForwardSpeedOrigin
 				self.spec_motorized.motor.manualClutchValue = 0
 				loadsetXP = 0;
+				
+				-- if self.spec_motorized.motor.currentDirection == 0 then
+					-- self.spec_motorized.motor.currentDirection = spec.lastDirection
+					-- if sbshFlyDebugOn then
+						-- print("Dritter cD")
+					-- end
+				-- end
+				
+				-- if self.spec_motorized.motor.currentDirection == 0 then 
+					-- self.spec_motorized.motor.currentDirection = spec.lastDirection
+				-- end
+				
+				-- if self.spec_motorized.motor.lastAcceleratorPedal < 0.01 or self.spec_motorized.motor.lastAcceleratorPedal == nil then
+					-- -- self.spec_drivable.axisForward = self.spec_drivable.axisForward +0.011
+				-- end
 				--
 			end
 			
-			-- MOTORDREHZAHL (Handgas-digital)    min
+			
+-- MOTORDREHZAHL (Handgas-digital)    min
+			local maxRpm = self.spec_motorized.motor.maxRpm
+			local minRpm = self.spec_motorized.motor.minRpm
+			local lastMotorRpm = self.spec_motorized.motor.lastMotorRpm
+			local accPedal = math.max(0, self.spec_drivable.axisForward)
 			if self.spec_motorized.motor.lastPtoRpm == nil then
 				self.spec_motorized.motor.lastPtoRpm = 0
 			end
@@ -805,35 +864,35 @@ function CVTaddon:onUpdate(dt)
 			end
 			if spec.vFive == 2 and spec.vFive ~= nil then
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/1.99), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 150, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 			end
 			if spec.vFive == 3 and spec.vFive ~= nil then
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/2.97), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 250, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 			end
 			if spec.vFive == 4 and spec.vFive ~= nil then
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 350, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/3.95), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 			end
 			if spec.vFive == 5 and spec.vFive ~= nil then
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 500, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/4.92), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 			end
 			if spec.vFive == 6 and spec.vFive ~= nil then
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/5.88), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 675, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 			end
 			if spec.vFive == 7 and spec.vFive ~= nil then
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/6.85), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 825, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 			end
 			if spec.vFive == 8 and spec.vFive ~= nil then
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/7.82), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 1000, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 			end
 			if spec.vFive == 9 and spec.vFive ~= nil then
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/8.78), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
-				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.minRpm + 1150, self.spec_motorized.motor.lastPtoRpm)), self.spec_motorized.motor.maxRpm)
+				self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm)), maxRpm)
 			end
 			if spec.vFive == 10 and spec.vFive ~= nil then
 				-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/9.72), self.spec_motorized.motor.maxRpm), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
@@ -850,11 +909,13 @@ function CVTaddon:onUpdate(dt)
 			
 			
 			
-			-- -- FAHRSTUFE I. 
+-- -- FAHRSTUFE I. 
 			-- if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM then
 			if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM and self.spec_motorized.motor.maxForwardSpeedOrigin > 6.68 then
+				spec.isHydroState = false
 				spec.spiceDFWspeed = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 4.49), 6.94)
 				spec.spiceDBWspeed = math.min(math.max(spec.BackupMaxFwSpd / 1.4, 3.21), 6.36)
+				
 				-- spec.spiceDFWspeedT = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 4.49), 6.94) * spec.HydrostatPedal
 				-- spec.spiceDBWspeedT = math.min(math.max(spec.BackupMaxFwSpd / 1.4, 3.21), 6.36) * spec.HydrostatPedal
 				-- if spec.HydrostatPedal >= 0.25 then
@@ -871,25 +932,28 @@ function CVTaddon:onUpdate(dt)
 				self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeed
 				self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeed
 				-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_VarioOne")) -- #l10n
-				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.4
+				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.1
+				self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio * 1.4
+				self.spec_motorized.motor.maxBackwardGearRatio = self.spec_motorized.motor.maxBackwardGearRatio + 15
+				-- self.spec_motorized.motor.minBackwardGearRatio = self.spec_motorized.motor.minBackwardGearRatio + 5
+				self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage * 0.5
 				if spec.spiceRPM > self.spec_motorized.motor.minRpm + 150 then
-					if self.spec_motorized.motor.smoothedLoadPercentage < 0.6 then
-						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.975), self.spec_motorized.motor.lastPtoRpm)
-						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
+					if self.spec_motorized.motor.smoothedLoadPercentage < 0.5 then
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.995), self.spec_motorized.motor.lastPtoRpm)
+						-- self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.minRpm + 250
 					end
-					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.6 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.65 then
-						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.98), self.spec_motorized.motor.lastPtoRpm)
-						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
+					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.5 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.6 then
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.990), self.spec_motorized.motor.lastPtoRpm)
+						-- self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.minRpm + 250
 					end
-					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.65 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.7 then
-						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.985), self.spec_motorized.motor.lastPtoRpm)
-						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
+					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.6 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.7 then
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.992), self.spec_motorized.motor.lastPtoRpm)
+						-- self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.minRpm + 250
 					end
-					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.75 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.8 then
-						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.99), self.spec_motorized.motor.lastPtoRpm)
-						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
+					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.7 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.8 then
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.995), self.spec_motorized.motor.lastPtoRpm)
 					end
-					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.85 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.9 then
+					if self.spec_motorized.motor.smoothedLoadPercentage >= 0.8 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.9 then
 						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 1), self.spec_motorized.motor.lastPtoRpm)
 						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 					end
@@ -899,8 +963,9 @@ function CVTaddon:onUpdate(dt)
 					end
 				end
 			-- end
-			-- HYDROSTAT
+-- HYDROSTAT
 			elseif spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM and self.spec_motorized.motor.maxForwardSpeedOrigin <= 6.68 and not isTractor and isWoodWorker then
+				spec.isHydroState = true
 				-- spec.HydrostatPedal = math.abs(self.spec_motorized.motor.lastAcceleratorPedal) -- nach oben verschoben
 				spec.spiceDFWspeedHs = math.min(math.max(spec.BackupMaxFwSpd / 2.1, 2.8), 3.16)
 				spec.spiceDBWspeedHs = math.min(math.max(spec.BackupMaxFwSpd / 1.4, 2.8), 3.16)
@@ -919,11 +984,11 @@ function CVTaddon:onUpdate(dt)
 				
 				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 2.1
 				if spec.spiceRPM > self.spec_motorized.motor.minRpm + 150 then
-					if self.spec_motorized.motor.smoothedLoadPercentage < 0.4 then
+					if self.spec_motorized.motor.smoothedLoadPercentage < 0.3 then
 						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.98), self.spec_motorized.motor.lastPtoRpm)
 						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 					end
-					if self.spec_motorized.motor.smoothedLoadPercentage > 0.6 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.8 then
+					if self.spec_motorized.motor.smoothedLoadPercentage > 0.4 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.8 then
 						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.99), self.spec_motorized.motor.lastPtoRpm)
 						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 					end
@@ -934,9 +999,13 @@ function CVTaddon:onUpdate(dt)
 				end
 			end
 			
-			-- -- FAHRSTUFE II. (Street/light weight transport or work) inputbinding
+-- -- FAHRSTUFE II. (Street/light weight transport or work) inputbinding
 			if spec.vOne == 1 and spec.vOne ~= nil and spec.isVarioTM then
-				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 0.76
+				spec.isHydroState = false
+				self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 0.96
+				self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatioOrigin
+				self.spec_motorized.motor.minBackwardGearRatio = self.spec_motorized.motor.minBackwardGearRatioOrigin
+				self.spec_motorized.motor.maxBackwardGearRatio = self.spec_motorized.motor.maxBackwardGearRatioOrigin
 				-- pedal TMS tryout
 				-- spec.spiceDFWspeed = spec.BackupMaxFwSpd
 				-- spec.spiceDBWspeed = spec.BackupMaxFwSpd
@@ -978,7 +1047,7 @@ function CVTaddon:onUpdate(dt)
 					end
 					if self.spec_motorized.motor.smoothedLoadPercentage > 0.8 then
 						-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * 0.92
-						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * math.min(0.96+spec.spiceLoad, 1)), self.spec_motorized.motor.lastPtoRpm)
+						self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * math.min(0.97+spec.spiceLoad, 1)), self.spec_motorized.motor.lastPtoRpm)
 					end
 				end
 			end
@@ -992,17 +1061,17 @@ function CVTaddon:onUpdate(dt)
 	-- end
 	-- g_currentMission:addExtraPrintText("moveTime: " .. tostring(self.spec_attacherJointControl.jointDesc.moveTime))
 	-- g_currentMission:addExtraPrintText("operatingTime: " .. tostring(self:getOperatingTime()/100000))
-	g_currentMission:addExtraPrintText("lastAcceleratorPedal: " .. tostring(self.spec_motorized.motor.lastAcceleratorPedal))
+	-- g_currentMission:addExtraPrintText("lastAcceleratorPedal: " .. tostring(self.spec_motorized.motor.lastAcceleratorPedal))
 	-- g_currentMission:addExtraPrintText("getTypeByName: " .. tostring(self.spec_motorized.vehicle.vehicleType))
 	-- g_vehicleTypeManager:getTypeByName(self.typeName)))
 		
-	g_currentMission:addExtraPrintText("storeItem.categoryName: " .. tostring(storeItem.categoryName))
+	-- g_currentMission:addExtraPrintText("storeItem.categoryName: " .. tostring(storeItem.categoryName))
 	-- g_currentMission:addExtraPrintText("lastRotSpeed: " .. tostring(tool.lastRotSpeed))
 	
 	if sbshFlyDebugOn then
 	-- -- Dev Text Help Zeug -------------------------------------------------------------------------------------------------------------------------------
 			
-			-- g_currentMission:addExtraPrintText("lastManualShifterActive: " .. tostring(self.spec_motorized.motor.lastManualShifterActive))
+			g_currentMission:addExtraPrintText("lastManualShifterActive: " .. tostring(self.spec_motorized.motor.lastManualShifterActive))
 			-- g_currentMission:addExtraPrintText("lowBrakeForceSpeedLimit: " .. tostring(self.spec_motorized.motor.lowBrakeForceSpeedLimit))
 			-- g_currentMission:addExtraPrintText("forwardGears: " .. tostring(self.spec_motorized.motor.forwardGears)) -- works for isVarioTM
 			-- print("lowBrakeForceSpeedLimit: " .. tostring(self.spec_motorized.motor.lowBrakeForceSpeedLimit))
@@ -1025,29 +1094,28 @@ function CVTaddon:onUpdate(dt)
 			-- g_currentMission:addExtraPrintText("age: " .. tostring(Vehicle.operatingTime))
 			g_currentMission:addExtraPrintText("groupType: " .. tostring(self.spec_motorized.motor.groupType))
 			g_currentMission:addExtraPrintText("gearType: " .. tostring(self.spec_motorized.motor.gearType))
-			g_currentMission:addExtraPrintText("gearShiftMode: " .. tostring(self.spec_motorized.motor.gearShiftMode))
+			g_currentMission:addExtraPrintText("peakMotorTorque: " .. tostring(self.spec_motorized.motor.peakMotorTorque))
 			
 	--------------------------------------------------------------------------------------------------------------------------------------------------------------
-	end
-	g_currentMission:addExtraPrintText("isTractor: "..tostring(isTractor))
-	g_currentMission:addExtraPrintText("isErnter: "..tostring(isErnter))
-	g_currentMission:addExtraPrintText("isLoader: "..tostring(isLoader))
-	g_currentMission:addExtraPrintText("isPKWLKW: "..tostring(isPKWLKW))
-	g_currentMission:addExtraPrintText("isWoodWorker: "..tostring(isWoodWorker))
-	g_currentMission:addExtraPrintText("isFFF: "..tostring(isFFF))
+	
 	g_currentMission:addExtraPrintText("StI: "..tostring(StI))
-
+	g_currentMission:addExtraPrintText("minGearRatio: "..tostring(self.spec_motorized.motor.minGearRatio))
+	g_currentMission:addExtraPrintText("maxGearRatio: "..tostring(self.spec_motorized.motor.maxGearRatio))
+	g_currentMission:addExtraPrintText("gearRatio: "..tostring(self.spec_motorized.motor.gearRatio))
+	g_currentMission:addExtraPrintText("minSpeed: "..tostring(self.spec_motorized.motor.minSpeed))
+	g_currentMission:addExtraPrintText("directionChangeMode: "..tostring(self.spec_motorized.motor.directionChangeMode))
+	g_currentMission:addExtraPrintText("axisForward: "..tostring(self.spec_drivable.axisForward))
+	g_currentMission:addExtraPrintText("lV targetDirection: "..tostring(self.spec_drivable.lastInputValues.targetDirection))
+	g_currentMission:addExtraPrintText("spec.lastDirection: "..tostring(spec.lastDirection))
+	g_currentMission:addExtraPrintText("currentDirection: "..tostring(self.spec_motorized.motor.currentDirection))
+	-- g_currentMission:addExtraPrintText("spec.wasFwd: "..tostring(spec.wasFwd))
+	g_currentMission:addExtraPrintText("spec.vFour: "..tostring(spec.vFour))
+	g_currentMission:addExtraPrintText("lastManualShifterActive: " .. tostring(self.spec_motorized.motor.lastManualShifterActive))
+	-- g_currentMission:addExtraPrintText("heightController: "..tostring(self.spec_attacherJointControl.heightController))
+	-- g_currentMission:addExtraPrintText("lastMoveTime: "..tostring(self.spec_attacherJointControl.lastMoveTime))
+	-- g_currentMission:addExtraPrintText("movingTool axis: "..tostring(self.spec_cylindered.movingTool.axis))
+	end
 end
-
--- function CVTaddon.createBackground()
-	-- local width, height = getNormalizedScreenValues(unpack(CVTaddon.BGSIZE.BACKGROUND))
-	-- local backgroundOverlay = Overlay.new(nil, 0.2, 0.9542, width, height)
-	-- -- local boxOverlay = Overlay.new(_, 0.2, 0.9542, 0.04, 0.0358)
-
-	-- backgroundOverlay:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_CENTER)
-
-	-- return backgroundOverlay
--- end
 
 function CVTaddon:onDraw(vehicle, dt)
 	local spec = self.spec_CVTaddon
@@ -1064,18 +1132,30 @@ function CVTaddon:onDraw(vehicle, dt)
 	
 
         -- calculate position and size
+		local uiScale = g_gameSettings.uiScale;
 		-- render BG
 		-- h -
+		-- + nach 
         -- local D_posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.3) -0.018
-        local posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.3) - 0.015
+        local posX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1) - (0.035*g_gameSettings.uiScale)
 		
-		-- v |
-		local D_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY + 0.02
-        local AR_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY
-        local BR_posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - 0.02
-        
-		local BG_PosX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1.2) - 0.01
-		local BG_PosY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - 0.019
+		-- v |   + hoch
+		local posY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY
+  
+		-- vector2D[1] * self.overlay.scaleWidth * g_aspectScaleX / g_referenceScreenWidth,
+        -- vector2D[2] * self.overlay.scaleHeight * g_aspectScaleY / g_referenceScreenHeight
+		
+		-- function vehicleControlAddon.getUiScale()
+			-- local uiScale = 1.0
+			-- if g_gameSettings ~= nil and type( g_gameSettings.uiScale ) == "number" then
+				-- uiScale = g_gameSettings.uiScale
+			-- end
+			-- return uiScale 
+		-- end
+		
+		
+		-- local BG_PosX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - (g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY * 1)
+		-- local BG_PosY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY - 0.02
 		
         -- local SpeedMeterDisplay = g_currentMission.inGameMenu.hud.speedMeter
 		-- local width, height = getNormalizedScreenValues(unpack(CVTaddon.BGSIZE.BACKGROUND))
@@ -1087,17 +1167,21 @@ function CVTaddon:onDraw(vehicle, dt)
 		-- if CVTaddon.overlay[overlay] == nil then
 
         local size = 0.014 * g_gameSettings.uiScale
+		
 		local drawHgStep = ""
 		for i=1, spec.vFive-1 do
 			drawHgStep = drawHgStep .."["
+			
 		end
+		spec.HgScaleX = 0.04 / 9 * (spec.vFive-1)
 		-- if spec.vOne == 3.2 then
 		if spec.vOne == 2 then
-			spec.D_insTextV = "txt_VarioOne"
+			spec.D_insTextV = "txt_VarioOne"  -- ToDo make graphic instead of Text Dots to comp with 4k
+			
 		end
 		-- if spec.vOne == 1 then
 		if spec.vOne == 1 then
-			spec.D_insTextV = "txt_VarioTwo"
+			spec.D_insTextV = "txt_VarioTwo"  -- ToDo make graphic instead of Text Dots to comp with 4k
 		end
 		if spec.vFour == 0 then
 			spec.N_insTextV = "txt_VarioN"
@@ -1135,26 +1219,147 @@ function CVTaddon:onDraw(vehicle, dt)
 		-----------------------------------------------------------------------------------------------------------------
 		if spec.AR_genText ~= nil and spec.BR_genText ~= nil and spec.D_genText ~= nil then
 			if not isPKWLKW then
-				spec.currBGcolor = { 0.02, 0.02, 0.02, math.max(math.min(spec.transparendSpd, 0.6), 0.2) }
+				spec.currBGcolor = { 0.01, 0.01, 0.01, math.max(math.min(spec.transparendSpd, 0.6), 0.2) }
 				CVTaddon.CVTIconBg:setColor(unpack(spec.currBGcolor))
 				CVTaddon.CVTIconFb:setColor(0, 0, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
-				-- CVTaddon.CVTIcon:setColor(unpack(SpeedMeterDisplay.COLOR.GEARS_BG));
-				CVTaddon.CVTIconBg:setPosition(posX-0.01, BR_posY-0.032)
-				CVTaddon.CVTIconFb:setPosition(posX-0.01, BR_posY-0.032)
-				CVTaddon.CVTIconBg:setScale(0.04, 0.094)
-				CVTaddon.CVTIconFb:setScale(0.04, 0.094)
+				CVTaddon.CVTIconFs1:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				CVTaddon.CVTIconFs2:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				CVTaddon.CVTIconHg:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconAr1:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1)) --
+				CVTaddon.CVTIconAr2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconAr3:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconAr4:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconHydro:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconN:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconN2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconV:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				CVTaddon.CVTIconR:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				
+				CVTaddon.CVTIconBg:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconFb:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconFs1:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconFs2:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconHg:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconAr1:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconAr2:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconAr3:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconAr4:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconHydro:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconN:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconN2:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconV:setPosition(posX-0.01, posY)
+				CVTaddon.CVTIconR:setPosition(posX-0.01, posY)
+				
+				CVTaddon.CVTIconBg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconFb:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconFs1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconFs2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconHg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconAr1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconAr2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconAr3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconAr4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconHydro:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconN:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconN2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconV:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				CVTaddon.CVTIconR:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+
+				-- :setAlignment(self.alignmentVertical, self.alignmentHorizontal)
+				
+				CVTaddon.CVTIconBg:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconFb:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconFs1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconFs2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconHg:setScale(spec.HgScaleX*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconAr1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconAr2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconAr3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconAr4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconHydro:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconN:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconN2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				-- CVTaddon.CVTIconN2:setBlinking(true)
+				CVTaddon.CVTIconV:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				CVTaddon.CVTIconR:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				
+				-- self.mapHotspot:setPersistent(true)
+				-- self.mapHotspot:setRenderLast(true)
+				-- self.mapHotspot:setBlinking(true)
+				
+			
+				-- local HGuvs = {x,y, x,y, x,y, x,y}
+			--	local HGuvs = {s1s  s2e   e 3s   e 4e}
+				-- local hgUVs = {0,0, 0,1, 0.5,0, 0.5,1} -- verschiebt nur und cropped nicht
+				-- Array of UV coordinates as {x, y, width, height}
+				-- local HGuvs  = getNormalizedUVs{0, 0, 108, 512}
+				-- CVTaddon.CVTIconHg:setUVs(hgUVs)
+				-- u1, v1, u2, v2, u3, v3, u4, v4
+				 -- -- start x, start y
+                -- u1 = (u3-u1)*p1 + u1
+                -- v1 = (v2-v1)*p2 + v1
+
+                -- -- start x, end y
+                -- u2 = (u3-u1)*p1 + u1
+                -- v2 = (v4-v3)*p4 + v3
+
+                -- -- end x, start y
+                -- u3 = (u3-u1)*p3 + u1
+                -- v3 = (v2-v1)*p2 + v1
+
+                -- -- end x, end y
+                -- u4 = (u4-u2)*p3 + u2
+                -- v4 = (v4-v3)*p4 + v3
+				
+				
 				-- CVTaddon.CVTIcon:setDimension(0.4, 0.8)
+				
 				CVTaddon.CVTIconBg:render()
 				CVTaddon.CVTIconFb:render()
 				if spec.isMotorOn then
-					setTextBold(true)
-					renderText(posX, D_posY+0.03, size+0.025, spec.D_genText)
-					renderText(posX-0.01, D_posY, size, spec.N_genText)
+					CVTaddon.CVTIconHg:render()
+					
+					if spec.vOne == 2 then
+						CVTaddon.CVTIconFs1:render()
+					elseif spec.vOne == 1 then
+						CVTaddon.CVTIconFs2:render()
+					end
+					if spec.vTwo == 1 then
+					CVTaddon.CVTIconAr4:render()
+					elseif spec.vTwo == 2 then
+						CVTaddon.CVTIconAr1:render()
+					elseif spec.vTwo == 3 then
+						CVTaddon.CVTIconAr2:render()
+					elseif spec.vTwo == 4 then
+						CVTaddon.CVTIconAr3:render()
+					end
+					if spec.vFour == 0 then
+						CVTaddon.CVTIconN2:render()
+					end
+					if self.spec_motorized.motor.currentDirection == 1 then
+						CVTaddon.CVTIconV:render()
+					elseif self.spec_motorized.motor.currentDirection == -1 then
+						CVTaddon.CVTIconR:render()
+					end
+					if spec.isHydroState then
+						
+						CVTaddon.CVTIconHydro:render()
+					end
+					
+					-- setTextBold(true)
+					-- renderText(posX, D_posY+0.03, size+0.025, spec.D_genText)
+					-- renderText(posX-0.01, posY+0.024, size, spec.N_genText)
 					setTextBold(false)
-					renderText(posX, AR_posY-0.005, size, spec.AR_genText)
-					renderText(posX, BR_posY-0.012, size, spec.BR_genText)
-					setTextAlignment(RenderText.ALIGN_RIGHT)
-					renderText(posX+0.015, D_posY+0.016, size-0.006, drawHgStep)
+					-- renderText(posX, posY, size, spec.AR_genText)
+					renderText(posX, posY-0.02, size, spec.BR_genText)
+					-- setTextAlignment(RenderText.ALIGN_RIGHT)
+					-- renderText(posX+0.010, posY+0.026, size-0.005, drawHgStep)
+					g_currentMission:addExtraPrintText("uiScale: "..tostring(uiScale))
+					-- g_currentMission:addExtraPrintText("g_screenAspectRatio: "..tostring(g_screenAspectRatio))
+					-- g_currentMission:addExtraPrintText("g_aspectScaleX: "..tostring(g_aspectScaleX))
+					-- g_currentMission:addExtraPrintText("g_aspectScaleY: "..tostring(g_aspectScaleY))
+					-- g_currentMission:addExtraPrintText("g_referenceScreenWidth: "..tostring(g_referenceScreenWidth))
+					-- g_currentMission:addExtraPrintText("g_referenceScreenHeight: "..tostring(g_referenceScreenHeight))
 				end
 			end
 			

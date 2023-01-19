@@ -103,10 +103,10 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 	<l10n>
 		<text name="txt_VarioOne">
 			<!-- <de><![CDATA[D  I.]]></de> <en><![CDATA[D  I.]]></en> <fr><![CDATA[D  I.]]></fr> -->
-			<de><![CDATA[ .  ]]></de> <en><![CDATA[D .  ]]></en> <fr><![CDATA[D .  ]]></fr>
+			<de><![CDATA[ .  ]]></de> <en><![CDATA[ .  ]]></en> <fr><![CDATA[ .  ]]></fr>
 		</text>
 		<text name="txt_VarioTwo">
-            <de><![CDATA[    .]]></de> <en><![CDATA[D     .]]></en> <fr><![CDATA[D     .]]></fr>
+            <de><![CDATA[    .]]></de> <en><![CDATA[    .]]></en> <fr><![CDATA[    .]]></fr>
         </text>
 		<text name="txt_VarioN">
             <de><![CDATA[  N]]></de> <en><![CDATA[  N]]></en> <fr><![CDATA[  N]]></fr>
@@ -138,6 +138,12 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 		<text name="input_SETVARIORPMM">
             <de>CVTa: Motordrehzahl verringern</de> <en>CVTa: Decrease engine rpm</en> <fr>CVTa: rpm -</fr>
         </text>
+		<text name="input_SETVARIORPM_AXIS">
+            <de>CVTa: Motordrehzahl + / -</de> <en>CVTa: Engine rpm +-</en> <fr>CVTa: rpm +-</fr>
+        </text>
+		<text name="input_SETPEDALWAY_AXIS">
+            <de>CVTa: Pedalauflösung</de> <en>CVTa: Pedalresolution</en> <fr>CVTa: Pedalresolution</fr>
+        </text>
 		<text name="input_LMBF_TOGGLE_RAMP">
 			<de>CVTa: Beschleunigungsrampe wechseln</de> <en>CVTa: Toggle Accelerationramp</en> <fr>CVTa: Changer la rampe d'accélération</fr>
 		</text>
@@ -158,13 +164,13 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 		</text>
 		
 		<text name="txt_bRamp1">
-			<de><![CDATA[BR aus]]></de> <en>BR OFF</en> <fr>BR DÉS</fr>
+			<de><![CDATA[BR aus]]></de> <en>BR off</en> <fr>BR dés</fr>
 		</text>
 		<text name="txt_bRamp2">
 			<de>BR  4</de> <en>BR  4</en> <fr>BR  4</fr>
 		</text>
 		<text name="txt_bRamp3">
-			<de>BR 8</de> <en>BR  8</en> <fr>BR  8</fr>
+			<de>BR  8</de> <en>BR  8</en> <fr>BR  8</fr>
 		</text>
 		<text name="txt_bRamp4">
 			<de>BR 15</de> <en>BR 15</en> <fr>BR 15</fr>

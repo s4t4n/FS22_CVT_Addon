@@ -94,7 +94,7 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 ]]></fr>
     </description> 
 
-    <iconFilename>modIcon.dds</iconFilename>
+    <iconFilename>CVT_Addon_Icon.dds</iconFilename>
 	<multiplayer supported="true" />
     <extraSourceFiles>
         <sourceFile filename="registerCVT_Addon.lua" />

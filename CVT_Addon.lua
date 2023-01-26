@@ -10,9 +10,14 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
--- Script Ver	0.2.0.79
--- last update	24.01.23
+-- Script Ver	0.2.0.81
+-- last update	25.01.23
 -- last change	server sync try
+-- errors:
+-- Error: Running LUA method 'packetReceived'.
+-- dataS/scripts/utils/Utils.lua(461) : attempt to call upvalue 'newFunc' (a nil value)
+-- Kein join sync @ 99% dsrv
+
 
 -- source(g_currentModDirectory .. "CVT_Addon_HUD.lua")  -- need to sync 'spec' between CVT_Addon.lua and CVT_Addon_HUD.lua
 CVTaddon = {};
@@ -997,7 +1002,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 							-- self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.97), self.spec_motorized.motor.lastPtoRpm*0.7)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
-						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.4 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.5 then
+						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.3 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.5 then
 							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.967), self.spec_motorized.motor.lastPtoRpm*0.7)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
@@ -1090,7 +1095,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 							if spec.smoother ~= nil and spec.smoother > 150 then
 								spec.smoother = 0;
 								if self:getLastSpeed() > 3 then
-									self.spec_motorized.motor.lastMotorRpm = math.max(math.max(math.min((self:getLastSpeed() * math.abs(math.max(self.spec_motorized.motor.rawLoadPercentage, 0.52)))*44, self.spec_motorized.motor.maxRpm*0.98), self.spec_motorized.motor.minRpm+203), self.spec_motorized.motor.lastPtoRpm*0.7)
+									self.spec_motorized.motor.lastMotorRpm = math.max(math.max(math.min((self:getLastSpeed() * math.abs(math.max(self.spec_motorized.motor.rawLoadPercentage, 0.55)))*44, self.spec_motorized.motor.maxRpm*0.99), self.spec_motorized.motor.minRpm+203), self.spec_motorized.motor.lastPtoRpm*0.7)
 									if self:getLastSpeed() > (self.spec_motorized.motor.maxForwardSpeed*3.14)-2 then
 										self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage *0.9
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm - self:getLastSpeed()
@@ -1109,7 +1114,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 							-- self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.97), self.spec_motorized.motor.lastPtoRpm*0.7)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 							
-						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.4 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.5 then
+						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.3 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.5 then
 							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.97), self.spec_motorized.motor.lastPtoRpm*0.7)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
@@ -1345,10 +1350,11 @@ function CVTaddon:onDraw(vehicle, dt)
 			
 			 -- local HGuvs = {x,y,  x ,y,  x ,y, x,y}
 			 -- local HGuvs = { s 1s   s 2e   e 3s  e4e}
+				local hgUVs = {0,0, 0.5,1}
 				-- local hgUVs = {0.2,0, 0.2,1, 0.5,0, 1,1} -- verschiebt nur und cropped nicht oder falsche Werte?
 				-- Array of UV coordinates as {x, y, width, height}
 				-- local HGuvs  = getNormalizedUVs{0, 0, 108, 512}
-				-- CVTaddon.CVTIconHg:setUVs(hgUVs)
+				CVTaddon.CVTIconHg:setUVs(GuiUtils.getUVs(hgUVs))
 				-- u1, v1, u2, v2, u3, v3, u4, v4
 				 -- -- start x, start y
 				-- u1 = (u3-u1)*p1 + u1
@@ -1453,11 +1459,11 @@ function CVTaddon:onReadStream(streamId, connection)
 
 		-- spec.BackupMaxFwSpd = streamReadString32(streamId)
 		-- spec.BackupMaxBwSpd = streamReadString32(streamId)
-		spec.spiceMaxSpd = streamReadFloat32(streamId)
-		spec.spiceRPM = streamReadFloat32(streamId)
+		-- spec.spiceMaxSpd = streamReadFloat32(streamId)
+		-- spec.spiceRPM = streamReadFloat32(streamId)
 		
-		spec.isVarioTM = streamReadBool(streamId)
-		spec.isMotorOn = streamReadBool(streamId)
+		-- spec.isVarioTM = streamReadBool(streamId)
+		-- spec.isMotorOn = streamReadBool(streamId)
 		spec.eventActiveV1 = streamReadBool(streamId)
 		spec.eventActiveV2 = streamReadBool(streamId)
 		spec.eventActiveV3 = streamReadBool(streamId)
@@ -1491,15 +1497,15 @@ function CVTaddon:onWriteStream(streamId, connection)
 		
 		-- streamWriteString32(streamId, spec.BackupMaxFwSpd) -- nil
 		-- streamWriteString32(streamId, spec.BackupMaxBwSpd) -- nil
-		if spec.spiceMaxSpd ~= nil then
-		streamWriteFloat32(streamId, spec.spiceMaxSpd)
-		end
-		if spec.spiceRPM ~= nil then
-			streamWriteFloat32(streamId, spec.spiceRPM)
-		end
+		-- if spec.spiceMaxSpd ~= nil then
+		-- streamWriteFloat32(streamId, spec.spiceMaxSpd)
+		-- end
+		-- if spec.spiceRPM ~= nil then
+			-- streamWriteFloat32(streamId, spec.spiceRPM)
+		-- end
 
-		streamWriteBool(streamId, spec.isVarioTM)
-		streamWriteBool(streamId, spec.isMotorOn)
+		-- streamWriteBool(streamId, spec.isVarioTM)
+		-- streamWriteBool(streamId, spec.isMotorOn)
 		streamWriteBool(streamId, spec.eventActiveV1)
 		streamWriteBool(streamId, spec.eventActiveV2)
 		streamWriteBool(streamId, spec.eventActiveV3)
@@ -1536,11 +1542,11 @@ function CVTaddon:onReadUpdateStream(streamId, timestamp, connection)
 				
 				-- spec.BackupMaxFwSpd = streamReadString32(streamId)
 				-- spec.BackupMaxDwSpd = streamReadString32(streamId)
-				spec.spiceMaxSpd = streamReadFloat32(streamId)
-				spec.spiceRPM = streamReadFloat32(streamId)
+				-- spec.spiceMaxSpd = streamReadFloat32(streamId)
+				-- spec.spiceRPM = streamReadFloat32(streamId)
 				
-				spec.isVarioTM = streamReadBool(streamId)
-				spec.isMotorOn = streamReadBool(streamId)
+				-- spec.isVarioTM = streamReadBool(streamId)
+				-- spec.isMotorOn = streamReadBool(streamId)
 				spec.eventActiveV1 = streamReadBool(streamId)
 				spec.eventActiveV2 = streamReadBool(streamId)
 				spec.eventActiveV3 = streamReadBool(streamId)
@@ -1579,11 +1585,11 @@ function CVTaddon:onWriteUpdateStream(streamId, connection, dirtyMask)
 					
 					-- streamWriteString32(streamId, spec.BackupMaxFwSpd)
 					-- streamWriteString32(streamId, spec.BackupMaxBwSpd)
-					streamWriteFloat32(streamId, spec.spiceMaxSpd)
-					streamWriteFloat32(streamId, spec.spiceRPM)
+					-- streamWriteFloat32(streamId, spec.spiceMaxSpd)
+					-- streamWriteFloat32(streamId, spec.spiceRPM)
 					
-					streamWriteBool(streamId, spec.isVarioTM)
-					streamWriteBool(streamId, spec.isMotorOn)
+					-- streamWriteBool(streamId, spec.isVarioTM)
+					-- streamWriteBool(streamId, spec.isMotorOn)
 					streamWriteBool(streamId, spec.eventActiveV1)
 					streamWriteBool(streamId, spec.eventActiveV2)
 					streamWriteBool(streamId, spec.eventActiveV3)

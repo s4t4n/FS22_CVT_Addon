@@ -10,13 +10,15 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
--- Script Ver	0.2.0.81
--- last update	25.01.23
+local scrversion = "0.2.0.82";
+-- last update	26.01.23
 -- last change	server sync try
 -- errors:
 -- Error: Running LUA method 'packetReceived'.
 -- dataS/scripts/utils/Utils.lua(461) : attempt to call upvalue 'newFunc' (a nil value)
 -- Kein join sync @ 99% dsrv
+
+
 
 
 -- source(g_currentModDirectory .. "CVT_Addon_HUD.lua")  -- need to sync 'spec' between CVT_Addon.lua and CVT_Addon_HUD.lua
@@ -314,8 +316,8 @@ function CVTaddon.initSpecialization()
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#vFour")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#vFive")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#PedalResolution")
-	print("CVT_Addon: init... ")
-	print("schemaSavegame: "..tostring(schemaSavegame))
+	print("CVT_Addon: init... " .. scrversion)
+	-- print("schemaSavegame: "..tostring(schemaSavegame))
 end -- initSpecialization
 
 function CVTaddon:onPostLoad(savegame)
@@ -598,6 +600,9 @@ function CVTaddon:VarioOne() -- field
 					end
 					-- spec.vOne = 3.2
 					spec.vOne = 2
+					local SpeedScale = spec.PedalResolution
+					self.spec_motorized.motor.maxForwardSpeed = spec.BackupMaxFwSpd
+					self.spec_motorized.motor.maxBackwardSpeed = spec.BackupMaxBwSpd
 					-- spec.vFour = 1
 					spec.eventActiveV1 = false
 					spec.eventActiveV2 = true
@@ -817,7 +822,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 						spec.AR_genText = tostring(g_i18n:getText("txt_accRamp3"))
 					end
 				end
-				
+				-- g_currentMission:addExtraPrintText(tostring(self.spec_motorized.motor.accelerationLimit))
 	-- BRAKE RAMPS - BREMSRAMPEN
 				if spec.vThree == 1 and spec.isVarioTM then
 					-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_bRamp5")) -- #l10n
@@ -948,6 +953,9 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 				
 				
 				
+				if self.spec_motorized.motor.currentDirection == -1 then
+					self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage * 2.8
+				end
 				
 		-- -- FAHRSTUFE I. 
 				-- if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM then
@@ -972,10 +980,11 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 					self.spec_motorized.motor.maxForwardSpeed = spec.spiceDFWspeed
 					self.spec_motorized.motor.maxBackwardSpeed = spec.spiceDBWspeed
 					-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_VarioOne")) -- #l10n
-					self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.1
-					self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio * 1.4
-					self.spec_motorized.motor.maxBackwardGearRatio = self.spec_motorized.motor.maxBackwardGearRatio + 15
-					-- self.spec_motorized.motor.minBackwardGearRatio = self.spec_motorized.motor.minBackwardGearRatio + 5
+					self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 0.99 + (self.spec_motorized.motor.rawLoadPercentage*9)
+					-- self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.1
+					self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio * 1.6
+					self.spec_motorized.motor.maxBackwardGearRatio = self.spec_motorized.motor.maxForwardGearRatio + 1
+					self.spec_motorized.motor.minBackwardGearRatio = self.spec_motorized.motor.minForwardGearRatio * 2
 					self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage * 0.5
 					if spec.spiceRPM > self.spec_motorized.motor.minRpm + 300 then
 						if self.spec_motorized.motor.smoothedLoadPercentage < 0.3 then
@@ -987,10 +996,10 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 									self.spec_motorized.motor.lastMotorRpm = math.max(math.max(math.min((self:getLastSpeed() * math.abs(math.max(self.spec_motorized.motor.rawLoadPercentage, 0.52)))*44, self.spec_motorized.motor.maxRpm*0.98), self.spec_motorized.motor.minRpm+203), self.spec_motorized.motor.lastPtoRpm*0.7)
 									if self:getLastSpeed() > (self.spec_motorized.motor.maxForwardSpeed*3.14)-2 then
 										self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage *0.9
-										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm - self:getLastSpeed()
+										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed()
 									end
 									if accPedal < 0.2 then
-										self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed() * 5, self.spec_motorized.motor.maxRpm)
+										self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed() * 10, self.spec_motorized.motor.maxRpm)
 									end
 									if accPedal > 0.5 and accPedal <= 0.9 and self.spec_motorized.motor.rawLoadPercentage < 0.5 then
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.8
@@ -1101,7 +1110,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm - self:getLastSpeed()
 									end
 									if accPedal < 0.2 then
-										self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed() * 5, self.spec_motorized.motor.maxRpm)
+										self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed() * 10, self.spec_motorized.motor.maxRpm)
 									end
 									if accPedal > 0.5 and self.spec_motorized.motor.rawLoadPercentage < 0.5 then
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.8

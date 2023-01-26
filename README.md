@@ -1,6 +1,6 @@
 # FS22_CVT_Addon
-![CVTaddon_icon](https://user-images.githubusercontent.com/4678246/212495819-836ffed8-f2c6-4a86-bf72-44b624b703eb.png)
-![HUD1](https://user-images.githubusercontent.com/4678246/213579482-497e6224-5824-40ed-a4a3-b1741394e57c.jpg)
+
+![CVTaddon_github](https://user-images.githubusercontent.com/4678246/214910194-35925097-47f7-4b22-ba34-4a7e1f6e73b5.png)
 
 https://discord.gg/mktV7jpNzp 
 
@@ -55,6 +55,9 @@ Version 1.0.0.0 - New edition with CVT Addon
 
 - behavior changed in vario gearboxes
 
+
+
+![CVT_Addon_Explain](https://user-images.githubusercontent.com/4678246/214910310-4fb7e1ce-83e2-4319-b647-2e923cbf297a.png)
 
 
 Dieses Skript verringert je nach Einstellung die Motorbremswirkung

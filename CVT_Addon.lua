@@ -1496,7 +1496,7 @@ function CVTaddon:onWriteStream(streamId, connection)
 	local spec = self.spec_CVTaddon
 	local motorized = self.spec_motorized ~= nil
 	
-	if motorized and spec.isMotorOn then
+	if motorized then
 		streamWriteInt32(streamId, spec.vOne)
 		streamWriteInt32(streamId, spec.vTwo)
 		streamWriteInt32(streamId, spec.vThree)

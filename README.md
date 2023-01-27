@@ -5,9 +5,7 @@
 https://discord.gg/mktV7jpNzp 
 
 Known issues:
-- multiplayer not in sync !
-- Error: Running LUA method 'packetReceived'. dataS/scripts/utils/Utils.lua(461) : attempt to call upvalue 'newFunc' (a nil value) 
- (perhaps Utils.getFilname wrong usage?)
+- multiplayer not in sync with calculated transmisson and functions!
 
 
 LessMotorBrakeforce to new Edition CVT_Addon 

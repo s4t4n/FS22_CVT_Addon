@@ -10,13 +10,13 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.2.0.82";
--- last update	26.01.23
+local scrversion = "0.2.0.84";
+-- last update	27.01.23
 -- last change	server sync try
--- errors:
--- Error: Running LUA method 'packetReceived'.
--- dataS/scripts/utils/Utils.lua(461) : attempt to call upvalue 'newFunc' (a nil value)
--- Kein join sync @ 99% dsrv
+-- issues:
+-- 			Error: Running LUA method 'packetReceived'.
+-- 			dataS/scripts/utils/Utils.lua(461) : attempt to call upvalue 'newFunc' (a nil value)
+-- 			no join sync @ 99% dedicatedserver
 
 
 
@@ -31,10 +31,6 @@ CVTaddon.modDirectory = g_currentModDirectory;
 function CVTaddon.prerequisitesPresent(specializations) 
     return true
 end 
-
--- function Cylindered.prerequisitesPresent(specializations)
-    -- return SpecializationUtil.hasSpecialization(VehicleSettings, specializations)
--- end
 
 function CVTaddon.registerEventListeners(vehicleType) 
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CVTaddon) 
@@ -52,23 +48,10 @@ function CVTaddon.registerEventListeners(vehicleType)
 	
 	addModEventListener(CVTaddon)
 end 
-
-----------------------------------------------------------------------------------------------------------------------			
--- ----------------   Server Sync   --------------------------------
-
-	-- Error: Running LUA method 'packetReceived'.
-	-- dataS/scripts/utils/Utils.lua(461) : attempt to call upvalue 'newFunc' (a nil value)
-	
-	
-	
 	
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
-
-
-
-
 
 function CVTaddon:onRegisterActionEvents()
 	if g_client ~= nil then
@@ -208,20 +191,37 @@ function CVTaddon:onLoad()
 	if g_client ~= nil then
 		self.spec_CVTaddon = {}
 		local spec = self.spec_CVTaddon
-		CVTaddon.CVTIconBg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDbg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconFb = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfb.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconFs1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconFs2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconHg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconAr1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconAr2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconAr3 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar3.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconAr4 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar4.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconHydro = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhydro.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconN = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconN2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconR = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDr.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-		CVTaddon.CVTIconV = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDv.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		local root = Utils.getFilename("hud/", CVTaddon.modDirectory)
+		-- CVTaddon.CVTIconBg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDbg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconFb = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfb.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconFs1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconFs2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconHg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconAr1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconAr2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconAr3 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar3.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconAr4 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar4.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconHydro = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhydro.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconN = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconN2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconR = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDr.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		-- CVTaddon.CVTIconV = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDv.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		
+		spec.CVTIconBg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDbg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconFb = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfb.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconFs1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconFs2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDfs2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconHg = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhg.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconAr1 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar1.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconAr2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconAr3 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar3.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconAr4 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDar4.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconHydro = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhydro.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconN = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconN2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconR = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDr.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		spec.CVTIconV = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDv.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
+		
 		spec.BG1width, spec.BG1height = 0.005, 0.09;
 		spec.currBGcolor = { 0.02, 0.02, 0.02, 0.7 }
 		if spec.currentDirection == nil then
@@ -1166,10 +1166,10 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 					
 					-- g_currentMission:addExtraPrintText("getMotorAppliedTorque: " .. tostring(self:getMotorAppliedTorque()))
 				-- g_currentMission:addExtraPrintText("getMotorAvailableTorque: " .. tostring(self:getMotorAvailableTorque()))
-				g_currentMission:addExtraPrintText("rawLoadPercentageBuffer: " .. tostring(self.spec_motorized.motor.rawLoadPercentageBuffer))
-				g_currentMission:addExtraPrintText("rawLoadPercentage: " .. tostring(self.spec_motorized.motor.rawLoadPercentage))
+				-- g_currentMission:addExtraPrintText("rawLoadPercentageBuffer: " .. tostring(self.spec_motorized.motor.rawLoadPercentageBuffer))
+				-- g_currentMission:addExtraPrintText("rawLoadPercentage: " .. tostring(self.spec_motorized.motor.rawLoadPercentage))
 				
-				g_currentMission:addExtraPrintText("spec.smoother: " .. tostring(spec.smoother))
+				-- g_currentMission:addExtraPrintText("spec.smoother: " .. tostring(spec.smoother))
 				end
 			end                 -- pto rpm muss weiter runter
 			
@@ -1289,68 +1289,68 @@ function CVTaddon:onDraw(vehicle, dt)
 			if not isPKWLKW then
 				-- spec.currBGcolor = { 0.01, 0.01, 0.01, math.max(math.min(spec.transparendSpd, 0.6), 0.2) }
 				-- CVTaddon.CVTIconBg:setColor(unpack(spec.currBGcolor))
-				CVTaddon.CVTIconBg:setColor(0.01, 0.01, 0.01, math.max(math.min(spec.transparendSpd, 0.6), 0.2))
-				CVTaddon.CVTIconFb:setColor(0, 0, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
-				CVTaddon.CVTIconFs1:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
-				CVTaddon.CVTIconFs2:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
-				CVTaddon.CVTIconHg:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconAr1:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1)) --
-				CVTaddon.CVTIconAr2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconAr3:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconAr4:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconHydro:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconN:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconN2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconV:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-				CVTaddon.CVTIconR:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconBg:setColor(0.01, 0.01, 0.01, math.max(math.min(spec.transparendSpd, 0.6), 0.2))
+				spec.CVTIconFb:setColor(0, 0, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				spec.CVTIconFs1:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				spec.CVTIconFs2:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				spec.CVTIconHg:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconAr1:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1)) --
+				spec.CVTIconAr2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconAr3:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconAr4:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconHydro:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconN:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconN2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconV:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconR:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
 				
-				CVTaddon.CVTIconBg:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconFb:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconFs1:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconFs2:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconHg:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconAr1:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconAr2:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconAr3:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconAr4:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconHydro:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconN:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconN2:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconV:setPosition(posX-0.01, posY)
-				CVTaddon.CVTIconR:setPosition(posX-0.01, posY)
+				spec.CVTIconBg:setPosition(posX-0.01, posY)
+				spec.CVTIconFb:setPosition(posX-0.01, posY)
+				spec.CVTIconFs1:setPosition(posX-0.01, posY)
+				spec.CVTIconFs2:setPosition(posX-0.01, posY)
+				spec.CVTIconHg:setPosition(posX-0.01, posY)
+				spec.CVTIconAr1:setPosition(posX-0.01, posY)
+				spec.CVTIconAr2:setPosition(posX-0.01, posY)
+				spec.CVTIconAr3:setPosition(posX-0.01, posY)
+				spec.CVTIconAr4:setPosition(posX-0.01, posY)
+				spec.CVTIconHydro:setPosition(posX-0.01, posY)
+				spec.CVTIconN:setPosition(posX-0.01, posY)
+				spec.CVTIconN2:setPosition(posX-0.01, posY)
+				spec.CVTIconV:setPosition(posX-0.01, posY)
+				spec.CVTIconR:setPosition(posX-0.01, posY)
 				
-				CVTaddon.CVTIconBg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconFb:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconFs1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconFs2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconHg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconAr1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconAr2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconAr3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconAr4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconHydro:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconN:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconN2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconV:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-				CVTaddon.CVTIconR:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconBg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconFb:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconFs1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconFs2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconAr1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconAr2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconAr3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconAr4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHydro:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconN:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconN2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconV:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconR:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
 
 				-- :setAlignment(self.alignmentVertical, self.alignmentHorizontal)
 				
-				CVTaddon.CVTIconBg:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconFb:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconFs1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconFs2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconHg:setScale(spec.HgScaleX*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale) -- spec.HgScaleX*
-				CVTaddon.CVTIconAr1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconAr2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconAr3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconAr4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconHydro:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconN:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconN2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				-- CVTaddon.CVTIconN2:setBlinking(true)
-				CVTaddon.CVTIconV:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-				CVTaddon.CVTIconR:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconBg:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconFb:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconFs1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconFs2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg:setScale(spec.HgScaleX*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale) -- spec.HgScaleX*
+				spec.CVTIconAr1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconAr2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconAr3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconAr4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHydro:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconN:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconN2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				-- spec.CVTIconN2:setBlinking(true)
+				spec.CVTIconV:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconR:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
 				
 				-- self.mapHotspot:setPersistent(true)
 				-- self.mapHotspot:setRenderLast(true)
@@ -1363,7 +1363,7 @@ function CVTaddon:onDraw(vehicle, dt)
 				-- local hgUVs = {0.2,0, 0.2,1, 0.5,0, 1,1} -- verschiebt nur und cropped nicht oder falsche Werte?
 				-- Array of UV coordinates as {x, y, width, height}
 				-- local HGuvs  = getNormalizedUVs{0, 0, 108, 512}
-				CVTaddon.CVTIconHg:setUVs(GuiUtils.getUVs(hgUVs))
+				-- CVTaddon.CVTIconHg:setUVs(GuiUtils.getUVs(hgUVs))
 				-- u1, v1, u2, v2, u3, v3, u4, v4
 				 -- -- start x, start y
 				-- u1 = (u3-u1)*p1 + u1
@@ -1384,36 +1384,36 @@ function CVTaddon:onDraw(vehicle, dt)
 				
 				-- CVTaddon.CVTIcon:setDimension(0.4, 0.8)
 				
-				CVTaddon.CVTIconBg:render()
-				CVTaddon.CVTIconFb:render()
+				spec.CVTIconBg:render()
+				spec.CVTIconFb:render()
 				if self:getIsMotorStarted() then
-					CVTaddon.CVTIconHg:render()
+					spec.CVTIconHg:render()
 					
 					if spec.vOne == 2 then
-						CVTaddon.CVTIconFs1:render()
+						spec.CVTIconFs1:render()
 					elseif spec.vOne == 1 then
-						CVTaddon.CVTIconFs2:render()
+						spec.CVTIconFs2:render()
 					end
 					if spec.vTwo == 1 then
-					CVTaddon.CVTIconAr4:render()
+					spec.CVTIconAr4:render()
 					elseif spec.vTwo == 2 then
-						CVTaddon.CVTIconAr1:render()
+						spec.CVTIconAr1:render()
 					elseif spec.vTwo == 3 then
-						CVTaddon.CVTIconAr2:render()
+						spec.CVTIconAr2:render()
 					elseif spec.vTwo == 4 then
-						CVTaddon.CVTIconAr3:render()
+						spec.CVTIconAr3:render()
 					end
 					if spec.vFour == 0 then
-						CVTaddon.CVTIconN2:render()
+						spec.CVTIconN2:render()
 					end
 					if self.spec_motorized.motor.currentDirection == 1 then
-						CVTaddon.CVTIconV:render()
+						spec.CVTIconV:render()
 					elseif self.spec_motorized.motor.currentDirection == -1 then
-						CVTaddon.CVTIconR:render()
+						spec.CVTIconR:render()
 					end
 					if spec.isHydroState then
 						
-						CVTaddon.CVTIconHydro:render()
+						spec.CVTIconHydro:render()
 					end
 
 					-- setTextBold(true)
@@ -1466,12 +1466,14 @@ function CVTaddon:onReadStream(streamId, connection)
 		spec.vFive = streamReadInt32(streamId) -- state Handgas
 		-- spec.PedalResolution = streamReadInt32(streamId)
 
-		-- spec.BackupMaxFwSpd = streamReadString32(streamId)
-		-- spec.BackupMaxBwSpd = streamReadString32(streamId)
-		-- spec.spiceMaxSpd = streamReadFloat32(streamId)
-		-- spec.spiceRPM = streamReadFloat32(streamId)
+		spec.BackupMaxFwSpd = streamReadString32(streamId)
+		spec.BackupMaxBwSpd = streamReadString32(streamId)
 		
-		-- spec.isVarioTM = streamReadBool(streamId)
+		spec.spiceMaxSpd = streamReadFloat32(streamId)
+		spec.spiceRPM = streamReadFloat32(streamId)
+		spec.smoother = streamReadFloat32(streamId)
+		
+		spec.isVarioTM = streamReadBool(streamId)
 		-- spec.isMotorOn = streamReadBool(streamId)
 		spec.eventActiveV1 = streamReadBool(streamId)
 		spec.eventActiveV2 = streamReadBool(streamId)
@@ -1495,8 +1497,8 @@ end
 function CVTaddon:onWriteStream(streamId, connection)
 	local spec = self.spec_CVTaddon
 	local motorized = self.spec_motorized ~= nil
-	
-	if motorized and spec.isMotorOn then
+	-- sync was stucking @99% thanks Glowin for fixing this
+	if motorized then
 		streamWriteInt32(streamId, spec.vOne)
 		streamWriteInt32(streamId, spec.vTwo)
 		streamWriteInt32(streamId, spec.vThree)
@@ -1504,16 +1506,18 @@ function CVTaddon:onWriteStream(streamId, connection)
 		streamWriteInt32(streamId, spec.vFive)
 		-- streamWriteInt32(streamId, spec.PedalResolution)
 		
-		-- streamWriteString32(streamId, spec.BackupMaxFwSpd) -- nil
-		-- streamWriteString32(streamId, spec.BackupMaxBwSpd) -- nil
-		-- if spec.spiceMaxSpd ~= nil then
-		-- streamWriteFloat32(streamId, spec.spiceMaxSpd)
-		-- end
-		-- if spec.spiceRPM ~= nil then
-			-- streamWriteFloat32(streamId, spec.spiceRPM)
-		-- end
-
-		-- streamWriteBool(streamId, spec.isVarioTM)
+		streamWriteString32(streamId, spec.BackupMaxFwSpd) -- nil
+		streamWriteString32(streamId, spec.BackupMaxBwSpd) -- nil
+		if spec.spiceMaxSpd ~= nil then
+		streamWriteFloat32(streamId, spec.spiceMaxSpd)
+		end
+		if spec.spiceRPM ~= nil then
+			streamWriteFloat32(streamId, spec.spiceRPM)
+			
+		end
+		streamWriteFloat32(streamId, spec.smoother)
+		
+		streamWriteBool(streamId, spec.isVarioTM)
 		-- streamWriteBool(streamId, spec.isMotorOn)
 		streamWriteBool(streamId, spec.eventActiveV1)
 		streamWriteBool(streamId, spec.eventActiveV2)
@@ -1549,12 +1553,14 @@ function CVTaddon:onReadUpdateStream(streamId, timestamp, connection)
 				spec.vFive = streamReadInt32(streamId)
 				-- spec.PedalResolution = streamReadInt32(streamId)
 				
-				-- spec.BackupMaxFwSpd = streamReadString32(streamId)
-				-- spec.BackupMaxDwSpd = streamReadString32(streamId)
-				-- spec.spiceMaxSpd = streamReadFloat32(streamId)
-				-- spec.spiceRPM = streamReadFloat32(streamId)
+				spec.BackupMaxFwSpd = streamReadString32(streamId)
+				spec.BackupMaxDwSpd = streamReadString32(streamId)
 				
-				-- spec.isVarioTM = streamReadBool(streamId)
+				spec.spiceMaxSpd = streamReadFloat32(streamId)
+				spec.spiceRPM = streamReadFloat32(streamId)
+				spec.smoother = streamReadFloat32(streamId)
+				
+				spec.isVarioTM = streamReadBool(streamId)
 				-- spec.isMotorOn = streamReadBool(streamId)
 				spec.eventActiveV1 = streamReadBool(streamId)
 				spec.eventActiveV2 = streamReadBool(streamId)
@@ -1592,12 +1598,14 @@ function CVTaddon:onWriteUpdateStream(streamId, connection, dirtyMask)
 					streamWriteInt32(streamId, spec.vFive)
 					-- streamWriteInt32(streamId, spec.PedalResolution)
 					
-					-- streamWriteString32(streamId, spec.BackupMaxFwSpd)
-					-- streamWriteString32(streamId, spec.BackupMaxBwSpd)
-					-- streamWriteFloat32(streamId, spec.spiceMaxSpd)
-					-- streamWriteFloat32(streamId, spec.spiceRPM)
+					streamWriteString32(streamId, spec.BackupMaxFwSpd)
+					streamWriteString32(streamId, spec.BackupMaxBwSpd)
 					
-					-- streamWriteBool(streamId, spec.isVarioTM)
+					streamWriteFloat32(streamId, spec.spiceMaxSpd)
+					streamWriteFloat32(streamId, spec.spiceRPM)
+					streamWriteFloat32(streamId, spec.smoother)
+					
+					streamWriteBool(streamId, spec.isVarioTM)
 					-- streamWriteBool(streamId, spec.isMotorOn)
 					streamWriteBool(streamId, spec.eventActiveV1)
 					streamWriteBool(streamId, spec.eventActiveV2)

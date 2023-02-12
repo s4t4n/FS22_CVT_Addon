@@ -10,7 +10,7 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.2.0.93";
+local scrversion = "0.2.0.94";
 local modversion = "0.9.9.7";
 -- last update	03.02.23
 -- last change	BR & HG graphic
@@ -991,45 +991,47 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 							end
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.3 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.5 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.97), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*75)
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 0.97), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*25), self.spec_motorized.motor.maxRpm)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.5 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.65 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.975), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*75)
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 0.975), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*45), self.spec_motorized.motor.maxRpm)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.65 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.7 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.98), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*75)
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 0.98), self.spec_motorized.motor.lastPtoRpm*0.7), self.spec_motorized.motor.maxRpm)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.7 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.75 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.99), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*75)
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 0.99), self.spec_motorized.motor.lastPtoRpm*0.7), self.spec_motorized.motor.maxRpm)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.75 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.8 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.995), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*75)
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 0.995), self.spec_motorized.motor.lastPtoRpm*0.7), self.spec_motorized.motor.maxRpm)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.8 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.85 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 1.00), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*75)
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 1.00), self.spec_motorized.motor.lastPtoRpm*0.7), self.spec_motorized.motor.maxRpm)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.85 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.9 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 1.05), self.spec_motorized.motor.lastPtoRpm*0.7)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*80)
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 1.001), self.spec_motorized.motor.lastPtoRpm*0.7), self.spec_motorized.motor.maxRpm - self.spec_motorized.motor.smoothedLoadPercentage*99)
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
-						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.9 and self.spec_motorized.motor.smoothedLoadPercentage <= 0.95 then
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 1.10), self.spec_motorized.motor.lastPtoRpm*0.6)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*85)
-							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1 + (self.spec_motorized.motor.rawLoadPercentage*9)
-							self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio * 1.6
+						if self.spec_motorized.motor.smoothedLoadPercentage >= 0.9 then
+							self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * 1.002), self.spec_motorized.motor.lastPtoRpm*0.6), self.spec_motorized.motor.maxRpm - self.spec_motorized.motor.smoothedLoadPercentage*99)
+							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 3 + (self.spec_motorized.motor.rawLoadPercentage*19)
+							self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio + self.spec_motorized.motor.smoothedLoadPercentage*15
+							-- self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio * 1.6
 							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * (math.min(0.92+spec.spiceLoad, 1)))
 						end
-						if self.spec_motorized.motor.smoothedLoadPercentage > 0.95 then
-							-- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * 0.92
-							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * math.min(0.97+spiceLoad, 1)), self.spec_motorized.motor.lastPtoRpm*0.5)+(math.abs(self.spec_motorized.motor.lastAcceleratorPedal)*99)
-							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.2 + (self.spec_motorized.motor.rawLoadPercentage*9)
-							self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio * 1.7
-						end
+						-- if self.spec_motorized.motor.smoothedLoadPercentage > 0.95 then
+							-- -- self.spec_motorized.motor.lastMotorRpm = (self.spec_motorized.motor.lastMotorRpm * 0.92
+							-- self.spec_motorized.motor.lastMotorRpm = math.min(math.max((self.spec_motorized.motor.lastMotorRpm * math.min(0.97+spiceLoad, 1)), self.spec_motorized.motor.lastPtoRpm*0.5), self.spec_motorized.motor.maxRpm)
+							-- self.spec_motorized.motor.gearRatio = 250
+							-- -- self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.8 + (self.spec_motorized.motor.rawLoadPercentage*19)
+							-- self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatio +  - self.spec_motorized.motor.smoothedLoadPercentage*9
+						-- end
 					end
 				end
 	
@@ -1147,10 +1149,16 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 					end
 				end
 			end                 -- pto rpm muss weiter runter
-			g_currentMission:addExtraPrintText("StI: " .. tostring(StI))
-			g_currentMission:addExtraPrintText("vOne: " .. tostring(spec.vOne))
-			g_currentMission:addExtraPrintText("isVarioTM: " .. tostring(spec.isVarioTM))
-			g_currentMission:addExtraPrintText("isTractor: " .. tostring(isTractor))
+			-- g_currentMission:addExtraPrintText("StI: " .. tostring(StI))
+			-- g_currentMission:addExtraPrintText("vOne: " .. tostring(spec.vOne))
+			-- g_currentMission:addExtraPrintText("isVarioTM: " .. tostring(spec.isVarioTM))
+			-- g_currentMission:addExtraPrintText("isTractor: " .. tostring(isTractor))
+			-- g_currentMission:addExtraPrintText("gearRatio: " .. tostring(self.spec_motorized.motor.gearRatio))
+			-- g_currentMission:addExtraPrintText("maxGearRatio: " .. tostring(self.spec_motorized.motor.maxGearRatio))
+			-- g_currentMission:addExtraPrintText("minGearRatio: " .. tostring(self.spec_motorized.motor.minGearRatio))
+			-- g_currentMission:addExtraPrintText("requiredMotorRpm: " .. tostring(self.spec_motorized.motor.requiredMotorRpm))
+			-- g_currentMission:addExtraPrintText("minForwardGearRatio: " .. tostring(self.spec_motorized.motor.minForwardGearRatio))
+			-- g_currentMission:addExtraPrintText("maxForwardGearRatio: " .. tostring(self.spec_motorized.motor.maxForwardGearRatio))
 		end
 		-- print("CLIENT vOne: " .. tostring(spec.vOne))
 		-- print("CLIENT vTwo: " .. tostring(spec.vTwo))
@@ -1262,7 +1270,7 @@ function CVTaddon:onDraw(vehicle, dt)
 		local isFFF = storeItem.categoryName == "FORKLIFTS"
 		
 		if g_currentMission.hud.isVisible and spec.isVarioTM then
-		g_currentMission:addExtraPrintText("spec.lastPTORot: " .. tostring(spec.lastPTORot))
+		-- g_currentMission:addExtraPrintText("spec.lastPTORot: " .. tostring(spec.lastPTORot))
 
 			-- calculate position and size
 			local uiScale = g_gameSettings.uiScale;

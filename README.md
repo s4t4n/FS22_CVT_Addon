@@ -2,7 +2,7 @@
 
 ![CVTaddon_github](https://user-images.githubusercontent.com/4678246/214910194-35925097-47f7-4b22-ba34-4a7e1f6e73b5.png)
 
-https://discord.gg/mktV7jpNzp 
+https://discord.gg/mfergkwhDu 
 
 Known issues:
 - multiplayer not in sync with calculated transmisson and functions!

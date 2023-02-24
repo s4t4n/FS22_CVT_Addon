@@ -10,10 +10,10 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.2.0.94";
+local scrversion = "0.2.0.98";
 local modversion = "0.9.9.7";
--- last update	03.02.23
--- last change	BR & HG graphic
+-- last update	19.02.23
+-- last change	saving only for `isVarioTM`, ramps engineBrakeCurve changed
 -- issues:
 
 
@@ -24,7 +24,7 @@ CVTaddon.modDirectory = g_currentModDirectory;
 source(CVTaddon.modDirectory.."events/SyncClientServerEvent.lua")
 -- source(g_currentModDirectory .. "CVT_Addon_HUD.lua")  -- need to sync 'spec' between CVT_Addon.lua and CVT_Addon_HUD.lua
 
-local sbshDebugOn = true;
+local sbshDebugOn = false;
 -- local changeFlag = false;
 local startetATM = false;
 -- local sbshFlyDebugOn = true;
@@ -364,21 +364,22 @@ function CVTaddon:saveToXMLFile(xmlFile, key, usedModNames)
 		local spec = self.spec_CVTaddon
 		
 		-- spec.actionsLength = table.getn(spec.actions)
-		
-		xmlFile:setValue(key.."#eventActiveV1", CVTaddon.eventActiveV1)
-		xmlFile:setValue(key.."#eventActiveV2", CVTaddon.eventActiveV2)
-		xmlFile:setValue(key.."#eventActiveV3", CVTaddon.eventActiveV3)
-		xmlFile:setValue(key.."#eventActiveV4", CVTaddon.eventActiveV4)
-		xmlFile:setValue(key.."#eventActiveV5", CVTaddon.eventActiveV5)
-		xmlFile:setValue(key.."#eventActiveV6", CVTaddon.eventActiveV6)
-		xmlFile:setValue(key.."#eventActiveV7", CVTaddon.eventActiveV7)
-		xmlFile:setValue(key.."#eventActiveV8", CVTaddon.eventActiveV8)
-		xmlFile:setValue(key.."#vOne", spec.vOne)
-		xmlFile:setValue(key.."#vTwo", spec.vTwo)
-		xmlFile:setValue(key.."#vThree", spec.vThree)
-		xmlFile:setValue(key.."#vFour", spec.vFour)
-		xmlFile:setValue(key.."#vFive", spec.vFive)
-		xmlFile:setValue(key.."#PedalResolution", spec.PedalResolution)
+		if spec.isVarioTM then
+			xmlFile:setValue(key.."#eventActiveV1", CVTaddon.eventActiveV1)
+			xmlFile:setValue(key.."#eventActiveV2", CVTaddon.eventActiveV2)
+			xmlFile:setValue(key.."#eventActiveV3", CVTaddon.eventActiveV3)
+			xmlFile:setValue(key.."#eventActiveV4", CVTaddon.eventActiveV4)
+			xmlFile:setValue(key.."#eventActiveV5", CVTaddon.eventActiveV5)
+			xmlFile:setValue(key.."#eventActiveV6", CVTaddon.eventActiveV6)
+			xmlFile:setValue(key.."#eventActiveV7", CVTaddon.eventActiveV7)
+			xmlFile:setValue(key.."#eventActiveV8", CVTaddon.eventActiveV8)
+			xmlFile:setValue(key.."#vOne", spec.vOne)
+			xmlFile:setValue(key.."#vTwo", spec.vTwo)
+			xmlFile:setValue(key.."#vThree", spec.vThree)
+			xmlFile:setValue(key.."#vFour", spec.vFour)
+			xmlFile:setValue(key.."#vFive", spec.vFive)
+			xmlFile:setValue(key.."#PedalResolution", spec.PedalResolution)
+		end
 
 		print("CVT_Addon: saved personal adjustments for "..self:getName())
 		print("CVT_Addon: Save Driving Level id: "..tostring(spec.vOne))
@@ -467,7 +468,7 @@ function CVTaddon:AccRamps()
 		end
 		if (spec.vTwo == 1) then -- Ramp 1
 			self.spec_motorized.motor.accelerationLimit = 0.50
-			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce-0.10))
+			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce-0.05))
 			if sbshDebugOn then
 				print("AccRamp 1 vTwo: "..tostring(spec.vTwo))
 				print("AccRamp 1 acc0.5: "..self.spec_motorized.motor.accelerationLimit)
@@ -475,7 +476,7 @@ function CVTaddon:AccRamps()
 		end
 		if (spec.vTwo == 2) then -- Ramp 2
 			self.spec_motorized.motor.accelerationLimit = 1.00
-			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce))
+			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce+0.18))
 			if sbshDebugOn then
 				print("AccRamp 2 vTwo: "..tostring(spec.vTwo))
 				print("AccRamp 2 acc1.0: "..self.spec_motorized.motor.accelerationLimit)
@@ -483,7 +484,7 @@ function CVTaddon:AccRamps()
 		end
 		if (spec.vTwo == 3) then -- Ramp 3
 			self.spec_motorized.motor.accelerationLimit = 1.50
-			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce+0.03))
+			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce+0.24))
 			if sbshDebugOn then
 				print("AccRamp 3 vTwo: "..tostring(spec.vTwo))
 				print("AccRamp 3 acc1.5: "..self.spec_motorized.motor.accelerationLimit)
@@ -491,7 +492,7 @@ function CVTaddon:AccRamps()
 		end
 		if (spec.vTwo == 4) then -- Ramp 4
 			self.spec_motorized.motor.accelerationLimit = 2.00 -- Standard
-			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce+0.08))
+			self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce+0.69))
 			-- self.spec_motorized.motor.peakMotorTorque = self.spec_motorized.motor.peakMotorTorque * 0.5
 			if sbshDebugOn then
 				print("AccRamp 4 vTwo: "..tostring(spec.vTwo))

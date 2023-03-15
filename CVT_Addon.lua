@@ -11,8 +11,8 @@
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
 local scrversion = "0.2.0.98";
-local modversion = "0.9.9.7";
--- last update	19.02.23
+local modversion = "0.9.9.8";
+-- last update	14.03.23
 -- last change	saving only for `isVarioTM`, ramps engineBrakeCurve changed
 -- issues:
 
@@ -58,7 +58,7 @@ function CVTaddon:onRegisterActionEvents()
 		local spec = self.spec_CVTaddon
 		spec.BackupMaxFwSpd = tostring(self.spec_motorized.motor.maxForwardSpeedOrigin)
 		spec.BackupMaxBwSpd = tostring(self.spec_motorized.motor.maxBackwardSpeedOrigin)
-		spec.calcBrakeForce = string.format("%.2f", self.spec_motorized.motor.maxForwardSpeedOrigin/100)
+		spec.calcBrakeForce = string.format("%.2f", self.spec_motorized.motor.maxForwardSpeedOrigin/50)
 		
 		if self.getIsEntered ~= nil and self:getIsEntered() then
 			CVTaddon.actionEventsV1 = {}
@@ -803,7 +803,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 					if spec.vTwo == 1 and spec.isVarioTM then
 						-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_accRamp4")) -- #l10n
 						self.spec_motorized.motor.accelerationLimit = 2.00 -- Standard
-						self.spec_motorized.motor.lowBrakeForceScale = (math.abs(spec.calcBrakeForce+0.08))
+						self.spec_motorized.motor.lowBrakeForceScale = math.max(math.min((math.abs(spec.calcBrakeForce+0.08)+((1-self.spec_motorized.motor.lastMotorRpm/((self.spec_motorized.motor.minRpm/3)*10))-(self:getLastSpeed()/70))),0.7),0.025)
 						spec.AR_genText = tostring(g_i18n:getText("txt_accRamp4"))
 					end
 					if spec.vTwo == 2 and spec.isVarioTM then
@@ -982,6 +982,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 									end
 									if math.max(0, self.spec_drivable.axisForward) < 0.2 then
 										self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed() * 10, self.spec_motorized.motor.maxRpm)
+										self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage - (self:getLastSpeed() / 50)
 									end
 									if math.max(0, self.spec_drivable.axisForward) > 0.5 and math.max(0, self.spec_drivable.axisForward) <= 0.9 and self.spec_motorized.motor.rawLoadPercentage < 0.5 then
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.8
@@ -1096,9 +1097,14 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 									if self:getLastSpeed() > (self.spec_motorized.motor.maxForwardSpeed*3.14)-2 then
 										self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage *0.9
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm - self:getLastSpeed()
+										
 									end
 									if math.max(0, self.spec_drivable.axisForward) < 0.2 then
-										self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed() * 10, self.spec_motorized.motor.maxRpm)
+										self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + self:getLastSpeed() * 20, self.spec_motorized.motor.maxRpm)
+										self.spec_motorized.motor.blowOffValveState = math.min(self.spec_motorized.motor.blowOffValveState + (self.spec_motorized.motor.lastMotorRpm / 1000 ), 1)
+										-- self.spec_motorized.motor.lastTurboScale = math.min(self.spec_motorized.motor.lastTurboScale + (self.spec_motorized.motor.lastMotorRpm / 1000 ), 1)
+										self.spec_motorized.motor.lastTurboScale = math.min(math.abs(self.spec_motorized.motor.rawLoadPercentage), 1)
+										-- self.spec_motorized.motor.constantRpmCharge = 1
 									end
 									if math.max(0, self.spec_drivable.axisForward) > 0.5 and self.spec_motorized.motor.rawLoadPercentage < 0.5 then
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.8
@@ -1159,7 +1165,12 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 			-- g_currentMission:addExtraPrintText("minGearRatio: " .. tostring(self.spec_motorized.motor.minGearRatio))
 			-- g_currentMission:addExtraPrintText("requiredMotorRpm: " .. tostring(self.spec_motorized.motor.requiredMotorRpm))
 			-- g_currentMission:addExtraPrintText("minForwardGearRatio: " .. tostring(self.spec_motorized.motor.minForwardGearRatio))
-			-- g_currentMission:addExtraPrintText("maxForwardGearRatio: " .. tostring(self.spec_motorized.motor.maxForwardGearRatio))
+			-- g_currentMission:addExtraPrintText("blowOffValveState: " .. tostring(self.spec_motorized.motor.blowOffValveState))
+			-- g_currentMission:addExtraPrintText("lastTurboScale: " .. tostring(self.spec_motorized.motor.lastTurboScale))
+			-- g_currentMission:addExtraPrintText("constantRpmCharge: " .. tostring(self.spec_motorized.motor.constantRpmCharge))
+			-- g_currentMission:addExtraPrintText("constantAccelerationCharge: " .. tostring(self.spec_motorized.motor.constantAccelerationCharge))
+			-- g_currentMission:addExtraPrintText("loadPercentageChangeCharge: " .. tostring(self.spec_motorized.motor.loadPercentageChangeCharge))
+			-- self.spec_motorized.motor.constantRpmCharge = 1
 		end
 		-- print("CLIENT vOne: " .. tostring(spec.vOne))
 		-- print("CLIENT vTwo: " .. tostring(spec.vTwo))
@@ -1220,8 +1231,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 			self:raiseDirtyFlags(spec.dirtyFlag)
 			
 			--spec.check = true
-			
-			--print("BITTE SCHREIB MIR OB DER PRINT NUR 1x BEIM EINSTEIGEN KOMMT ODER DAUERND BEIM STARTEN")
+
 			----------------------------------
 				-- events (sync client server)
 			----------------------------------

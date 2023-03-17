@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="72">
+<modDesc descVersion="73">
     <author>SbSh</author>
-	<version>0.9.9.7</version>
+	<version>0.9.9.8</version>
 	<title>
         <en>CVT stepless transmission addon</en>
         <de>CVT Stufenlosgetriebe Addon</de>
@@ -48,7 +48,7 @@ Um Komfortable Einstellungsmöglichkeiten nicht auszulassen, kann man ebenfalls 
 Hierzu gibt es auch wieder eine Taste mit der in 5 Stufen umgeschaltet werden kann. Die Bremsrampe in unterschiedlichen Geschwindigkeitsstufen von 1 km/h bis 17 km/h
 bewirken, daß beim loslassen des Fahrpedals oder Fahrjoysticks die Motorbremswirkung ab der eingestellten Bremsrampe unterstützt.
 Dies kann hilfreich bei Rangier- oder Frontladerarbeiten sein - oder einfach bei Stop&Go Straßenfahrten.
-Manuell geschaltete Getriebe werden nicht beeinflusst.
+Manuell geschaltete Getriebe werden nicht beeinflusst. TMS ähnlicher Pedalmodus, welcher über den deaktiven Tempomaten in Stufen gesteuert wird.
 Mein Skript "Verringerte Motorbremswirkung" wird mit dieser Neuauflage nicht mehr benötigt, bzw. sollte nicht zusammen genutzt werden.
 
 
@@ -77,7 +77,7 @@ Il y a aussi un bouton avec lequel peut être converti en 5 étapes. La rampe de
 Faites le support de l'effet de freinage du moteur à partir de la rampe de frein définie lorsque la pédale de conduite ou le bâton de joie de conduite est libéré.
 Cela peut être utile pour les manœuvres ou les travaux de chargement frontal - ou simplement avec des voyages en route Stop & GO.
 Les engrenages commutés manuellement ne sont pas influencés.
-Mon script "réduit l'effet de freinage du moteur" n'est plus requis avec cette nouvelle édition, ou ne doit pas être utilisé ensemble.
+Mon script "LessMotorBrakeforce" n'est plus requis avec cette nouvelle édition, ou ne doit pas être utilisé ensemble.
 
 
 Changer la liste / ChangeLog
@@ -141,8 +141,8 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 		<text name="input_SETVARIORPM_AXIS">
             <de>CVTa: Motordrehzahl + / -</de> <en>CVTa: Engine rpm +-</en> <fr>CVTa: rpm +-</fr>
         </text>
-		<text name="input_SETPEDALWAY_AXIS">
-            <de>CVTa: Pedalauflösung</de> <en>CVTa: Pedalresolution</en> <fr>CVTa: Pedalresolution</fr>
+		<text name="input_SETPEDALTMS">
+            <de>CVTa: TMS Pedal Modus</de> <en>CVTa: TMS Pedalmode</en> <fr>CVTa: TMS Pedalmode</fr>
         </text>
 		<text name="input_LMBF_TOGGLE_RAMP">
 			<de>CVTa: Beschleunigungsrampe wechseln</de> <en>CVTa: Toggle Accelerationramp</en> <fr>CVTa: Changer la rampe d'accélération</fr>
@@ -199,7 +199,7 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
         <action name="SETVARIORPMP" />
         <action name="SETVARIORPMM" />
         <action name="SETVARIORPM_AXIS" />
-        <action name="SETPEDALWAY_AXIS" />
+        <action name="SETPEDALTMS" />
     </actions>
 	<inputBinding>
 		<actionBinding action="SETVARIOONE">
@@ -226,7 +226,7 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 		<actionBinding action="SETVARIORPM_AXIS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
-		<actionBinding action="SETPEDALWAY_AXIS">
+		<actionBinding action="SETPEDALTMS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 	</inputBinding>

@@ -15,7 +15,7 @@ local modversion = "0.9.9.8";
 -- last update	17.03.23
 -- last change	pedal tms
 -- issues:
-
+--		crash when a vehicle will be reset by console while the vehicle is in neutral
 
 
 

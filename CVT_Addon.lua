@@ -73,48 +73,6 @@ function CVTaddon:onRegisterActionEvents()
 			if sbshDebugOn then
 				print("storeItem.categoryName: " .. tostring(storeItem.categoryName)) -- debug
 			end
-			if spec.vOne == nil then
-				spec.vOne = 1
-			end
-			if spec.vTwo == nil then
-				spec.vTwo = 4
-			end
-			if spec.vThree == nil then
-				spec.vThree = 2
-			end
-			if spec.vFour == nil then
-				spec.vFour = 1
-			end
-			if spec.vFive == nil then
-				spec.vFive = 1
-			end
-			if spec.PedalResolution == nil then
-				spec.PedalResolution = 0
-			end
-			if CVTaddon.eventActiveV1 == nil then
-				CVTaddon.eventActiveV1 = true
-			end
-			if CVTaddon.eventActiveV2 == nil then
-				CVTaddon.eventActiveV2 = true
-			end
-			if CVTaddon.eventActiveV3 == nil then
-				CVTaddon.eventActiveV3 = true
-			end
-			if CVTaddon.eventActiveV4 == nil then
-				CVTaddon.eventActiveV4 = true
-			end
-			if CVTaddon.eventActiveV5 == nil then
-				CVTaddon.eventActiveV5 = true
-			end
-			if CVTaddon.eventActiveV6 == nil then
-				CVTaddon.eventActiveV6 = true
-			end
-			if CVTaddon.eventActiveV7 == nil then
-				CVTaddon.eventActiveV7 = true
-			end
-			if CVTaddon.eventActiveV8 == nil then
-				CVTaddon.eventActiveV8 = true
-			end
 
 			-- spec.eventActiveV1 = true
 			-- spec.eventActiveV2 = false
@@ -232,48 +190,20 @@ function CVTaddon:onLoad()
 		spec.lastDirection = 1
 	end
 	spec.smoother = 0
-	if spec.vOne == nil then
-		spec.vOne = 1
-	end
-	if spec.vTwo == nil then
-		spec.vTwo = 4
-	end
-	if spec.vThree == nil then
-		spec.vThree = 2
-	end
-	if spec.vFour == nil then
-		spec.vFour = 1
-	end
-	if spec.vFive == nil then
-		spec.vFive = 1
-	end
-	if spec.PedalResolution == nil then
-		spec.PedalResolution = 0
-	end
-	if CVTaddon.eventActiveV1 == nil then
-		CVTaddon.eventActiveV1 = true
-	end
-	if CVTaddon.eventActiveV2 == nil then
-		CVTaddon.eventActiveV2 = true
-	end
-	if CVTaddon.eventActiveV3 == nil then
-		CVTaddon.eventActiveV3 = true
-	end
-	if CVTaddon.eventActiveV4 == nil then
-		CVTaddon.eventActiveV4 = true
-	end
-	if CVTaddon.eventActiveV5 == nil then
-		CVTaddon.eventActiveV5 = true
-	end
-	if CVTaddon.eventActiveV6 == nil then
-		CVTaddon.eventActiveV6 = true
-	end
-	if CVTaddon.eventActiveV7 == nil then
-		CVTaddon.eventActiveV7 = true
-	end
-	if CVTaddon.eventActiveV8 == nil then
-		CVTaddon.eventActiveV8 = true
-	end
+	spec.vOne = 1
+	spec.vTwo = 4
+	spec.vThree = 2
+	spec.vFour = 1
+	spec.vFive = 1
+	spec.PedalResolution = 0
+	CVTaddon.eventActiveV1 = true
+	CVTaddon.eventActiveV2 = true
+	CVTaddon.eventActiveV3 = true
+	CVTaddon.eventActiveV4 = true
+	CVTaddon.eventActiveV5 = true
+	CVTaddon.eventActiveV6 = true
+	CVTaddon.eventActiveV7 = true
+	CVTaddon.eventActiveV8 = true
 	CVTaddon.eventIdV1 = nil
 	CVTaddon.eventIdV2 = nil
 	CVTaddon.eventIdV3 = nil
@@ -450,6 +380,7 @@ function CVTaddon:BrakeRamps()
 			print("BrRamp Taste losgelassen vThree: "..tostring(spec.vThree))
 			print("BrRamp Taste losgelassen lBFSL: "..self.spec_motorized.motor.lowBrakeForceSpeedLimit)
 		end
+		self:raiseDirtyFlags(spec.dirtyFlag) 
 	end --g_client
 end -- BrakeRamps
 
@@ -509,6 +440,7 @@ function CVTaddon:AccRamps()
 			print("AccRamp Taste losgelassen vTwo: "..tostring(spec.vTwo))
 			print("AccRamp Taste losgelassen acc: "..self.spec_motorized.motor.accelerationLimit)
 		end
+		self:raiseDirtyFlags(spec.dirtyFlag) 
 	end -- g_client
 end -- AccRamps
 
@@ -542,6 +474,7 @@ function CVTaddon:VarioRpmPlus() ----- +
 			print("VarioRpmPlus Taste losgelassen vFive: "..tostring(spec.vFive))
 			-- print("VarioRpmPlus : FwS/BwS/lBFS/cBF:")
 		end
+		self:raiseDirtyFlags(spec.dirtyFlag) 
 	end -- g_client
 end
 
@@ -575,6 +508,7 @@ function CVTaddon:VarioRpmMinus() ----- -
 			print("VarioRpmMinus Taste losgelassen vFive: "..tostring(spec.vFive))
 			-- print("VarioRpmPlus : FwS/BwS/lBFS/cBF:")
 		end
+		self:raiseDirtyFlags(spec.dirtyFlag) 
 	end -- g_client
 end
 
@@ -629,6 +563,8 @@ function CVTaddon:VarioOne() -- field
 			print("VarioOne Taste losgelassen vOne: ".. tostring(spec.vOne))
 			print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
 		end
+		
+		self:raiseDirtyFlags(spec.dirtyFlag) 
 	end -- g_client
 end -- VarioOne
 
@@ -676,6 +612,8 @@ function CVTaddon:VarioTwo() -- street
 			print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
 			print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxFwSpd))
 		end
+		
+		self:raiseDirtyFlags(spec.dirtyFlag) 
 	end
 end -- VarioTwo
 
@@ -727,6 +665,7 @@ function CVTaddon:VarioN() -- neutral
 			else
 				spec.vFour = 1
 			end
+			self:raiseDirtyFlags(spec.dirtyFlag) 
 		end
 	end
 end -- VarioN
@@ -761,6 +700,7 @@ function CVTaddon:VarioPedalRes() -- Pedal Resolution TMS like
 			else
 				spec.isTMSpedal = 1
 			end
+			self:raiseDirtyFlags(spec.dirtyFlag) 
 		end
 	end
 end
@@ -930,42 +870,42 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 				if self.spec_motorized.motor.lastPtoRpm == nil then
 					self.spec_motorized.motor.lastPtoRpm = 0
 				end
-				if spec.vFive == 1 and spec.vFive ~= nil then
+				if spec.vFive == 1 then
 					self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1
 				end
-				if spec.vFive == 2 and spec.vFive ~= nil then
+				if spec.vFive == 2 then
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/1.99), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 				end
-				if spec.vFive == 3 and spec.vFive ~= nil then
+				if spec.vFive == 3 then
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/2.97), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 				end
-				if spec.vFive == 4 and spec.vFive ~= nil then
+				if spec.vFive == 4 then
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/3.95), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 				end
-				if spec.vFive == 5 and spec.vFive ~= nil then
+				if spec.vFive == 5 then
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/4.92), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 				end
-				if spec.vFive == 6 and spec.vFive ~= nil then
+				if spec.vFive == 6 then
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/5.88), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 				end
-				if spec.vFive == 7 and spec.vFive ~= nil then
+				if spec.vFive == 7 then
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/6.85), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 				end
-				if spec.vFive == 8 and spec.vFive ~= nil then
+				if spec.vFive == 8 then
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/7.82), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 				end
-				if spec.vFive == 9 and spec.vFive ~= nil then
+				if spec.vFive == 9 then
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/8.78), self.spec_motorized.motor.maxRpm-1), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
 				end
-				if spec.vFive == 10 and spec.vFive ~= nil then
+				if spec.vFive == 10 then
 					-- self.spec_motorized.motor.lastMotorRpm = math.max(math.min((self.spec_motorized.motor.lastMotorRpm) * (spec.vFive/9.72), self.spec_motorized.motor.maxRpm), self.spec_motorized.motor.lastPtoRpm+(spec.vFive*10))
 					self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.maxRpm-51, self.spec_motorized.motor.lastPtoRpm*0.75)), self.spec_motorized.motor.maxRpm)
 				end
@@ -1273,7 +1213,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 	--local isMotorStarting = (self.spec_motorized.isMotorStarted and (self.spec_motorized.motorStartTime > g_currentMission.time and 1 or 2) or 0)
 	--if self:getIsEntered() then
 	--	if spec.check == false then
-			self:raiseDirtyFlags(spec.dirtyFlag)
+			--self:raiseDirtyFlags(spec.dirtyFlag)
 			
 			--spec.check = true
 
@@ -1281,11 +1221,11 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 				-- events (sync client server)
 			----------------------------------
 			
-			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.isVarioTM), nil, nil, self)
-			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.isVarioTM))
-			end
+			--if g_server ~= nil then
+			--	g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.isVarioTM), nil, nil, self)
+			--else
+			--	g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.isVarioTM))
+			--end
 		--end
 	--else
 		--spec.check = false
@@ -1293,6 +1233,7 @@ function CVTaddon:onUpdate(dt, isActiveForInput, isActiveForInputIgnoreSelection
 	-- print("vOne ALL: " .. tostring(spec.vOne))
 end -- onUpdate
 
+--[[
 function CVTaddon.SyncClientServer(vehicle, vOne, vTwo, vThree, vFour, vFive)
 	local spec = vehicle.spec_CVTaddon	
 	-- local spec = self.spec_CVTaddon  -- need too?
@@ -1305,11 +1246,12 @@ function CVTaddon.SyncClientServer(vehicle, vOne, vTwo, vThree, vFour, vFive)
 	spec.isVarioTM = isVarioTM
     -- spec.check = check						  
 end
+--]]
 
 ----------------------------------------------------------------------------------------------------------------------	
 ----------------------------------------------------------------------------------------------------------------------			
 ------------- Should be external in CVT_Addon_HUD.lua, but I can't sync spec between 2 lua's -------------------------			
-function CVTaddon:onDraw(vehicle, dt)
+function CVTaddon:onDraw(dt)
 	local spec = self.spec_CVTaddon
 	
 	
@@ -1732,53 +1674,35 @@ end
 
 function CVTaddon:onReadStream(streamId, connection)
 	local spec = self.spec_CVTaddon
-	local motorized = self.spec_motorized ~= nil
-	-- if motorized then
-		
-		spec.vOne = streamReadInt32(streamId)  -- state driving level
-		spec.vTwo = streamReadInt32(streamId) -- state accelerationRamp
-		spec.vThree = streamReadInt32(streamId) -- state brakeRamp
-		spec.vFour = streamReadInt32(streamId) -- state neutral
-		spec.vFive = streamReadInt32(streamId) -- state Handgas
-
-		spec.isVarioTM = streamReadBool(streamId)
-		-- spec.check = streamReadBool(streamId)
-	-- end -- motorized
+	spec.vOne = streamReadInt32(streamId)  -- state driving level
+	spec.vTwo = streamReadInt32(streamId) -- state accelerationRamp
+	spec.vThree = streamReadInt32(streamId) -- state brakeRamp
+	spec.vFour = streamReadInt32(streamId) -- state neutral
+	spec.vFive = streamReadInt32(streamId) -- state Handgas
+	spec.isVarioTM = streamReadBool(streamId)
 end
 
 function CVTaddon:onWriteStream(streamId, connection)
 	local spec = self.spec_CVTaddon
-	local motorized = self.spec_motorized ~= nil
-	-- sync was stucking @99% thanks Glowin for fixing this
-	-- if motorized then
-		streamWriteInt32(streamId, spec.vOne)
-		streamWriteInt32(streamId, spec.vTwo)
-		streamWriteInt32(streamId, spec.vThree)
-		streamWriteInt32(streamId, spec.vFour)
-		streamWriteInt32(streamId, spec.vFive)
-		
-		streamWriteBool(streamId, spec.isVarioTM)
-		-- streamWriteBool(streamId, spec.check)	   
-	-- end -- motorized
+	streamWriteInt32(streamId, spec.vOne)
+	streamWriteInt32(streamId, spec.vTwo)
+	streamWriteInt32(streamId, spec.vThree)
+	streamWriteInt32(streamId, spec.vFour)
+	streamWriteInt32(streamId, spec.vFive)	
+	streamWriteBool(streamId, spec.isVarioTM)
 end
 
 function CVTaddon:onReadUpdateStream(streamId, timestamp, connection)
--- local spec = self.spec_CVTaddon
 	if not connection:getIsServer() then
 		local spec = self.spec_CVTaddon
-		
-		if streamReadBool(streamId) then
-			if spec ~= nil then
-				
-				spec.vOne = streamReadInt32(streamId)
-				spec.vTwo = streamReadInt32(streamId)
-				spec.vThree = streamReadInt32(streamId)
-				spec.vFour = streamReadInt32(streamId)
-				spec.vFive = streamReadInt32(streamId)
-				
-				spec.isVarioTM = streamReadBool(streamId)
-				-- spec.check = streamReadBool(streamId)
-			end
+		if streamReadBool(streamId) then			
+			spec.vOne = streamReadInt32(streamId)
+			spec.vTwo = streamReadInt32(streamId)
+			spec.vThree = streamReadInt32(streamId)
+			spec.vFour = streamReadInt32(streamId)
+			spec.vFive = streamReadInt32(streamId)
+			spec.isVarioTM = streamReadBool(streamId)
+			-- spec.check = streamReadBool(streamId)
 		end
 	end
 end
@@ -1787,30 +1711,14 @@ function CVTaddon:onWriteUpdateStream(streamId, connection, dirtyMask)
 -- local spec = self.spec_CVTaddon
 	if connection:getIsServer() then
 		local spec = self.spec_CVTaddon
-		if spec ~= nil then
-			if spec.dirtyFlag ~= nil then
-				if streamWriteBool(streamId, bitAND(dirtyMask, spec.dirtyFlag) ~= 0) then
-
-					streamWriteInt32(streamId, spec.vOne)
-					if spec.vTwo ~= nil then -- test
-						streamWriteInt32(streamId, spec.vTwo) -- nil
-					end
-					if spec.vThree ~= nil then
-						streamWriteInt32(streamId, spec.vThree) -- nil
-					end
-					if spec.vFour ~= nil then
-						streamWriteInt32(streamId, spec.vFour) -- nil
-					end
-					if spec.vFive ~= nil then
-						streamWriteInt32(streamId, spec.vFive) -- nil
-					end
-
-					streamWriteBool(streamId, spec.isVarioTM)
-					-- streamWriteBool(streamId, spec.check)
-				end
-			else 
-				streamWriteBool(streamId, false)
-			end
+		if streamWriteBool(streamId, bitAND(dirtyMask, spec.dirtyFlag) ~= 0) then
+			streamWriteInt32(streamId, spec.vOne)
+			streamWriteInt32(streamId, spec.vTwo) -- nil
+			streamWriteInt32(streamId, spec.vThree) -- nil
+			streamWriteInt32(streamId, spec.vFour) -- nil
+			streamWriteInt32(streamId, spec.vFive) -- nil
+			streamWriteBool(streamId, spec.isVarioTM)
+			-- streamWriteBool(streamId, spec.check)
 		end
 	end
 end

@@ -5,8 +5,9 @@
 https://discord.gg/mfergkwhDu 
 
 Known issues:
-- multiplayer not in sync with calculated transmisson and functions!
+- multiplayer* is in sync. but the driving feeling have to be readjust - I'm on it.
 
+*A very big thanks goes to Glowin, for fixing the mp sync issue.
 
 LessMotorBrakeforce to new Edition CVT_Addon 
 by SbSh(s4t4n) and Frvetz

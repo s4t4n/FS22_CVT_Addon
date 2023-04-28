@@ -10,7 +10,7 @@ Known issues:
 *A very big thanks goes to Glowin, for fixing the mp sync issue.
 
 LessMotorBrakeforce to new Edition CVT_Addon 
-by SbSh(s4t4n) and Frvetz
+by SbSh(Modastian) and Frvetz
 
 also in credits: modelleicher
 

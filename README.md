@@ -51,13 +51,15 @@ A key assignment must be assigned for each level.  Changing the driving range sh
  Then there is the TMS "Pedal" mode, with this you can control the pedal resolution.
  Ie set the maximum speed of the pedal.  With the cruise control deactivated, you set the levels there.
  E.g. 1 could be max 3 km/h.  In addition, the padal then reacts as a percentage, i.e. 50% pedal travel corresponds to a maximum of 12 km/h, 6 km/h.
+
+ Improper operation can lead to higher temperatures, pressures and even damage in the gearbox
  
  My script "Reduced engine braking effect" is no longer required with this new edition, and should not be used together.
 
 EV: 100%
  - no restrictions
 
-VCA: 60%
+VCA: 80%
  - Unfortunately, the engine braking effect calculation does not work correctly.  In VCA the "low braking force" should be set to 100%
  - An update will hopefully follow from the VCA Mod
  - The vca:motor modification should be switched off
@@ -76,7 +78,8 @@ Important:
 
 
 
-![CVT_Addon_Explain](https://user-images.githubusercontent.com/4678246/214910310-4fb7e1ce-83e2-4319-b647-2e923cbf297a.png)
+![CVT_Addon_Explain](https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/090a90af-d47a-455d-a59b-b9fea431db5c)
+
 
 
 
@@ -116,12 +119,14 @@ Dann gibt es noch den TMS "Pedal" Modus, mit diesem kann man die Pedalauflösung
 D.h. die maximale Geschwindigkeit des Pedals festlegen. Mit deaktiviertem Tempomat, stellt man dort die Stufen ein.
 Bsp. 1 könnte max 3 km/h sein. Dazu reagiert das Padal dann prozentual, sprich 50% Pedalweg entspricht bei max 12 km/h, 6 km/h.
 
+Unsachgemäße Bedienung kann zu höheren Temperaturen, Drücken und sogar Schäden im Getriebe führen!
+
 Mein Skript "Verringerte Motorbremswirkung" wird mit dieser Neuauflage nicht mehr benötigt, bzw. sollte nicht zusammen genutzt werden.
 
 EV: 100%
 - keine Einschränkungen
   
-VCA: 60%
+VCA: 80%
 - Die Motorbremswirkungs-Berechnung funktioniert leider nicht korrekt. In VCA sollte die "niedrige Bremskraft" auf 100% gestellt werden
 - Ein Update folgt hoffentlich vom VCA Mod
 - Die vca:Motormodifikation sollte ausgeschalten sein

@@ -1,27 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="73">
+<modDesc descVersion="75">
     <author>SbSh</author>
-	<version>0.9.9.8</version>
+	<version>0.9.9.14</version>
 	<title>
-        <en>CVT stepless transmission addon</en>
-        <de>CVT Stufenlosgetriebe Addon</de>
+        <en>CVT Addon</en>
+        <de>CVT Addon</de>
     </title>
 
     <description>
         <en>
-<![CDATA[This script reduces the engine brake effect depending on the setting
-And adds various options for Vario and CVT gearbox.
-There are 2 speeds, II. Is intended for road trips, transport and easy work.
-Level I. Rather for heavy field work and heavy transports. The maximum speed is also reduced.
-A key assignment must be assigned for each stage.
-Furthermore, there is now an acceleration ramp in 4 steps that can be switched through with a button.
-Here the suit behavior when accelerating and reducing the driving speed is influenced. Gentle and with felt or full power and rough.
-In order not to indulge in comfortable setting options, you can also change the brake ramp.
-There is also a button with which can be converted into 5 steps. The brake ramp in different speed levels from 1 km/h to 17 km/h
-Make the engine braking effect support from the set brake ramp when the driving pedal or driving joy stick is released.
-This can be helpful for maneuvering or front loading work - or simply with Stop & Go road trips.
-Manually switched gears are not influenced.
-My script "LessMotorBrakeforce" is no longer required with this new edition, or should not be used together.
+<![CDATA[Depending on the setting, this script completely recalculates the engine braking effect
+
+    engine speed
+
+    Engine power/hp class (displacement would still be nice, unfortunately not in the LS)
+
+    wind
+
+    vehicle condition
+
+There are 2 driving levels, II. is intended for road travel,
+transport and light work. Stage I. Rather for heavy field work and heavy transport.
+The maximum speed is also reduced here and the torque provides more thrust,
+especially when starting. A key assignment must be assigned for each level.
+Changing the driving range should be done while stationary, since damage can also occur here.
+*A little tip if you use the group switching buttons for up/down, you can use the same buttons for the speed levels.
+Furthermore, there is now an acceleration ramp in 4 stages, which can be switched through with a button.
+Here the pull-in behavior when accelerating and reducing the driving speed are influenced.
+Gentle and with feeling or full power and rough. With heavy equipment or trailers,
+This can lead to high pressures in the planetary gear and it can be damaged!
+Here the acceleration ramp should be set to 3 or less. Level 4 is more suitable for empty runs.
+In light field work, you can easily pull on speed level 1 in acceleration ramp 4 - for example disc harrow,
+flat cultivator. Some vehicles / implements have a hydrostatic drive in gear 1. Which vehicles should or should have this,
+Can you please give me some feedback. In order not to leave out the comfortable setting options,
+you can also change the braking ramp. There is also a button that can be used to switch between 5 levels.
+The braking ramp in different speed levels of 1 km/h (standard)4, 8, 15 and 17 km/h effect,
+that when the accelerator pedal or joystick is released, the engine braking effect is supported by the service brake from the set braking ramp.
+This can be helpful when maneuvering or front loader work - or simply when driving stop and go on the road. Manually shifted transmissions are not affected.
+Then there is the TMS "Pedal" mode, with this you can control the pedal resolution. Ie set the maximum speed of the pedal.
+With the cruise control deactivated, you set the levels there. E.g. 1 could be max 3 km/h. The padal then reacts as a percentage,
+i.e. 50% pedal travel corresponds to a maximum of 12 km/h, 6 km/h. Digital hand throttle,
+without further ado, only has a decorative function - but together with
+eg RealismAddon_rpmAnimSpeeds is then used to control the hydraulic and PTO performance,
+among other things. Improper operation can lead to higher temperatures,
+pressures and even damage to the gearbox!
+My script "Reduced engine braking effect" is no longer required with this new edition and should not be used together.
 
 
 Change list / changelog
@@ -37,19 +60,50 @@ Version 1.0.0.0 - New edition with CVT Addon
 GITHUB: https://github.com/s4t4n/FS22_CVT_Addon
 ]]></en>
         <de>
-<![CDATA[Dieses Skript verringert je nach Einstellung die Motorbremswirkung
+<![CDATA[Dieses Skript berechnet je nach Einstellung die Motorbremswirkung völlig neu
 und fügt diverse Optionen für Vario und CVT Getriebe hinzu.
-Es gibt 2 Fahrbereiche, II. ist für Straßenfahrten, Transport und leichte Arbeiten gedacht.
-Stufe I. eher für schwere Feldarbeiten und schwere Transporte. Hierbei wird auch die Maximalgeschwindigkeit reduziert.
-Für jede Stufe ist eine Tastenbelegung zu vergeben.
-Desweiteren gibt es nun eine Beschleunigungsrampe in 4 Stufen, die mit einer Taste durchgeschaltet werden können.
-Hier werden das Anzugverhalten beim Beschleunigen und reduzieren der Fahrgeschwindigkeit beeinflusst. Sanft und mit Gefühlt oder volle Power und ruppig.
-Um Komfortable Einstellungsmöglichkeiten nicht auszulassen, kann man ebenfalls noch die Bremsrampe verändern.
-Hierzu gibt es auch wieder eine Taste mit der in 5 Stufen umgeschaltet werden kann. Die Bremsrampe in unterschiedlichen Geschwindigkeitsstufen von 1 km/h bis 17 km/h
-bewirken, daß beim loslassen des Fahrpedals oder Fahrjoysticks die Motorbremswirkung ab der eingestellten Bremsrampe unterstützt.
-Dies kann hilfreich bei Rangier- oder Frontladerarbeiten sein - oder einfach bei Stop&Go Straßenfahrten.
-Manuell geschaltete Getriebe werden nicht beeinflusst. TMS ähnlicher Pedalmodus, welcher über den deaktiven Tempomaten in Stufen gesteuert wird.
+Die Berechnungen sind von verschiedenen Faktoren anhängig - z.B.:
+
+    Geschwindigkeiten
+    Gewicht & Gewicht angangener Geräter und Anhänger und deren Füllung
+    Untergrund, Reifen, Reibung
+    Motordrehzahl
+    Motorleistung/ PS-Klasse (Hubraum wäre noch schön, gibt es leider nicht im LS)
+    Wind
+    Fahrzeugzustand
+
+Es gibt 2 Fahrstufen, II. ist für Straßenfahrten, Transport und leichte Arbeiten gedacht. Stufe I. eher für schwere Feldarbeiten und schwere Transporte.
+Hierbei wird auch die Maximalgeschwindigkeit reduziert und das Drehmoment sorgt vorallem beim anfahren für mehr Schub.
+Für jede Stufe ist eine Tastenbelegung zu vergeben. Das wechseln der Fahrbereiche sollte im Stillstand geschehen,
+da auch hier Schäden entstehen können. *Kleiner Tipp, wenn ihr die Gruppenschaltungs-Tasten für hoch/runter nutzt,
+könnt ihr die selben Tasten für die Fahrstufen verwenden. Desweiteren gibt es nun eine Beschleunigungsrampe in 4 Stufen,
+die mit einer Taste durchgeschaltet werden können. Hier werden das Anzugverhalten beim Beschleunigen und reduzieren der Fahrgeschwindigkeit beeinflusst.
+Sanft und mit Gefühlt oder volle Power und ruppig. Mit schweren Geräten oder Anhänger,
+kann es zu hohen Drücken im Planetengetriebe kommen und es kann Schaden nehmen! Hier sollte die Beschleunigungsrampe auf 3 oder weniger eingestellt werden.
+Stufe 4 ist eher für Leerfahrten geeignet.
+In der leichten Feldarbeit kann man ruhig auf Fahrstufe 1 in der Beschleunigungsrampe 4 ziehen - Beispielsweise Scheibenegge, Flachgrubber.
+Manche Fahrzeuge / Arbeitsgeräte haben einen Hydrostatischen Antrieb in der Fahrstufe 1. Welche Fahzeuge genau dies besitzen sollen oder sollten,
+könnt ihr mir gerne ein Feedback zu geben. Um Komfortable Einstellungsmöglichkeiten nicht auszulasen, kann man ebenfalls noch die Bremsrampe verändern.
+Hierzu gibt es auch wieder eine Taste mit der in 5 Stufen umgeshaltet werden kann.
+Die Bremsrampe in unterschiedlichen Geschwindigkeitsstufen von 1 km/h(Standard)4, 8, 15 und 17 km/h bewirken,
+daß beim loslassen des Fahrpedals oder Fahrjoysticks die Motorbremswirkung ab der eingestellten Bremsrampe mit der Betriebsbremse unterstützt.
+Dies kann hilfreich bei Rangier- oder Frontladerarbeiten sein - oder einfach bei Stop&Go Straßenfahrten. Manuell geschaltete Getriebe werden nicht beeinflusst.
+Dann gibt es noch den TMS "Pedal" Modus, mit diesem kann man die Pedalauflösung kontrollieren. D.h. die maximale Geschwindigkeit des Pedals festlegen.
+Mit deaktiviertem Tempomat, stellt man dort die Stufen ein. Bsp. 1 könnte max 3 km/h sein. Dazu reagiert das Padal dann prozentual,
+sprich 50% Pedalweg entspricht bei max 12 km/h, 6 km/h.
+Digitales Handgas, hat ohne weiteres nur eine Deko Funktion - jedoch zusammen mit
+z.B. RealismAddon_rpmAnimSpeeds wird damit dann u.a. die Hydraulik- und PTO-Leistung gesteuert.
+
+Unsachgemäße Bedienung kann zu höheren Temperaturen, Drücken und sogar Schäden im Getriebe führen!
+
 Mein Skript "Verringerte Motorbremswirkung" wird mit dieser Neuauflage nicht mehr benötigt, bzw. sollte nicht zusammen genutzt werden.
+
+Wichtig:
+    Alle Einstellungen im LS müssen auf manuell gesetzt sein.
+    Manuelle Schaltung und Kupplung.
+    Es dürfen keine Automatiken für die Steuerung aktiv sein. Wenn man realistisch fahren möchte, macht man das sowieso.
+    U.a. zusammen mit realismAddon_GearBox von modelleicher, macht es noch mehr Sinn alles so real/manuell wie möglich einzustellen.
+    CVT-Addon sollte aktiv benutzt werden und nicht nur ein "es läuft im Hintergund" mod ( für die jeweilige Anwendung anpassen )
 
 
 Änderungsliste / Changelog
@@ -64,37 +118,9 @@ Version 1.0.0.0	- Neuauflage mit CVT Addon
 				
 GitHub: https://github.com/s4t4n/FS22_CVT_Addon
 ]]></de>
-        <fr>
-<![CDATA[Ce script réduit l'effet de freinage du moteur en fonction du réglage
-Et ajoute diverses options pour Vario et CVT Gearbox.
-Il y a 2 vitesses, II. Est destinée aux voyages en route, aux transports et aux travaux faciles.
-Niveau I. plutôt pour les travaux importants sur le terrain et les transports lourds. La vitesse maximale est également réduite.
-Une affectation de clé doit être attribuée pour chaque étape.
-De plus, il existe maintenant une rampe d'accélération en 4 étapes qui peuvent être commutées avec un bouton.
-Ici, le comportement de la combinaison lors de l'accélération et de la réduction de la vitesse de conduite est influencé. Doux et avec du feutre ou de pleine puissance et rugueux.
-Afin de ne pas se livrer à des options de réglage confortables, vous pouvez également modifier la rampe de frein.
-Il y a aussi un bouton avec lequel peut être converti en 5 étapes. La rampe de frein à différents niveaux de vitesse de 1 km / h à 17 km / h
-Faites le support de l'effet de freinage du moteur à partir de la rampe de frein définie lorsque la pédale de conduite ou le bâton de joie de conduite est libéré.
-Cela peut être utile pour les manœuvres ou les travaux de chargement frontal - ou simplement avec des voyages en route Stop & GO.
-Les engrenages commutés manuellement ne sont pas influencés.
-Mon script "LessMotorBrakeforce" n'est plus requis avec cette nouvelle édition, ou ne doit pas être utilisé ensemble.
-
-
-Changer la liste / ChangeLog
-Version 0.1.0.0 - Publication ModHub - comme une force de frein moins moteur
-Version 0.1.0.1 - Réglage des Écritures à la version 1.2.0.2
-Version 0.1.0.2 - Réglage des Écritures au patch 1.8.2.x
-- Les modes ont augmenté
-- Optimisation plus approfondie du script
-Version 1.0.0.0 - Nouvelle édition avec CVT Addon
-- Adaptation à fs22_remismaddon_gearbox de Modelleicher
-- comportement modifié dans les boîtes de vitesses vario
-
-Github: https://github.com/s4t4n/fs22_cvt_addon
-]]></fr>
     </description> 
 
-    <iconFilename>CVT_Addon_Icon.dds</iconFilename>
+    <iconFilename>icon_CVT_Addon.dds</iconFilename>
 	<multiplayer supported="true" />
     <extraSourceFiles>
         <sourceFile filename="registerCVT_Addon.lua" />
@@ -112,10 +138,10 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
             <de><![CDATA[  N]]></de> <en><![CDATA[  N]]></en> <fr><![CDATA[  N]]></fr>
         </text>
 		<text name="txt_VarioR">
-            <de>↓</de> <en> </en> <fr> </fr>
+            <de>↓</de> <en>↓</en> <fr>↓</fr>
         </text>
 		<text name="txt_VarioD">
-            <de>↑</de> <en> </en> <fr> </fr>
+            <de>↑</de> <en>↑</en> <fr>↑</fr>
         </text>
 		<text name="txt_VarioRpmPlus">
             <de>UPM +</de> <en>rpm +</en> <fr>rpm +</fr>
@@ -132,15 +158,18 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 		<text name="input_SETVARION">
             <de>CVTa: Neutral</de> <en>CVTa: neutral</en> <fr>CVTa: neutral</fr>
         </text>
+		<text name="input_SETVARIOADIFFS">
+            <de>CVTa: AWD und DIFF Automatik</de> <en>CVTa: AWD and diff automatic</en>
+        </text>
 		<text name="input_SETVARIORPMP">
             <de>CVTa: Motordrehzahl erhöhen</de> <en>CVTa: Increase engine rpm</en> <fr>CVTa: rpm +</fr>
         </text>
 		<text name="input_SETVARIORPMM">
             <de>CVTa: Motordrehzahl verringern</de> <en>CVTa: Decrease engine rpm</en> <fr>CVTa: rpm -</fr>
         </text>
-		<text name="input_SETVARIORPM_AXIS">
-            <de>CVTa: Motordrehzahl + / -</de> <en>CVTa: Engine rpm +-</en> <fr>CVTa: rpm +-</fr>
-        </text>
+		<!-- <text name="input_SETVARIORPM_AXIS"> -->
+            <!-- <de>CVTa: not in use for now</de> <en>CVTa: not in use for now</en> <fr>CVTa: rpm +-</fr> -->
+        <!-- </text> -->
 		<text name="input_SETPEDALTMS">
             <de>CVTa: TMS Pedal Modus</de> <en>CVTa: TMS Pedalmode</en> <fr>CVTa: TMS Pedalmode</fr>
         </text>
@@ -178,6 +207,12 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 		<text name="txt_bRamp5">
 			<de>BR 17</de> <en>BR 17</en> <fr>BR 17</fr>
 		</text>
+		<text name="txt_vcaInfo">
+			<de>Bitte stelle die Niedrige Bremskraft in VCA auf 100% und deaktiviere ggf. die Motormodifikationen</de> <en>Please set the Low Brake Force in VCA to 100% and ph. disable the Modify Motor RPM</en>
+		</text>
+		<text name="txt_attCVTpressure">
+			<de>Achtung, Zu hoher Druck im Triebsatz. Temp. beobachten.</de> <en>Caution, too much pressure in the powertrain. Watch temp.</en> <fr>Attention, pression trop élevée dans la chaîne cinématique. Leok temp.</fr>
+		</text>
 		<text name="txt_warn_tofastDn">
 			<de>Zu schnell! Fahrstufenwechsel maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</de>
 			<en>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</en>
@@ -196,9 +231,10 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
         <action name="SETVARIOONE" />
         <action name="SETVARIOTWO" />
         <action name="SETVARION" />
+        <action name="SETVARIOADIFFS" />
         <action name="SETVARIORPMP" />
         <action name="SETVARIORPMM" />
-        <action name="SETVARIORPM_AXIS" />
+        <!-- <action name="SETVARIORPM_AXIS" /> -->
         <action name="SETPEDALTMS" />
     </actions>
 	<inputBinding>
@@ -217,15 +253,18 @@ Github: https://github.com/s4t4n/fs22_cvt_addon
 		<actionBinding action="SETVARION">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
+		<actionBinding action="SETVARIOADIFFS">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
 		<actionBinding action="SETVARIORPMP">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 		<actionBinding action="SETVARIORPMM">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
-		<actionBinding action="SETVARIORPM_AXIS">
-			<binding device="KB_MOUSE_DEFAULT" input="" />
-		</actionBinding>
+		<!-- <actionBinding action="SETVARIORPM_AXIS"> -->
+			<!-- <binding device="KB_MOUSE_DEFAULT" input="" /> -->
+		<!-- </actionBinding> -->
 		<actionBinding action="SETPEDALTMS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>

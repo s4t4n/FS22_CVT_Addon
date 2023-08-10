@@ -30,9 +30,9 @@ function LMBFRegister:register(name)
 					if spec == "CVTaddon" then -- don't insert if already inserted
 						CVTaddon = true;
 					end
-					-- if spec == "cylindered" then -- don't insert if already inserted
-						-- cylindered = true;
-					-- end
+					if spec == "vehicle" then -- don't insert if already inserted
+						vehicle = true;
+					end
 					
 				end    
 				if motorized and not CVTaddon then

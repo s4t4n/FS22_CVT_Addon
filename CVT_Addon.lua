@@ -10,10 +10,15 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.3.0.11";
-local modversion = "0.9.9.12";
--- last update	08.008.23
+local scrversion = "0.3.0.18";
+local modversion = "0.9.9.14"; -- moddesc
+-- last update	10.08.23
 -- last change	-- disable VCA static enginebrake if vca is active
+				-- added vehicles as hydrostatic driveable
+				-- "FRONTLOADERVEHICLES" "WHEELLOADERVEHICLES" "WOODHARVESTING" "FORKLIFTS"
+				-- automaticly enable & disable awd and diffs c.o. speed and steerangle
+				
+-- known issue	Neutral does'n sync lastDirection mp
 
 
 
@@ -25,6 +30,8 @@ source(CVTaddon.modDirectory.."events/SyncClientServerEvent.lua")
 -- local sbshDebugOn = true;
 -- local changeFlag = false;
 local startetATM = false;
+local vcaAWDon = false
+local vcaInfoUnread = true
 -- local sbshFlyDebugOn = true;
 
 function CVTaddon.prerequisitesPresent(specializations) 
@@ -69,7 +76,7 @@ function CVTaddon:onRegisterActionEvents()
 			CVTaddon.actionEventsV6 = {}
 			CVTaddon.actionEventsV7 = {}
 			CVTaddon.actionEventsV8 = {}
-			-- CVTaddon.actionEventsV9 = {}
+			CVTaddon.actionEventsV9 = {}
 			CVTaddon.actionEventsV10 = {}
 			local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName) -- debug
 			if sbshDebugOn then
@@ -132,17 +139,16 @@ function CVTaddon:onRegisterActionEvents()
 			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV8, GS_PRIO_NORMAL)
 			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV8, false)
 			
-			-- rpmDmin
-			-- _, CVTaddon.eventIdV9 = self:addActionEvent(CVTaddon.actionEventsV9, 'SETVARIORPMDMIN', self, CVTaddon.VarioRpmDmin, false, true, false, true)
-			-- g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV9, GS_PRIO_NORMAL)
-			-- g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV9, CVTaddon.eventActiveV9)
+			-- autoDiffs
+			_, CVTaddon.eventIdV9 = self:addActionEvent(CVTaddon.actionEventsV9, 'SETVARIOADIFFS', self, CVTaddon.VarioADiffs, false, true, false, true)
+			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV9, GS_PRIO_NORMAL)
+			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV9, false)
+	
 			-- rpmDmax
 			_, CVTaddon.eventIdV10 = self:addActionEvent(CVTaddon.actionEventsV10, 'SETVARIORPMDMAX', self, CVTaddon.VarioRpmDmax, false, true, false, true)
 			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV10, GS_PRIO_NORMAL)
 			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV10, CVTaddon.eventActiveV10)
-			
-			-- CVTaddon.updateActionEvents(self)
-			--  local _, actionEventId = self:addActionEvent(spec.actionEvents, InputAction.LOWER_IMPLEMENT, self, Pickup.actionEventTogglePickup, triggerUp, triggerDown, triggerAlways, startActive, callbackState, customIconName)
+
 		end
 		if sbshDebugOn then
 			print("CVTaddon: onRegisterActionEvents a vOne: ".. tostring(spec.vOne))
@@ -210,6 +216,7 @@ function CVTaddon:onLoad()
 	spec.vThree = 2
 	spec.vFour = 1
 	spec.vFive = 1
+	spec.autoDiffs = 0
 	spec.lastDirection = 1
 	spec.isTMSpedal = 0
 	spec.PedalResolution = 0
@@ -243,7 +250,7 @@ function CVTaddon:onLoad()
 	CVTaddon.eventActiveV6 = true
 	CVTaddon.eventActiveV7 = true
 	CVTaddon.eventActiveV8 = true
-	-- CVTaddon.eventActiveV9 = true
+	CVTaddon.eventActiveV9 = true
 	CVTaddon.eventActiveV10 = true
 	CVTaddon.eventIdV1 = nil
 	CVTaddon.eventIdV2 = nil
@@ -253,7 +260,7 @@ function CVTaddon:onLoad()
 	CVTaddon.eventIdV6 = nil
 	CVTaddon.eventIdV7 = nil
 	CVTaddon.eventIdV8 = nil
-	-- CVTaddon.eventIdV9 = nil
+	CVTaddon.eventIdV9 = nil
 	CVTaddon.eventIdV10 = nil
 	spec.BackupMaxFwSpd = ""
 	if spec.calcBrakeForce == nil then
@@ -282,7 +289,7 @@ function CVTaddon.initSpecialization()
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV6")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV7")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV8")
-    -- schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV9")
+    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV9")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV10")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#vOne")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#vTwo")
@@ -292,7 +299,8 @@ function CVTaddon.initSpecialization()
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#lastDirection")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#PedalResolution")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#rpmDmax")
-	print("CVT_Addon: init..... " .. scrversion)
+    schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#autoDiffs")
+	print("CVT_Addon: init....... ")
 	print("CVT_Addon: Script...: " .. scrversion)
 	print("CVT_Addon: Mod......: " .. modversion)
 end -- initSpecialization
@@ -316,13 +324,14 @@ function CVTaddon:onPostLoad(savegame)
 				CVTaddon.eventActiveV6 = xmlFile:getValue(key.."#eventActiveV6", CVTaddon.eventActiveV6)
 				CVTaddon.eventActiveV7 = xmlFile:getValue(key.."#eventActiveV7", CVTaddon.eventActiveV7)
 				CVTaddon.eventActiveV8 = xmlFile:getValue(key.."#eventActiveV8", CVTaddon.eventActiveV8)
-				-- CVTaddon.eventActiveV9 = xmlFile:getValue(key.."#eventActiveV9", CVTaddon.eventActiveV9)
+				CVTaddon.eventActiveV9 = xmlFile:getValue(key.."#eventActiveV9", CVTaddon.eventActiveV9)
 				CVTaddon.eventActiveV10 = xmlFile:getValue(key.."#eventActiveV10", CVTaddon.eventActiveV10)
 				spec.vOne = xmlFile:getValue(key.."#vOne", spec.vOne)
 				spec.vTwo = xmlFile:getValue(key.."#vTwo", spec.vTwo)
 				spec.vThree = xmlFile:getValue(key.."#vThree", spec.vThree)
 				spec.vFour = xmlFile:getValue(key.."#vFour", spec.vFour)
 				spec.vFive = xmlFile:getValue(key.."#vFive", spec.vFive)
+				spec.autoDiffs = xmlFile:getValue(key.."#autoDiffs", spec.autoDiffs)
 				spec.lastDirection = xmlFile:getValue(key.."#lastDirection", spec.lastDirection)
 				spec.PedalResolution = xmlFile:getValue(key.."#PedalResolution", spec.PedalResolution)
 				-- spec.rpmDmin = xmlFile:getValue(key.."#rpmDmin", spec.rpmDmin)
@@ -351,13 +360,14 @@ function CVTaddon:saveToXMLFile(xmlFile, key, usedModNames)
 			xmlFile:setValue(key.."#eventActiveV6", CVTaddon.eventActiveV6)
 			xmlFile:setValue(key.."#eventActiveV7", CVTaddon.eventActiveV7)
 			xmlFile:setValue(key.."#eventActiveV8", CVTaddon.eventActiveV8)
-			-- xmlFile:setValue(key.."#eventActiveV9", CVTaddon.eventActiveV9)
+			xmlFile:setValue(key.."#eventActiveV9", CVTaddon.eventActiveV9)
 			xmlFile:setValue(key.."#eventActiveV10", CVTaddon.eventActiveV10)
 			xmlFile:setValue(key.."#vOne", spec.vOne)
 			xmlFile:setValue(key.."#vTwo", spec.vTwo)
 			xmlFile:setValue(key.."#vThree", spec.vThree)
 			xmlFile:setValue(key.."#vFour", spec.vFour)
 			xmlFile:setValue(key.."#vFive", spec.vFive)
+			xmlFile:setValue(key.."#autoDiffs", spec.autoDiffs)
 			xmlFile:setValue(key.."#lastDirection", spec.lastDirection)
 			xmlFile:setValue(key.."#PedalResolution", spec.PedalResolution)
 			-- xmlFile:setValue(key.."#rpmDmin", spec.rpmDmin)
@@ -434,9 +444,9 @@ function CVTaddon:VarioRpmDmax() -- RPM range max
 		spec.forDBL_rpmDmax = tostring(spec.rpmDmax)
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 		end				 
 	end -- g_client
 end -- rpmDmin
@@ -506,9 +516,9 @@ function CVTaddon:BrakeRamps() -- BREMSRAMPEN - Ab kmh X wird die Betriebsbremse
 		end
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 		end																																				  
 	end --g_client
 end -- BrakeRamps
@@ -582,9 +592,9 @@ function CVTaddon:AccRamps() -- BESCHLEUNIGUNGSRAMPEN - Motorbremswirkung wird k
 		
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 		end			 
 	end -- g_client
 end -- AccRamps
@@ -622,9 +632,9 @@ function CVTaddon:VarioRpmPlus() -- Handgas hoch
 		end
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 		end																																						  
 	end -- g_client
 	-- DBL convert
@@ -664,9 +674,9 @@ function CVTaddon:VarioRpmMinus() -- Handgas runter
 		end
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 		end	
 	end -- g_client
 	-- DBL convert
@@ -726,9 +736,9 @@ function CVTaddon:VarioOne() -- FAHRSTUFE 1 field
 		
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 		end		 
 	end -- g_client
 	-- DBL convert
@@ -750,7 +760,9 @@ function CVTaddon:VarioTwo() -- FAHRSTUFE 2 street
 		-- if spec.vOne == nil then
 			-- spec.vOne = 2
 		-- end
-
+		spec.autoDiffs = 0
+		self:vcaSetState("diffLockFront", false)
+		self:vcaSetState("diffLockBack", false)
 		if sbshDebugOn then
 			print("VarioTwo Taste gedrückt vOne: "..tostring(spec.vOne))
 			print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
@@ -790,9 +802,9 @@ function CVTaddon:VarioTwo() -- FAHRSTUFE 2 street
 		
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 		end		 
 	end
 	-- DBL convert
@@ -879,9 +891,9 @@ function CVTaddon:VarioN() -- neutral
 			end
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.autoDiffs, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 			end	
 		end
 	end
@@ -892,6 +904,47 @@ function CVTaddon:VarioN() -- neutral
 		spec.forDBL_neutral = tostring(0)
 	end
 end -- VarioN
+
+function CVTaddon:VarioADiffs() -- autoDiffs
+	local spec = self.spec_CVTaddon
+	if g_client ~= nil then
+		
+		-- local isEntered = self.getIsEntered ~= nil and self:getIsEntered()
+		
+		if sbshDebugOn then
+			-- print("VarioN Taste gedrückt vFour: "..spec.vFour)
+			-- print("VarioN : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+			-- print("VarioN : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
+		end
+		if self:getIsEntered() and self:getIsMotorStarted() then
+			if (spec.autoDiffs == 0) then
+				CVTaddon.eventActiveV9 = true
+				if sbshFlyDebugOn then
+					print("Auto Diffs inaktiv") -- debug
+				end
+			end
+			if (spec.autoDiffs == 1) then
+				CVTaddon.eventActiveV9 = true
+				if sbshFlyDebugOn then
+					print("Auto Diffs aktiv") -- debug
+				end
+			end
+			if spec.autoDiffs == 1 then
+				spec.autoDiffs = 0
+				self:vcaSetState("diffLockFront", false)
+				self:vcaSetState("diffLockBack", false)
+			else
+				spec.autoDiffs = 1
+			end
+			self:raiseDirtyFlags(spec.dirtyFlag) 
+			if g_server ~= nil then
+				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+			else
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+			end	
+		end
+	end
+end -- Automatic Diffs
 
 function CVTaddon:VarioPedalRes() -- Pedal Resolution TMS like
 	local spec = self.spec_CVTaddon
@@ -926,9 +979,9 @@ function CVTaddon:VarioPedalRes() -- Pedal Resolution TMS like
 			end
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
+				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax), nil, nil, self)
 			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax))
 			end		  
 		end
 	end
@@ -999,14 +1052,46 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				end;
 			end;
 			
-			-- disable VCA static enginebrake if vca is active - thanks glowin for this code
 			if self.spec_vca ~= nil and self.spec_motorized.motor.lowBrakeForceScale ~= nil then
-			  self.spec_motorized.motor.lowBrakeForceScale      = self.spec_vca.origLowBrakeForceScale
-			  self.spec_motorized.motor.lowBrakeForceSpeedLimit = self.spec_vca.origLowBrakeForceSpeedLimit
-			  self.spec_vca.origLowBrakeForceScale              = nil 
-			  self.spec_vca.origLowBrakeForceSpeedLimit         = nil 
+				if self.spec_vca.brakeForce ~= 1 or self.spec_vca.idleThrottle == true then
+					-- Check for wrong vca settings to use CVT addon
+					
+					-- g_currentMission:showBlinkingWarning(g_i18n:getText("txt_vcaInfo"), 1024)
+					if vcaInfoUnread then
+						g_gui:showInfoDialog({
+						titel = "titel",
+						text = g_i18n:getText("txt_vcaInfo", "vcaInfo"),
+						})
+						vcaInfoUnread = false
+					end
+				end
+				
+				-- enable & disable VCA AWD and difflocks automaticly by speed and steering angle
+					-- awd
+					if spec.vOne == 2 and spec.autoDiffs == 1 then
+						if self:getLastSpeed() > 19 then
+							self:vcaSetState("diffLockAWD", false)
+						elseif self:getLastSpeed() < 16 then
+							self:vcaSetState("diffLockAWD", true)
+						end
+						-- diff front
+						if self:vcaGetState("diffLockFront") == true and math.abs(self.rotatedTime) > 0.29 then
+							self:vcaSetState("diffLockFront", false)
+						elseif math.abs(self.rotatedTime) < 0.15 then
+							self:vcaSetState("diffLockFront", true)
+						end
+						-- diff rear
+						if self:vcaGetState("diffLockBack") == true and math.abs(self.rotatedTime) > 0.18 then
+							self:vcaSetState("diffLockBack", false)
+						elseif math.abs(self.rotatedTime) < 0.11 then
+							self:vcaSetState("diffLockBack", true)
+						end
+					end
+				-- print("CVTa: rotatedTime ".. tostring(self.rotatedTime))
 			end
 			
+			-- print("CVTa: availablePower: ".. tostring(self.spec_motorized.motor.availablePower))
+			-- print("CVTa: peakMotorPower: ".. tostring(self.spec_motorized.motor.peakMotorPower))
 			
 	-- ACCELERATION RAMPS - BESCHLEUNIGUNGSRAMPEN
 			if self:getIsMotorStarted() then
@@ -1239,6 +1324,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					if self.spec_motorized.motor.lastMotorRpm > self.spec_motorized.motor.minRpm + 160 then
 						if self.spec_motorized.motor.smoothedLoadPercentage < 0.3 then
 							-- Gaspedal and Variator
+							-- smooth = 1 + dt / 1400 for 60 fps range
 							spec.smoother = spec.smoother + dt;
 							if spec.smoother ~= nil and spec.smoother > 75 then
 								spec.smoother = 0;
@@ -1309,6 +1395,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 	
 	
 	-- HYDROSTAT  für evtl. Radlader und Holzernter    ToDo: need separate
+				local hydrostaticVehicles = isLoader or isWoodWorker or isFFF
 				if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM and self.spec_motorized.motor.maxForwardSpeedOrigin <= 6.68 and not isTractor and isWoodWorker then
 					spec.isHydroState = true
 					-- spec.HydrostatPedal = math.abs(self.spec_motorized.motor.lastAcceleratorPedal) -- nach oben verschoben z.719
@@ -1639,6 +1726,13 @@ function CVTaddon:onDraw(dt)
 			local Transparancy = 0.6
 			local size = 0.014 * g_gameSettings.uiScale
 			
+			-- vca diff locks
+			local VCAposX   = g_currentMission.inGameMenu.hud.speedMeter.gearBg.overlay.x
+			local VCAposY   = g_currentMission.inGameMenu.hud.speedMeter.gearBg.overlay.y
+			local VCAwidth  = g_currentMission.inGameMenu.hud.speedMeter.gearBg.overlay.width 
+			local VCAheight = g_currentMission.inGameMenu.hud.speedMeter.gearBg.overlay.height
+			local VCAl = g_currentMission.inGameMenu.hud.speedMeter.gearTextSize
+			
 			-- render
 			if spec.transparendSpd == nil then
 				spec.transparendSpd = 0.6
@@ -1650,7 +1744,7 @@ function CVTaddon:onDraw(dt)
 			elseif self:getLastSpeed() <= 20 or self:getLastSpeed() == nil then
 				spec.transparendSpdT = 1
 			end
-			setTextColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+			setTextColor(0, 0.95, 0, 0.8)
 			setTextAlignment(RenderText.ALIGN_LEFT)
 			setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
 			setTextBold(false)
@@ -1846,6 +1940,13 @@ function CVTaddon:onDraw(dt)
 							renderText(ptmsX+0.006, ptmsY-0.002, size, tmsSpeed)
 						end
 					end
+					-- VCA DiffLocks AutoDiffsAWD
+					if spec.autoDiffs == 1 then
+						renderText( 0.5 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.3 * VCAheight, VCAl + 0.005, "A" )
+						
+						-- renderText( 0.5 * ( posX + width + 1 ), posY + 0.5 * height, l, ">99%" )
+					end
+					
 					-- print("AN: ".. tostring(AN))
 					-- print("Number: ".. tostring(spec.NumberBlinkTimer))
 					-- print("Counter: ".. tostring(Counter))
@@ -1976,7 +2077,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------			
 -- ----------------   Server Sync   --------------------------------
 
-function CVTaddon.SyncClientServer(vehicle, vOne, vTwo, vThree, vFour, vFive, lastDirection, isVarioTM, isTMSpedal, PedalResolution, rpmDmax)
+function CVTaddon.SyncClientServer(vehicle, vOne, vTwo, vThree, vFour, vFive, autoDiffs, lastDirection, isVarioTM, isTMSpedal, PedalResolution, rpmDmax)
 	local spec = vehicle.spec_CVTaddon
 	
 	spec.vOne = vOne
@@ -1984,6 +2085,7 @@ function CVTaddon.SyncClientServer(vehicle, vOne, vTwo, vThree, vFour, vFive, la
 	spec.vThree = vThree
 	spec.vFour = vFour
 	spec.vFive = vFive
+	spec.autoDiffs = autoDiffs
 	spec.lastDirection = lastDirection
 	spec.isVarioTM = isVarioTM
 	spec.isTMSpedal = isTMSpedal
@@ -1997,6 +2099,7 @@ function CVTaddon:onReadStream(streamId, connection)
 	spec.vThree = streamReadInt32(streamId) -- state brakeRamp
 	spec.vFour = streamReadInt32(streamId) -- state neutral
 	spec.vFive = streamReadInt32(streamId) -- state Handgas
+	spec.autoDiffs = streamReadInt32(streamId) -- state autoDiffs n awd
 	spec.lastDirection = streamReadInt32(streamId) -- backup for neutral
 	spec.isVarioTM = streamReadBool(streamId) -- checks if cvt
 	spec.isTMSpedal = streamReadInt32(streamId) -- checks if pedalresolution is in use
@@ -2011,6 +2114,7 @@ function CVTaddon:onWriteStream(streamId, connection)
 	streamWriteInt32(streamId, spec.vThree)
 	streamWriteInt32(streamId, spec.vFour)
 	streamWriteInt32(streamId, spec.vFive)	
+	streamWriteInt32(streamId, spec.autoDiffs)	
 	streamWriteInt32(streamId, spec.lastDirection)	
 	streamWriteBool(streamId, spec.isVarioTM)
 	streamWriteInt32(streamId, spec.isTMSpedal)
@@ -2027,6 +2131,7 @@ function CVTaddon:onReadUpdateStream(streamId, timestamp, connection)
 			spec.vThree = streamReadInt32(streamId)
 			spec.vFour = streamReadInt32(streamId)
 			spec.vFive = streamReadInt32(streamId)
+			spec.autoDiffs = streamReadInt32(streamId)
 			spec.lastDirection = streamReadInt32(streamId)
 			spec.isVarioTM = streamReadBool(streamId)
 			spec.isTMSpedal = streamReadInt32(streamId)
@@ -2046,6 +2151,7 @@ function CVTaddon:onWriteUpdateStream(streamId, connection, dirtyMask)
 			streamWriteInt32(streamId, spec.vThree)
 			streamWriteInt32(streamId, spec.vFour)
 			streamWriteInt32(streamId, spec.vFive)
+			streamWriteInt32(streamId, spec.autoDiffs)
 			streamWriteInt32(streamId, spec.lastDirection)
 			streamWriteBool(streamId, spec.isVarioTM)
 			streamWriteInt32(streamId, spec.isTMSpedal)

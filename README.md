@@ -58,6 +58,7 @@ EV: 100%
 VCA: 99%
  - update vca to build 130 or higher
  - The vca:motor modification should be switched off
+ - then it's 100%
 
 realismAddon_Gearbox: 100%
  - no restrictions
@@ -145,6 +146,7 @@ EV: 100%
 VCA: 99%
 - Update VCA auf Build 130 oder höher
 - Die vca:Motormodifikation sollte ausgeschalten sein
+- dann sind es 100%
 
 realismAddon_Gearbox: 100%
 - keine Einschränkungen

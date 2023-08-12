@@ -1,6 +1,7 @@
 # FS22_CVT_Addon
 
-![CVTaddon_github](https://user-images.githubusercontent.com/4678246/214910194-35925097-47f7-4b22-ba34-4a7e1f6e73b5.png)
+![CVTa_github](https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/f3f66c42-fe3e-419c-b4f7-552e2ebe2ea6)
+
 
 https://discord.gg/mfergkwhDu 
 
@@ -50,6 +51,9 @@ Depending on the setting, this script completely recalculates the engine braking
  Digital hand throttle, without further ado, only has a decorative function - but together with
  eg RealismAddon_rpmAnimSpeeds is then used to control the hydraulic and PTO performance, among other things.
  Improper operation can lead to higher temperatures, pressures and even damage to the gearbox!
+ New feature (vca requied), automatic diff locks by steering angle and awd by speed in drivinglevel I. for fieldwork
+ with additional automatic preselection from DL II. to DL I.
+ (You have to bind one new key for this)
  My script "Reduced engine braking effect" is no longer required with this new edition, and should not be used together.
 
 EV: 100%
@@ -137,6 +141,13 @@ z.B. RealismAddon_rpmAnimSpeeds wird damit dann u.a. die Hydraulik- und PTO-Leis
 
 
 Unsachgemäße Bedienung kann zu höheren Temperaturen, Drücken und sogar Schäden im Getriebe führen!
+
+
+Neue Funktion (VCA erforderlich), automatische Differenzialsperre je nach Lenkwinkel und Allradantrieb je nach Geschwindigkeit in Fahrstufe I. für Feldarbeiten
+
+mit zusätzlicher automatischer Vorwahl von DL II.  zu DL I.
+
+(Sie müssen hierfür eine neue Taste belegen)
 
 Mein Skript "Verringerte Motorbremswirkung" wird mit dieser Neuauflage nicht mehr benötigt, bzw. sollte nicht zusammen genutzt werden.
 

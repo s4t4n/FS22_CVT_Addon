@@ -110,7 +110,7 @@ könnt ihr die selben Tasten für die Fahrstufen verwenden. Desweiteren gibt es 
 
 die mit einer Taste durchgeschaltet werden können. Hier werden das Anzugverhalten beim Beschleunigen und reduzieren der Fahrgeschwindigkeit beeinflusst.
 
-Sanft und mit Gefühlt oder volle Power und ruppig. Mit schweren Geräten oder Anhänger,
+Sanft und mit Gefühl oder volle Power und ruppig. Mit schweren Geräten oder Anhänger,
 
 kann es zu hohen Drücken im Planetengetriebe kommen und es kann Schaden nehmen! Hier sollte die Beschleunigungsrampe auf 3 oder weniger eingestellt werden.
 

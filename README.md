@@ -10,6 +10,7 @@ https://discord.gg/mfergkwhDu
 
 Known issues:
 - multiplayer* is in sync. but the driving feeling have to be readjust at rpm - I'm on it.
+- Neutral doesnt work correct in multiplayer, because of a bug(giants part), can't sync the lastDirection
 
 *A very big thanks goes to Glowin, for fixing the mp sync issue.
 

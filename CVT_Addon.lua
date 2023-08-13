@@ -10,22 +10,27 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.3.0.18";
-local modversion = "0.9.9.14"; -- moddesc
--- last update	10.08.23
+local scrversion = "0.3.0.20";
+local modversion = "0.9.9.17"; -- moddesc
+-- last update	11.08.23
 -- last change	-- disable VCA static enginebrake if vca is active
 				-- added vehicles as hydrostatic driveable
 				-- "FRONTLOADERVEHICLES" "WHEELLOADERVEHICLES" "WOODHARVESTING" "FORKLIFTS"
 				-- automaticly enable & disable awd and diffs c.o. speed and steerangle
+				-- lowered Abfrage nicht mehr funktional nach Patch - fixed for patch 1.12.0.0
 				
 -- known issue	Neutral does'n sync lastDirection mp
+-- shop configuration produced call stacks
 
 
 
 CVTaddon = {};
+-- #configPart
+-- CVTaddon.l10nEnv = "FS22_CVT_Addon";
 CVTaddon.modDirectory = g_currentModDirectory;
 source(CVTaddon.modDirectory.."events/SyncClientServerEvent.lua")
 -- source(g_currentModDirectory .. "CVT_Addon_HUD.lua")  -- need to sync 'spec' between CVT_Addon.lua and CVT_Addon_HUD.lua
+--															
 
 -- local sbshDebugOn = true;
 -- local changeFlag = false;
@@ -34,8 +39,61 @@ local vcaAWDon = false
 local vcaInfoUnread = true
 -- local sbshFlyDebugOn = true;
 
+-- #configPart
+-- function addCVTconfig(xmlFile, superfunc, baseXMLName, baseDir, customEnvironment, isMod, storeItem) -- thanks glowin to may use it from hlm
+    -- local configurations, defaultConfigurationIds = superfunc(xmlFile, baseXMLName, baseDir, customEnvironment, isMod, storeItem)
+	-- -- dbgprint("addCVTconfig : Kat: "..storeItem.categoryName.." / ".."Name: "..storeItem.xmlFilename, 2)
+
+	-- local category = storeItem.categoryName
+	-- if 
+		-- (	category == "TRACTORSS" 
+		-- or	category == "TRACTORSM"
+		-- or	category == "TRACTORSL"
+		-- or	category == "HARVESTERS"
+		-- or	category == "FORAGEHARVESTERS"
+		-- or	category == "BEETVEHICLES"
+		-- or	category == "POTATOVEHICLES"
+		-- or	category == "COTTONVEHICLES"
+		-- or	category == "SPRAYERVEHICLES"
+		-- or  category == "SLURRYVEHICLES"
+		-- or	category == "SUGARCANEVEHICLES"
+		-- or	category == "MOWERVEHICLES"
+		-- or	category == "MISCVEHICLES"
+		-- or	category == "GRAPEVEHICLES"
+		-- or 	category == "OLIVEVEHICLES"
+		
+		-- -- Ifkos etc.
+		-- or 	category == "LSFM"
+		
+		-- -- Hof Bergmann etc.
+		-- or category == "MINIAGRICULTUREEQUIPMENT"
+		-- or category == "FM_VEHICLES"
+		
+		-- or category == "FENDTPACKCATEGORY"
+		-- or category == "FD_CASEPACKCATEGORY"
+		-- )
+		
+		-- and	configurations ~= nil
+		
+		-- and xmlFile:hasProperty("vehicle.enterable")
+		-- and xmlFile:hasProperty("vehicle.motorized")
+		-- and xmlFile:hasProperty("vehicle.drivable")
+
+	-- then
+		-- configurations["CVTaddon"] = {
+        	-- {name = g_i18n.modEnvironments[CVTaddon.l10nEnv]:getText("text_CVT_notInstalled_short"), index = 1, isDefault = false,  isSelectable = true, price = 100, dailyUpkeep = 0, desc = g_i18n.modEnvironments[CVTaddon.l10nEnv]:getText("text_CVT_notInstalled")},
+        	-- {name = g_i18n.modEnvironments[CVTaddon.l10nEnv]:getText("text_CVT_installed_short"), index = 2, isDefault = true, isSelectable = true, price = 0, dailyUpkeep = 0, desc = g_i18n.modEnvironments[CVTaddon.l10nEnv]:getText("text_CVT_installed")},
+        	-- {name = g_i18n.modEnvironments[CVTaddon.l10nEnv]:getText("text_HST_installed_short"), index = 3, isDefault = false, isSelectable = true, price = 0, dailyUpkeep = 2, desc = g_i18n.modEnvironments[CVTaddon.l10nEnv]:getText("text_HST_installed")}
+        	-- {name = g_i18n.modEnvironments[CVTaddon.MOD_NAME]:getText("text_HST_installed_short"), index = 3, isDefault = false, isSelectable = true, price = 0, dailyUpkeep = 2, desc = g_i18n.modEnvironments[CVTaddon.MOD_NAME]:getText("text_HST_installed")}
+    	-- }
+    	-- -- dbgprint("addHLMconfig : Configuration CVTaddon added", 2)
+    	-- -- dbgprint_r(configurations["CVTaddon"], 4)
+	-- end
+	
+    -- return configurations, defaultConfigurationIds
+-- end
+
 function CVTaddon.prerequisitesPresent(specializations) 
-	-- return SpecializationUtil.hasSpecialization(WorkArea, specializations)
     return true
 end 
 
@@ -281,6 +339,12 @@ end  -- onLoad
 -----------------------------------------------------------------------------------------------
 function CVTaddon.initSpecialization()
 	local schemaSavegame = Vehicle.xmlSchemaSavegame
+	
+-- #configPart
+	-- if g_configurationManager.configurations["CVTaddon"] == nil then
+		-- g_configurationManager:addConfigurationType("CVTaddon", g_i18n.modEnvironments[CVTaddon.MOD_NAME]:getText("text_CVT_configuration"), nil, nil, nil, nil, ConfigurationUtil.SELECTOR_MULTIOPTION)
+	-- end
+	-- StoreItemUtil.getConfigurationsFromXML = Utils.overwrittenFunction(StoreItemUtil.getConfigurationsFromXML, addCVTconfig)
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV1")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV2")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV3")
@@ -306,10 +370,13 @@ function CVTaddon.initSpecialization()
 end -- initSpecialization
 
 function CVTaddon:onPostLoad(savegame)
-	
+	local spec = self.spec_CVTaddon
+	-- #configPart
+	-- spec.cvtexists = self.configurations["CVTaddon"] ~= nil and self.configurations["CVTaddon"] > 1
 	if g_client ~= nil then
 		if self.spec_motorized ~= nil then
-			local spec = self.spec_CVTaddon
+			-- spec.cvtexists = spec.cvtexists or (self.configurations["CVTaddon"] ~= nil and self.propertyState == Vehicle.PROPERTY_STATE_MISSION)
+			-- self.configurations["CVTaddon"] = spec.cvtexists and 3 or 2 or 1
 			if spec == nil then return end
 
 			if savegame ~= nil then
@@ -349,7 +416,8 @@ function CVTaddon:saveToXMLFile(xmlFile, key, usedModNames)
 	
 	if self.spec_motorized ~= nil then
 		local spec = self.spec_CVTaddon
-		
+		-- #configPart
+		-- spec.cvtexists = self.configurations["CVTaddon"] == 2
 		-- spec.actionsLength = table.getn(spec.actions)
 		if spec.isVarioTM then
 			xmlFile:setValue(key.."#eventActiveV1", CVTaddon.eventActiveV1)
@@ -998,19 +1066,19 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 	-- SpecializationUtil.raiseEvent(self, "onStartWorkAreaProcessing", dt, spec.workAreas)
 	local changeFlag = false
 	local motor = nil
-
+	local lowerfind = Vehicle:getIsLowered(defaultIsLowered)
+	
 	-- Anbaugeräte ermitteln und prüfen ob abgesenkt Front/Back
 	for attachedImplement = 1, #self.spec_attacherJoints.attachedImplements do
 		local object = self.spec_attacherJoints.attachedImplements[attachedImplement].object;
 		local object_specAttachable = object.spec_attachable
-
 		if object_specAttachable.attacherVehicle ~= nil then
 			local attacherJointVehicleSpec = object_specAttachable.attacherVehicle.spec_attacherJoints;
 			local implementIndex = object_specAttachable.attacherVehicle:getImplementIndexByObject(object);
 			local implement = attacherJointVehicleSpec.attachedImplements[implementIndex];
 			local jointDescIndex = implement.jointDescIndex;
 			local jointDesc = attacherJointVehicleSpec.attacherJoints[jointDescIndex];
-
+			
 			if jointDesc.bottomArm ~= nil then
 				if jointDesc.bottomArm.zScale == 1 then
 					moveDownFront = object:getIsImplementChainLowered();
@@ -1203,6 +1271,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				if spec.vFour == 0 then
 					Nonce = 1
 					self.spec_motorized.motor.currentDirection = 0
+					self.spec_motorized.motorFan.enabled = true
 					-- self.spec_motorized.motor.minForwardGearRatio = 0
 					-- self.spec_motorized.motor.maxForwardGearRatio = 0
 					-- self.spec_motorized.motor.minBackwardGearRatio = 0
@@ -1304,7 +1373,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					self.spec_motorized.motor.maxForwardSpeed = math.min(math.max(self.spec_motorized.motor.maxForwardSpeedOrigin / 2.1, 4.49), 6.94)
 					self.spec_motorized.motor.maxBackwardSpeed = math.min(math.max(self.spec_motorized.motor.maxForwardSpeedOrigin / 1.4, 3.21), 6.36)
 					-- g_currentMission:addExtraPrintText(g_i18n:getText("txt_VarioOne")) -- #l10n
-					self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.81 + (self.spec_motorized.motor.rawLoadPercentage*9)
+					self.spec_motorized.motor.gearRatio = math.max(self.spec_motorized.motor.gearRatio, 100) * 1.81 + (self.spec_motorized.motor.rawLoadPercentage*9)
 					self.spec_motorized.motor.minForwardGearRatio = self.spec_motorized.motor.minForwardGearRatioOrigin * 1.6
 					self.spec_motorized.motor.maxBackwardGearRatio = self.spec_motorized.motor.maxForwardGearRatioOrigin + 1
 					self.spec_motorized.motor.minBackwardGearRatio = self.spec_motorized.motor.minForwardGearRatioOrigin * 2
@@ -1379,21 +1448,58 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						end
 
 						-- Wenn ein Anbaugerät zu schwere Last erzeugt, schafft es die 4. Beschleunigungsrampe nicht oder nimmt Schaden
-						if self.spec_motorized.motor.smoothedLoadPercentage > 0.96 and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)) and spec.vTwo == 1 and spec.impIsLowered == true then
+						if self.spec_motorized.motor.smoothedLoadPercentage > 0.96 and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)/1.83) and spec.vTwo == 1 and spec.impIsLowered == true then
 							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.95), self.spec_motorized.motor.lastPtoRpm*0.2)
 							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 3.1 + (self.spec_motorized.motor.rawLoadPercentage*9)
 							self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 2
 							self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 2
+							self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm - 50
+							self.spec_motorized.motorTemperature.heatingPerMS = 0.015 * self.spec_motorized.motor.rawLoadPercentage
+							self:addDamageAmount((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4)
+							-- print("CVTa: > 96 % - Lowered, vTwo=1")
 							-- Getriebeschaden erzeugen
-							if self.spec_motorized.motor.rawLoadPercentage > 0.98 then
+							if self.spec_motorized.motor.smoothedLoadPercentage > 0.98 then
 								g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 2048)
 								self:addDamageAmount(self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 ) )
+								self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm -100
+								self.spec_motorized.motorTemperature.heatingPerMS = 0.0040 * self.spec_motorized.motor.rawLoadPercentage
+								-- print("CVTa: > 98 %")
+								if self.spec_motorized.motor.smoothedLoadPercentage > 0.99 then
+									self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 3
+									self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 3
+									self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.5
+									self.spec_motorized.motorTemperature.heatingPerMS = 0.0120 * self.spec_motorized.motor.rawLoadPercentage
+									self:addDamageAmount((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.7)
+									-- print("CVTa: > 99 %")
+								end
+							end
+						end
+						-- Wenn ein Anbaugerät zu schwere Last erzeugt, schafft es die 3. Beschleunigungsrampe nicht oder nimmt Schaden
+						if self.spec_motorized.motor.smoothedLoadPercentage > 0.96 and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)/1.18) and spec.vTwo == 4 and spec.impIsLowered == true then
+							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.95), self.spec_motorized.motor.lastPtoRpm*0.2)
+							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 3.1 + (self.spec_motorized.motor.rawLoadPercentage*9)
+							self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+							self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+							self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm - 50
+							-- print("CVTa: > 96 % - Lowered, vTwo=1")
+							-- Getriebeschaden erzeugen
+							if self.spec_motorized.motor.smoothedLoadPercentage > 0.98 then
+								g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 2048)
+								self:addDamageAmount(self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 ) )
+								self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm -100
+								self.spec_motorized.motorTemperature.heatingPerMS = 0.0040 * self.spec_motorized.motor.rawLoadPercentage
+								-- print("CVTa: > 98 %")
+								if self.spec_motorized.motor.smoothedLoadPercentage > 0.99 then
+									self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 2
+									self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 2
+									self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.6
+									-- print("CVTa: > 99 %")
+								end
 							end
 						end
 					end
 				end
-	
-	
+
 	-- HYDROSTAT  für evtl. Radlader und Holzernter    ToDo: need separate
 				local hydrostaticVehicles = isLoader or isWoodWorker or isFFF
 				if spec.vOne ~= 1 and spec.vOne ~= nil and spec.isVarioTM and self.spec_motorized.motor.maxForwardSpeedOrigin <= 6.68 and not isTractor and isWoodWorker then
@@ -1512,7 +1618,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.999), self.spec_motorized.motor.lastPtoRpm*0.7)
 							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 1.1 + (self.spec_motorized.motor.rawLoadPercentage*9)
 							self.spec_motorized.motor.lastPtoRpm = self.spec_motorized.motor.lastPtoRpm * 0.9
-							self.spec_motorized.motorTemperature.heatingPerMS = 0.0030 * self.spec_motorized.motor.rawLoadPercentage
+							self.spec_motorized.motorTemperature.heatingPerMS = 0.0020 * self.spec_motorized.motor.rawLoadPercentage
 							-- ändert bei sehr hoher Last die Übersetzung
 						end
 						
@@ -1520,27 +1626,32 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						if self.spec_motorized.motor.smoothedLoadPercentage > 0.93 and spec.impIsLowered == true then
 							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.98), self.spec_motorized.motor.lastPtoRpm*0.4)
 							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 3.1 + (self.spec_motorized.motor.rawLoadPercentage*9)
-							self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+							self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 0.5
 							self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
-							self.spec_motorized.motorTemperature.heatingPerMS = 0.0050 * self.spec_motorized.motor.rawLoadPercentage
+							self.spec_motorized.motorTemperature.heatingPerMS = 0.0030 * self.spec_motorized.motor.rawLoadPercentage
+							self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm -10
 						end
 						-- Wenn ein Anbaugerät zu schwere Last erzeugt, schafft es die 2. Fahrstufe nicht oder nimmt Schaden
 						if self.spec_motorized.motor.smoothedLoadPercentage > 0.96 and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)) and spec.vTwo == 1 then
 							self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.95), self.spec_motorized.motor.lastPtoRpm*0.8)
 							self.spec_motorized.motor.lastPtoRpm = self.spec_motorized.motor.lastPtoRpm * 0.6
 							self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 3.1 + (self.spec_motorized.motor.rawLoadPercentage*9)
-							self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+							self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 0.5
 							self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
-							self.spec_motorized.motorTemperature.heatingPerMS = 0.0060 * self.spec_motorized.motor.rawLoadPercentage
+							self.spec_motorized.motorTemperature.heatingPerMS = 0.0040 * self.spec_motorized.motor.rawLoadPercentage
+							self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm -10
 							local massDiff = (self:getTotalMass() - self:getTotalMass(true)) / 100
 							
 							-- Getriebeschaden erzeugen
-							if self.spec_motorized.motor.rawLoadPercentage > 0.98 then
+							if self.spec_motorized.motor.smoothedLoadPercentage > 0.99 then
 								g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 2048)
 								if spec.impIsLowered == false then
 									self.spec_motorized.motorTemperature.heatingPerMS = 0.0080 * self.spec_motorized.motor.rawLoadPercentage
 									if self.spec_motorized.motor.lastMotorRpm < self.spec_motorized.motor.minRpm + 150 then
 										self:addDamageAmount((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4)
+										self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+										self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1.12
 									end
 								end
 								-- print("addDamage: "  .. (self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4)
@@ -1548,6 +1659,9 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								if spec.impIsLowered == true then
 									self.spec_motorized.motorTemperature.heatingPerMS = 0.0150 * self.spec_motorized.motor.rawLoadPercentage
 									self:addDamageAmount((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.7)
+									self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+									self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
+									self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1.5
 									-- print("addDamage lowered: "  .. self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 ))
 								end
 							end
@@ -1942,9 +2056,9 @@ function CVTaddon:onDraw(dt)
 					end
 					-- VCA DiffLocks AutoDiffsAWD
 					if spec.autoDiffs == 1 then
-						renderText( 0.5 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.3 * VCAheight, VCAl + 0.005, "A" )
-						
-						-- renderText( 0.5 * ( posX + width + 1 ), posY + 0.5 * height, l, ">99%" )
+						if self.spec_vca.drawHud then
+							renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
+						end
 					end
 					
 					-- print("AN: ".. tostring(AN))

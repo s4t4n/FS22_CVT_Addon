@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="75">
+<modDesc descVersion="76">
     <author>SbSh</author>
-	<version>0.9.9.14</version>
+	<version>0.9.9.17</version>
 	<title>
         <en>CVT Addon</en>
         <de>CVT Addon</de>
@@ -126,105 +126,8 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
         <sourceFile filename="registerCVT_Addon.lua" />
     </extraSourceFiles>
 	
-	<l10n>
-		<text name="txt_VarioOne">
-			<!-- <de><![CDATA[D  I.]]></de> <en><![CDATA[D  I.]]></en> <fr><![CDATA[D  I.]]></fr> -->
-			<de><![CDATA[ .  ]]></de> <en><![CDATA[ .  ]]></en> <fr><![CDATA[ .  ]]></fr>
-		</text>
-		<text name="txt_VarioTwo">
-            <de><![CDATA[    .]]></de> <en><![CDATA[    .]]></en> <fr><![CDATA[    .]]></fr>
-        </text>
-		<text name="txt_VarioN">
-            <de><![CDATA[  N]]></de> <en><![CDATA[  N]]></en> <fr><![CDATA[  N]]></fr>
-        </text>
-		<text name="txt_VarioR">
-            <de>↓</de> <en>↓</en> <fr>↓</fr>
-        </text>
-		<text name="txt_VarioD">
-            <de>↑</de> <en>↑</en> <fr>↑</fr>
-        </text>
-		<text name="txt_VarioRpmPlus">
-            <de>UPM +</de> <en>rpm +</en> <fr>rpm +</fr>
-        </text>
-		<text name="txt_VarioRpmMinus">
-            <de>UPM -</de> <en>rpm -</en> <fr>rpm -</fr>
-        </text>
-		<text name="input_SETVARIOONE">
-			<de>CVTa: Fahrbereich 1</de> <en>CVTa: Driving level 1</en> <fr>CVTa: Niveau de levage: 1</fr>
-		</text>
-		<text name="input_SETVARIOTWO">
-            <de>CVTa: Fahrbereich 2</de> <en>CVTa: Driving level 2</en> <fr>CVTa: Niveau de levage: 2</fr>
-        </text>
-		<text name="input_SETVARION">
-            <de>CVTa: Neutral</de> <en>CVTa: neutral</en> <fr>CVTa: neutral</fr>
-        </text>
-		<text name="input_SETVARIOADIFFS">
-            <de>CVTa: AWD und DIFF Automatik</de> <en>CVTa: AWD and diff automatic</en>
-        </text>
-		<text name="input_SETVARIORPMP">
-            <de>CVTa: Motordrehzahl erhöhen</de> <en>CVTa: Increase engine rpm</en> <fr>CVTa: rpm +</fr>
-        </text>
-		<text name="input_SETVARIORPMM">
-            <de>CVTa: Motordrehzahl verringern</de> <en>CVTa: Decrease engine rpm</en> <fr>CVTa: rpm -</fr>
-        </text>
-		<!-- <text name="input_SETVARIORPM_AXIS"> -->
-            <!-- <de>CVTa: not in use for now</de> <en>CVTa: not in use for now</en> <fr>CVTa: rpm +-</fr> -->
-        <!-- </text> -->
-		<text name="input_SETPEDALTMS">
-            <de>CVTa: TMS Pedal Modus</de> <en>CVTa: TMS Pedalmode</en> <fr>CVTa: TMS Pedalmode</fr>
-        </text>
-		<text name="input_LMBF_TOGGLE_RAMP">
-			<de>CVTa: Beschleunigungsrampe wechseln</de> <en>CVTa: Toggle Accelerationramp</en> <fr>CVTa: Changer la rampe d'accélération</fr>
-		</text>
-		<text name="input_LMBF_TOGGLE_BRAMP">
-			<de>CVTa: Bremsrampe ändern</de> <en>CVTa: Change brakeramp</en> <fr>CVTa: Changer la rampe de frein</fr>
-		</text>
-		<text name="txt_accRamp1">
-			<de><![CDATA[AR 1]]></de> <en>AR 1</en> <fr>AR 1</fr>
-		</text>
-		<text name="txt_accRamp2">
-			<de><![CDATA[AR 2]]></de> <en>AR 2</en> <fr>AR 2</fr>
-		</text>
-		<text name="txt_accRamp3">
-			<de><![CDATA[AR 3]]></de> <en>AR 3</en> <fr>AR 3</fr>
-		</text>
-		<text name="txt_accRamp4">
-			<de><![CDATA[AR 4]]></de> <en>AR 4</en> <fr>AR 4</fr>
-		</text>
-		
-		<text name="txt_bRamp1">
-			<de><![CDATA[BR aus]]></de> <en>BR off</en> <fr>BR dés</fr>
-		</text>
-		<text name="txt_bRamp2">
-			<de>BR  4</de> <en>BR  4</en> <fr>BR  4</fr>
-		</text>
-		<text name="txt_bRamp3">
-			<de>BR  8</de> <en>BR  8</en> <fr>BR  8</fr>
-		</text>
-		<text name="txt_bRamp4">
-			<de>BR 15</de> <en>BR 15</en> <fr>BR 15</fr>
-		</text>
-		<text name="txt_bRamp5">
-			<de>BR 17</de> <en>BR 17</en> <fr>BR 17</fr>
-		</text>
-		<text name="txt_vcaInfo">
-			<de>Bitte stelle die Niedrige Bremskraft in VCA auf 100% und deaktiviere ggf. die Motormodifikationen</de> <en>Please set the Low Brake Force in VCA to 100% and ph. disable the Modify Motor RPM</en>
-		</text>
-		<text name="txt_attCVTpressure">
-			<de>Achtung, Zu hoher Druck im Triebsatz. Temp. beobachten.</de> <en>Caution, too much pressure in the powertrain. Watch temp.</en> <fr>Attention, pression trop élevée dans la chaîne cinématique. Leok temp.</fr>
-		</text>
-		<text name="txt_warn_tofastDn">
-			<de>Zu schnell! Fahrstufenwechsel maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</de>
-			<en>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</en>
-			<fr>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</fr>
-		</text>
-		<text name="txt_warn_tofastUp">
-			<de>Vorsicht! Fahrstufen maximal mit 10 km/h wechseln, am besten kurz stehen bleiben.</de>
-			<en>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</en>
-			<fr>Zu schnell! Fahrstufen maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden.</fr>
-		</text>
-		
-	</l10n>
+	<l10n filenamePrefix="l10n/modDesc_l10n"/>
+
 	<actions>
         <action name="LMBF_TOGGLE_RAMP" />
 		<action name="LMBF_TOGGLE_BRAMP" />
@@ -234,7 +137,7 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
         <action name="SETVARIOADIFFS" />
         <action name="SETVARIORPMP" />
         <action name="SETVARIORPMM" />
-        <!-- <action name="SETVARIORPM_AXIS" /> -->
+        <action name="SETVARIORPMDMAX" />
         <action name="SETPEDALTMS" />
     </actions>
 	<inputBinding>
@@ -262,9 +165,9 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
 		<actionBinding action="SETVARIORPMM">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
-		<!-- <actionBinding action="SETVARIORPM_AXIS"> -->
-			<!-- <binding device="KB_MOUSE_DEFAULT" input="" /> -->
-		<!-- </actionBinding> -->
+		<actionBinding action="SETVARIORPMDMAX">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
 		<actionBinding action="SETPEDALTMS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>

@@ -88,7 +88,7 @@ Dieses Skript berechnet je nach Einstellung die Motorbremswirkung völlig neu
 
 und fügt diverse Optionen für Vario und CVT Getriebe hinzu.
 
-Die Berechnungen sind von verschiedenen Faktoren anhängig - z.B.:
+Die Berechnungen sind von verschiedenen Faktoren abhängig - z.B.:
 - Geschwindigkeiten
 - Gewicht & Gewicht angangener Geräter und Anhänger und deren Füllung
 - Untergrund, Reifen, Reibung

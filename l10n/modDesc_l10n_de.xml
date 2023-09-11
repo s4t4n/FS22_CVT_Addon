@@ -10,9 +10,15 @@
 		<text name="txt_VarioRpmPlus" 				text="UPM +"/>
 		<text name="txt_VarioRpmMinus" 				text="UPM -"/>
 
+		<text name="text_CVT_title" 				text="CVTaddon Variante"/>
 		<text name="text_CVT_notInstalled_short" 	text="Nein"/>
-		<text name="text_CVT_installed_short" 		text="CVT"/>
-		<text name="text_HST_installed_short" 		text="HST"/>
+		<text name="text_CVTclas_installed_short" 	text="CVT klassisch"/>
+		<text name="text_CVTclasB1_installed_short" text="CVT klassisch + IPM15"/>
+		<text name="text_CVTclasB2_installed_short" text="CVT klassisch + IPM27"/>
+		<text name="text_CVTmod_installed_short" 	text="CVT modern"/>
+		<text name="text_CVTmodB1_installed_short" 	text="CVT modern + IPM15"/>
+		<text name="text_CVTmodB2_installed_short" 	text="CVT modern + IPM27"/>
+		<text name="text_HST_installed_short" 		text="HST Hydrostat"/>
         
 		<text name="input_SETVARIOONE" 				text="CVTa: Fahrbereich 1"/>
 		<text name="input_SETVARIOTWO" 				text="CVTa: Fahrbereich 2"/>
@@ -20,7 +26,7 @@
 		<text name="input_SETVARIOADIFFS" 			text="CVTa: AWD und DIFF Automatik"/>
 		<text name="input_SETVARIORPMP" 			text="CVTa: Motordrehzahl erhöhen"/>
 		<text name="input_SETVARIORPMM" 			text="CVTa: Motordrehzahl verringern"/>
-		<text name="input_SETVARIORPMDMAX" 			text="CVTa: RPM Begrenzng"/>
+		<text name="input_SETVARIORPMDMAX" 			text="CVTa: RPM Begrenzng (experiment)"/>
 		<text name="input_SETPEDALTMS" 				text="CVTa: TMS Pedal Modus"/>
 		<text name="input_LMBF_TOGGLE_RAMP" 		text="CVTa: Beschleunigungsrampe wechseln"/>
 		<text name="input_LMBF_TOGGLE_BRAMP" 		text="CVTa: Bremsrampe ändern"/>

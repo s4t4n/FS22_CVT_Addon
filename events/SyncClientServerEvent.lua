@@ -19,7 +19,7 @@ end
 ---Create new instance of event
 -- @param table vehicle vehicle
 -- @param integer state state
-function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, autoDiffs, lastDirection, isVarioTM, isTMSpedal, PedalResolution, rpmDmax)
+function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, autoDiffs, lastDirection, isVarioTM, isTMSpedal, PedalResolution, rpmDmax, rpmrange, CVTconfig, mcRPMvar)
     local self = SyncClientServerEvent.emptyNew()
     self.vOne = vOne
     self.vTwo = vTwo
@@ -33,6 +33,9 @@ function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, au
     self.isTMSpedal = isTMSpedal
     self.PedalResolution = PedalResolution
     self.rpmDmax = rpmDmax
+    self.rpmrange = rpmrange
+    self.CVTconfig = CVTconfig
+    self.mcRPMvar = mcRPMvar
     self.vehicle = vehicle
     return self
 end
@@ -56,6 +59,9 @@ function SyncClientServerEvent:readStream(streamId, connection)
     self.isTMSpedal = streamReadInt32(streamId)
     self.PedalResolution = streamReadInt32(streamId)
     self.rpmDmax = streamReadInt32(streamId)
+    self.rpmrange = streamReadInt32(streamId)
+    self.CVTconfig = streamReadInt32(streamId)
+    self.mcRPMvar = streamReadFloat32(streamId)
     self:run(connection)
 end
 
@@ -65,8 +71,9 @@ end
 -- @param integer connection connection
 function SyncClientServerEvent:writeStream(streamId, connection)
     NetworkUtil.writeNodeObject(streamId, self.vehicle)
-    streamWriteInt32(streamId, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax)
+    streamWriteInt32(streamId, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig)
     streamWriteBool(streamId, self.isVarioTM)
+    streamWriteFloat32(streamId, self.mcRPMvar)
 	-- streamWriteUIntN(streamId, self.vOne, 1)  -- what does it do?
 end
 
@@ -75,10 +82,10 @@ end
 -- @param integer connection connection
 function SyncClientServerEvent:run(connection)
     if self.vehicle ~= nil and self.vehicle:getIsSynchronized() then
-        CVTaddon.SyncClientServer(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax)
+        CVTaddon.SyncClientServer(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig, self.mcRPMvar)
 		
 		if not connection:getIsServer() then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, selfautoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax), nil, connection, self.vehicle)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, selfautoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig, self.mcRPMvar), nil, connection, self.vehicle)
 		end
     end
 end

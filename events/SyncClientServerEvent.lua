@@ -73,7 +73,9 @@ function SyncClientServerEvent:writeStream(streamId, connection)
     NetworkUtil.writeNodeObject(streamId, self.vehicle)
     streamWriteInt32(streamId, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig)
     streamWriteBool(streamId, self.isVarioTM)
-    streamWriteFloat32(streamId, self.mcRPMvar)
+	-- if self.mcRPMvar ~= nil then
+	streamWriteFloat32(streamId, self.mcRPMvar)
+	-- end
 	-- streamWriteUIntN(streamId, self.vOne, 1)  -- what does it do?
 end
 

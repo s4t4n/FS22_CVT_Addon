@@ -473,6 +473,7 @@ end
 function CVTaddon:onPostLoad(savegame)
 	local spec = self.spec_CVTaddon
 	local configurationId = Utils.getNoNil(self.configurations["CVTaddon"], 2)
+	spec.mcRPMvar = 1
 	if g_client ~= nil then
 		if self.spec_motorized ~= nil then
 			if spec == nil then return end
@@ -952,57 +953,60 @@ function CVTaddon:VarioOne() -- FAHRSTUFE 1 field
 	spec.Counter = 0
 	-- spec.AsLongBlink = g_currentMission.environment.dayTime
 	-- spec.NumberBlinkTimer = g_currentMission.environment.dayTime
-	if g_client ~= nil then
-		if sbshDebugOn then
-			print("VarioOne Taste gedrückt vOne: ".. tostring(spec.vOne))
-			print("Entered: " .. tostring(self:getIsEntered()))
-			print("Started: " .. tostring(self:getIsMotorStarted()))
-			print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
-		end
-		if self.CVTaddon == nil then 
-			return
-		end
-		if not CVTaddon.eventActiveV1 then
-			return
-		end
-
-		if self:getIsEntered() and self:getIsMotorStarted() then
-			if self:getLastSpeed() >= 11 and spec.vFour == 1 then
-				g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastDn"), 3072)
-				self:addDamageAmount(math.min(0.0002*(self:getOperatingTime()/1000000)+(self:getLastSpeed()/100), 1))
-				-- CVTaddon.eventActiveV1 = true
-				-- CVTaddon.eventActiveV2 = false
+	-- not able to use when modern config
+	if spec.CVTconfig ~= 4 or spec.CVTconfig ~= 5 or spec.CVTconfig ~= 6 then
+		if g_client ~= nil then
+			if sbshDebugOn then
+				print("VarioOne Taste gedrückt vOne: ".. tostring(spec.vOne))
+				print("Entered: " .. tostring(self:getIsEntered()))
+				print("Started: " .. tostring(self:getIsMotorStarted()))
+				print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+			end
+			if self.CVTaddon == nil then 
+				return
+			end
+			if not CVTaddon.eventActiveV1 then
+				return
 			end
 
-			if spec.vOne == 1 then
-				if self:getLastSpeed() <=10 then
-					if self:getLastSpeed() > 1 and spec.vFour == 1 then
-						self:addDamageAmount(math.min(0.00008*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000)+(self:getLastSpeed()/100), 1))
-					end
-					spec.vOne = 2
-					local SpeedScale = spec.PedalResolution
-					CVTaddon.eventActiveV1 = true
-					CVTaddon.eventActiveV2 = true
-					if sbshDebugOn then
-						print("VarioOne vOne: ".. tostring(spec.vOne))
-						print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+			if self:getIsEntered() and self:getIsMotorStarted() then
+				if self:getLastSpeed() >= 11 and spec.vFour == 1 then
+					g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastDn"), 3072)
+					self:addDamageAmount(math.min(0.0002*(self:getOperatingTime()/1000000)+(self:getLastSpeed()/100), 1))
+					-- CVTaddon.eventActiveV1 = true
+					-- CVTaddon.eventActiveV2 = false
+				end
+
+				if spec.vOne == 1 then
+					if self:getLastSpeed() <=10 then
+						if self:getLastSpeed() > 1 and spec.vFour == 1 then
+							self:addDamageAmount(math.min(0.00008*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000)+(self:getLastSpeed()/100), 1))
+						end
+						spec.vOne = 2
+						local SpeedScale = spec.PedalResolution
+						CVTaddon.eventActiveV1 = true
+						CVTaddon.eventActiveV2 = true
+						if sbshDebugOn then
+							print("VarioOne vOne: ".. tostring(spec.vOne))
+							print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+						end
 					end
 				end
 			end
-		end
-		
-		if sbshDebugOn then
-			print("VarioOne Taste losgelassen vOne: ".. tostring(spec.vOne))
-			print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
-		end
-		
-		self:raiseDirtyFlags(spec.dirtyFlag) 
-		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar), nil, nil, self)
-		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar))
-		end		 
-	end -- g_client
+			
+			if sbshDebugOn then
+				print("VarioOne Taste losgelassen vOne: ".. tostring(spec.vOne))
+				print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+			end
+			
+			self:raiseDirtyFlags(spec.dirtyFlag) 
+			if g_server ~= nil then
+				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar), nil, nil, self)
+			else
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar))
+			end		 
+		end -- g_client
+	end
 	-- DBL convert
 	if spec.vOne == 1 then
 		spec.forDBL_drivinglevel = tostring(2)
@@ -1017,59 +1021,62 @@ function CVTaddon:VarioTwo() -- FAHRSTUFE 2 street
 	spec.BlinkTimer = -1
 	spec.Counter = 0
 	-- spec.AsLongBlink = g_currentMission.environment.dayTime
-	if g_client ~= nil then
-		-- local spec = self.spec_CVTaddon
-		-- if spec.vOne == nil then
-			-- spec.vOne = 2
-		-- end
-		spec.autoDiffs = 0
-		if self.spec_vca ~= nil then
-			self:vcaSetState("diffLockFront", false)
-			self:vcaSetState("diffLockBack", false)
-		end
-		if sbshDebugOn then
-			print("VarioTwo Taste gedrückt vOne: "..tostring(spec.vOne))
-			print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
-			print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
-		end
-		if self.CVTaddon == nil then 
-			return
-		end
-		if not CVTaddon.eventActiveV2 then
-			return
-		end
-		if self:getIsEntered() and self:getIsMotorStarted() then
-			if self:getLastSpeed() > 10 then
-				g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastUp"), 3072)
-				self:addDamageAmount(math.min(0.00015*(self:getOperatingTime()/1000000), 1)) -- 3.6
+	-- not able to use when modern config
+	if spec.CVTconfig ~= 4 or spec.CVTconfig ~= 5 or spec.CVTconfig ~= 6 then
+		if g_client ~= nil then
+			-- local spec = self.spec_CVTaddon
+			-- if spec.vOne == nil then
+				-- spec.vOne = 2
+			-- end
+			spec.autoDiffs = 0
+			if self.spec_vca ~= nil then
+				self:vcaSetState("diffLockFront", false)
+				self:vcaSetState("diffLockBack", false)
 			end
-			if spec.vOne == 2 then
-				spec.vOne = 1
-				local SpeedScale = spec.PedalResolution
-				self.spec_motorized.motor.maxForwardSpeed = self.spec_motorized.motor.maxForwardSpeedOrigin
-				self.spec_motorized.motor.maxBackwardSpeed = self.spec_motorized.motor.maxBackwardSpeedOrigin
+			if sbshDebugOn then
+				print("VarioTwo Taste gedrückt vOne: "..tostring(spec.vOne))
+				print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+				print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
+			end
+			if self.CVTaddon == nil then 
+				return
+			end
+			if not CVTaddon.eventActiveV2 then
+				return
+			end
+			if self:getIsEntered() and self:getIsMotorStarted() then
+				if self:getLastSpeed() > 10 then
+					g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastUp"), 3072)
+					self:addDamageAmount(math.min(0.00015*(self:getOperatingTime()/1000000), 1)) -- 3.6
+				end
+				if spec.vOne == 2 then
+					spec.vOne = 1
+					local SpeedScale = spec.PedalResolution
+					self.spec_motorized.motor.maxForwardSpeed = self.spec_motorized.motor.maxForwardSpeedOrigin
+					self.spec_motorized.motor.maxBackwardSpeed = self.spec_motorized.motor.maxBackwardSpeedOrigin
 
-				CVTaddon.eventActiveV1 = true
-				CVTaddon.eventActiveV2 = true
-				if sbshDebugOn then
-					print("VarioTwo vOne: "..tostring(spec.vOne))
-					print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
-					print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
+					CVTaddon.eventActiveV1 = true
+					CVTaddon.eventActiveV2 = true
+					if sbshDebugOn then
+						print("VarioTwo vOne: "..tostring(spec.vOne))
+						print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+						print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
+					end
 				end
 			end
+			if sbshDebugOn then
+				print("VarioTwo Taste losgelassen vOne: "..tostring(spec.vOne))
+				print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+				print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxFwSpd))
+			end
+			
+			self:raiseDirtyFlags(spec.dirtyFlag) 
+			if g_server ~= nil then
+				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar), nil, nil, self)
+			else
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar))
+			end		 
 		end
-		if sbshDebugOn then
-			print("VarioTwo Taste losgelassen vOne: "..tostring(spec.vOne))
-			print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
-			print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxFwSpd))
-		end
-		
-		self:raiseDirtyFlags(spec.dirtyFlag) 
-		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar), nil, nil, self)
-		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig, spec.mcRPMvar))
-		end		 
 	end
 	-- DBL convert
 	if spec.vOne == 1 then
@@ -1115,8 +1122,12 @@ function CVTaddon:VarioN() -- neutral
 				self.spec_motorized.motor.maxBackwardGearRatio = self.spec_motorized.motor.minBackwardGearRatioOrigin
 				self.spec_motorized.motor.maxBackwardSpeed = self.spec_motorized.motor.maxBackwardSpeedOrigin
 				self.spec_motorized.motor.maxForwardSpeed = self.spec_motorized.motor.maxForwardSpeedOrigin
-				self.spec_motorized.motor.manualClutchValue = 0
-				
+				-- self.spec_motorized.motor.manualClutchValue = 0
+				if g_server and g_client and not g_currentMission.connectedToDedicatedServer then
+					self.spec_motorized.motor.currentDirection = spec.lastDirection -- again to push it
+				else
+					self.spec_motorized.motor.currentDirection = 1
+				end
 				
 				-- print("currDir0: "..self.spec_motorized.motor.currentDirection)
 				-- print("lastDir0: "..spec.lastDirection)
@@ -1137,9 +1148,9 @@ function CVTaddon:VarioN() -- neutral
 					self.spec_motorized.motor.maxForwardGearRatio = 0
 					self.spec_motorized.motor.minBackwardGearRatio = 0
 					self.spec_motorized.motor.maxBackwardGearRatio = 0
-					self.spec_motorized.motor.maxBackwardSpeed = 0
-					self.spec_motorized.motor.maxForwardSpeed = 0
-					self.spec_motorized.motor.manualClutchValue = 1
+					self.spec_motorized.motor.maxBackwardSpeed = 0.1
+					self.spec_motorized.motor.maxForwardSpeed = 0.1
+					-- self.spec_motorized.motor.manualClutchValue = 1
 					-- self.spec_motorized.motor.currentDirection = spec.lastDirection
 					if sbshFlyDebugOn then
 						print("Zweiter cD")
@@ -1302,14 +1313,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 		else
 			spec.impIsLowered = false
 		end
-
-		-- if g_server ~= nil then
-		-- print("CVTa Server: " .. tostring(g_server))
-		-- print("CVTa Client: " .. tostring(g_client))
-		-- if connection:getIsServer() then
-			-- print("CVTa Connection: Server")
-		-- end
-			-- local isEntered = self.getIsEntered ~= nil and self:getIsEntered()
 			
 			local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
 			local StI = storeItem.categoryName
@@ -1349,6 +1352,9 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					
 					-- AUTO-DIFFS: enable & disable VCA AWD and difflocks automaticly by speed and steering angle
 						-- Vehicle Control Addon
+						if spec.autoDiffs == 1 and self.spec_vca ~= nil then
+							self:vcaSetState("diffManual", true)
+						end
 						if spec.vOne == 2 and spec.autoDiffs == 1 then
 							-- classic
 							if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 then
@@ -1374,6 +1380,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								end
 							end
 						end
+						-- print("CVTa diffManual: " .. tostring(self:vcaGetState("diffManual")))
 						if spec.vOne >= 1 then
 							-- modern
 							if spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
@@ -1406,7 +1413,13 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						end
 				end
 				if self.spec_vca ~= nil then
-					-- print("CVTa HT: " .. self.spec_vca.handThrottle)
+					if spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
+						if self:getLastSpeed() == 0 and self.spec_motorized.motor.lastAcceleratorPedal < 0.01 then
+							self.spec_vca.handbrake = true
+						elseif self.spec_motorized.motor.lastAcceleratorPedal >= 0.01 then
+							self.spec_vca.handbrake = false
+						end
+					end
 				end
 				-- Enhanced Vehicle 
 				if FS22_EnhancedVehicle ~= nil and FS22_EnhancedVehicle.FS22_EnhancedVehicle ~= nil and FS22_EnhancedVehicle.FS22_EnhancedVehicle.onActionCall ~= nil then 
@@ -1471,37 +1484,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				if FS22_LessMotorBrakeForce ~= nil then 
 					print("CVT-Addon: FS22_LessMotorBrakeForce found, please deinstall the LessMotorBrakeForce mod !")
 				end
-				
-				-- print("CVTa: ptoMotorRpmRatio: ".. tostring(self.spec_motorized.motor.ptoMotorRpmRatio))
-				-- print("CVTa: requiredMotorPower: ".. tostring(self.spec_motorized.motor.requiredMotorPower))
-				-- print("CVTa: getSpeedLimit(): ".. tostring(self:getSpeedLimit()))
-				-- print("CVTa: peakMotorPower: ".. tostring(self.spec_motorized.motor.peakMotorPower * 1.35962))
-				-- print("CVTa: getPtoMotorRpmRatio(): ".. tostring(self:getPtoMotorRpmRatio()))
-				-- print("CVTa: PowerConsumer:getPtoRpm(): ".. tostring(PowerConsumer:getPtoRpm()))
-				-- print("CVTa: PowerConsumer:getDoConsumePtoPower(): ".. tostring(PowerConsumer:getDoConsumePtoPower()))
-				-- print("CVTa: accelerationLimitLoadScale: ".. tostring(self.spec_motorized.motor.accelerationLimitLoadScale))
-				-- print("CVTa: motorAppliedTorque: ".. tostring(self.spec_motorized.motor.motorAppliedTorque * self.spec_motorized.motor:getEqualizedMotorRpm() * math.pi / 30 * 1.35962))
-				-- print("CVTa: motorAvailableTorque: ".. tostring(self.spec_motorized.motor.motorAvailableTorque * self.spec_motorized.motor:getEqualizedMotorRpm() * math.pi / 30 * 1.35962))
-				
-				-- print("CVTa: motorAvailableTorque-motorAppliedTorque: ".. tostring( (self.spec_motorized.motor.motorAvailableTorque * self.spec_motorized.motor:getEqualizedMotorRpm() * math.pi / 30 * 1.35962) - (self.spec_motorized.motor.motorAppliedTorque * self.spec_motorized.motor:getEqualizedMotorRpm() * math.pi / 30 * 1.35962) ))
-				-- print("CVTa: motor.peakMotorPowerRotSpeed: ".. tostring(self.spec_motorized.motor.peakMotorPowerRotSpeed))
-				-- print("CVTa: motor.peakMotorPowerRotSpeed: ".. tostring(self.spec_powerConsumer.maxForce))
-				-- local VNpower = (self.spec_motorized.motor.motorExternalTorque * self.spec_motorized.motor:getEqualizedMotorRpm() * math.pi / 30)
-				-- print("CVTa: VNpower: ".. tostring(VNpower))
-				-- print("CVTa: ptoMotorRpmRatio: ".. tostring(self.spec_motorized.motor.ptoMotorRpmRatio))
-				-- print("CVTa: motorExternalTorque: ".. tostring(self.spec_motorized.motor.motorExternalTorque))
-				
-				
-				
-				-- local neededPtoTorque = PowerConsumer.getTotalConsumedPtoTorque(self.vehicle, nil, nil, true) / self:getPtoMotorRpmRatio()
-				-- local ptoPower = self.peakMotorPowerRotSpeed * neededPtoTorque
-				
-				-- if self.spec_motorized.motor.transmission.startGearValues ~= nil then
-					-- print("CVTa: startGearValues not nil ############################")
-				-- end
-				
-				
-				-- get maxForce sum of all tools attached and calculate the mass of all wheeled tools
+
+				-- get maxForce sum of all tools attached
 				local maxForce = 0
 				local vehicles = self:getChildVehicles()
 				for _, vehicle in ipairs(vehicles) do
@@ -1522,16 +1506,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								end
 							end
 						end
-
-						-- if vehicle.spec_leveler ~= nil then
-							-- maxForce = maxForce + math.abs(vehicle.spec_leveler.lastForce)
-						-- end
-
-						-- if vehicle.spec_wheels ~= nil then
-							-- if #vehicle.spec_wheels.wheels > 0 then
-								-- totalMassOnGround = totalMassOnGround + vehicle:getTotalMass(true)
-							-- end
-						-- end
 					end
 				end
 				
@@ -1553,6 +1527,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						-- self.spec_motorized.motor.ptoMotorRpmRatio = 6
 						if spec.CVTconfig == 2 then
 							print("CVTa: IPM c15")
+							self.spec_motorized.motor.motorRotationAccelerationLimit = math.max(self.spec_motorized.motor.motorRotationAccelerationLimit *1.25 , 2)
 							spec.forDBL_IPMactive = 1
 						elseif spec.CVTconfig == 3 then
 							print("CVTa: IPM c25")
@@ -1732,6 +1707,9 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					local Nonce = 0
 					
 		-- NEUTRAL
+					-- print("CVTa targetGear : " .. tostring(self.spec_motorized.motor.targetGear))
+					-- print("CVTa currentDirection : " .. tostring(self.spec_motorized.motor.currentDirection))
+					-- print("CVTa movingDirection2 : " .. tostring(self.spec_motorized.motor.vehicle.movingDirection))
 					if spec.vFour == 0 then
 						Nonce = 1
 						self.spec_motorized.motor.currentDirection = 0
@@ -1783,49 +1761,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						Nonce = 0
 					end
 					
-					
-		-- MOTORDREHZAHL (Handgas-digital)
-					local maxRpm = self.spec_motorized.motor.maxRpm
-					local minRpm = self.spec_motorized.motor.minRpm
-					spec.lastPTORot = self.spec_motorized.motor.lastPtoRpm
-					if self.spec_motorized.motor.lastPtoRpm == nil then
-						self.spec_motorized.motor.lastPtoRpm = 0
-					end
-					if self.spec_vca == nil then
-						-- Handgas Stufen
-						if spec.vFive == 1 then
-							self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1
-						end
-						if spec.vFive == 2 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 3 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 4 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 5 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 6 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 7 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 8 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 9 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
-						end
-						if spec.vFive == 10 then
-							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(self.spec_motorized.motor.maxRpm-51, self.spec_motorized.motor.lastPtoRpm*0.75)), self.spec_motorized.motor.maxRpm)
-						end
-					end
-					
-					
+	
 					-- Rückwärts retarder Last
 					if self.spec_motorized.motor.currentDirection == -1 then
 						self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage * 1.2
@@ -1847,18 +1783,20 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					
 					-- different classic and modern
 					-- local mcRPMvar = 1
-					if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 then
+					if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 then -- classic
 						if g_server and g_client and not g_currentMission.connectedToDedicatedServer then
-							spec.mcRPMvar = 1.009*0.97 	-- classic
+							spec.mcRPMvar = 1.0009*0.97 	-- c.local
 						else
-							spec.mcRPMvar = 1.009 	-- classic
+							spec.mcRPMvar = 1.0009	-- c.server
 						end
-					elseif spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
+					elseif spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then -- modern
 						if g_client and g_client and not g_currentMission.connectedToDedicatedServer then
-							spec.mcRPMvar = 0.9991*0.97	-- modern
+							spec.mcRPMvar = 0.9991*0.97	-- m.local
 						else
-							spec.mcRPMvar = 0.9991	-- modern
+							spec.mcRPMvar = 0.9991	-- m.server
 						end
+					else
+						spec.mcRPMvar = 1
 					end
 					
 	-- -- FAHRSTUFE I. 
@@ -1897,12 +1835,11 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								if spec.smoother ~= nil and spec.smoother > 75 then
 									spec.smoother = 0;
 									if self:getLastSpeed() > 3 then
-										self.spec_motorized.motor.lastMotorRpm = math.max(math.max(math.min((self:getLastSpeed() * math.abs(math.max(self.spec_motorized.motor.rawLoadPercentage, 0.52)))*44, self.spec_motorized.motor.maxRpm*0.98 * spec.mcRPMvar), self.spec_motorized.motor.minRpm+203), self.spec_motorized.motor.lastPtoRpm*0.7)
+										self.spec_motorized.motor.lastMotorRpm = math.max(math.max(math.min((self:getLastSpeed() * math.abs(math.max(self.spec_motorized.motor.rawLoadPercentage, 0.52)))*44, self.spec_motorized.motor.maxRpm*0.98), self.spec_motorized.motor.minRpm+203), self.spec_motorized.motor.lastPtoRpm*0.7)
 										if self:getLastSpeed() > (self.spec_motorized.motor.maxForwardSpeed*math.pi)-2 then
 											self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage *0.97
 											self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * spec.mcRPMvar + self:getLastSpeed()
 										end
-										-- self.spec_motorized.motor.lastTurboScale = self.spec_motorized.motor.lastTurboScale * 0.95 + (self.spec_motorized.motor.lastMotorRpm/100 * self.spec_motorized.motor.smoothedLoadPercentage) * 0.05
 										
 										if math.max(0, self.spec_drivable.axisForward) < 0.2 then
 										-- if self.isClient and not self.isServer
@@ -1990,7 +1927,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								end
 							end
 							-- Wenn ein Anbaugerät zu schwere Last erzeugt, schafft es die 3. Beschleunigungsrampe nicht oder nimmt Schaden
-							if self.spec_motorized.motor.smoothedLoadPercentage > 0.96 and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)/1.69) and spec.vTwo == 4 and spec.impIsLowered == true then
+							if self.spec_motorized.motor.smoothedLoadPercentage > 0.97 and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)/1.69) and spec.vTwo == 4 and spec.impIsLowered == true then
 								g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 768)
 								self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 0.95 * spec.mcRPMvar), self.spec_motorized.motor.lastPtoRpm*0.2)
 								self.spec_motorized.motor.gearRatio = self.spec_motorized.motor.gearRatio * 3.1 + (self.spec_motorized.motor.rawLoadPercentage*9)
@@ -2087,10 +2024,10 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							if self.spec_motorized.motor.smoothedLoadPercentage < 0.3 then
 								-- Gaspedal and Variator
 								spec.smoother = spec.smoother + dt;
-								if spec.smoother ~= nil and spec.smoother > 50 then -- Drehzahl zucken eliminieren
+								if spec.smoother ~= nil and spec.smoother > 100 then -- Drehzahl zucken eliminieren
 									spec.smoother = 0;
 									if self:getLastSpeed() > 3 then 
-										self.spec_motorized.motor.lastMotorRpm = math.max(math.max(math.min((self:getLastSpeed() * math.abs(math.max(self.spec_motorized.motor.rawLoadPercentage, 0.55)))*42, self.spec_motorized.motor.maxRpm*0.99 * spec.mcRPMvar), self.spec_motorized.motor.minRpm+203), self.spec_motorized.motor.lastPtoRpm*0.7)
+										self.spec_motorized.motor.lastMotorRpm = math.max(math.max(math.min((self:getLastSpeed() * math.abs(math.max(self.spec_motorized.motor.rawLoadPercentage, 0.55)))*42, self.spec_motorized.motor.maxRpm*0.99), self.spec_motorized.motor.minRpm+203), self.spec_motorized.motor.lastPtoRpm*0.7)
 
 										-- Drehzahl Erhöhung angleichen zur Motorbremswirkung, wenn Pedal losgelassen wird
 										-- self.spec_motorized.motor.lastTurboScale = self.spec_motorized.motor.lastTurboScale * 0.95 + (self.spec_motorized.motor.lastMotorRpm/100 * self.spec_motorized.motor.smoothedLoadPercentage) * 0.05
@@ -2167,10 +2104,10 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								
 								-- Getriebeschaden erzeugen
 								if self.spec_motorized.motor.smoothedLoadPercentage > 0.99 then
-									g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 1024)
+									g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 2048)
 									if spec.impIsLowered == false then
 										self.spec_motorized.motorTemperature.heatingPerMS = 0.0080 * self.spec_motorized.motor.rawLoadPercentage
-										if self.spec_motorized.motor.lastMotorRpm < self.spec_motorized.motor.minRpm + 150 then
+										if self.spec_motorized.motor.lastMotorRpm > self.spec_motorized.motor.minRpm + 150 then
 											self:addDamageAmount((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4)
 											self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 4
 											self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 4
@@ -2178,13 +2115,13 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										end
 									end
 								end
-								if spec.impIsLowered == true and self.spec_motorized.motor.rawLoadPercentage > 0.90 then
-									g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 512)
+								if spec.impIsLowered == true and self.spec_motorized.motor.rawLoadPercentage > 0.92 then
+									g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 1024)
 									self.spec_motorized.motorTemperature.heatingPerMS = 0.0150 * self.spec_motorized.motor.rawLoadPercentage
 									self:addDamageAmount((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.7)
 									self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 3
 									self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 3
-									self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1.5 * spec.mcRPMvar
+									self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1.5
 									-- print("addDamage lowered: "  .. self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 ))
 								end
 							end
@@ -2192,11 +2129,37 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							--          47							16.87 * 3.141592654 (53) 		    -                 "   (53)/14= 3.786    53-3.786= 49.214 kmh
 							if self:getLastSpeed() > ((self.spec_motorized.motor.maxForwardSpeed*math.pi)-(self.spec_motorized.motor.maxForwardSpeed*math.pi/14)) then
 								-- Ändert die Drehzahl wenn man sich der vMax nähert  ##here
-								self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm * spec.mcRPMvar + (self:getLastSpeed()/6 ), self.spec_motorized.motor.maxRpm-18)
+								self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm + (self:getLastSpeed()/6 ), self.spec_motorized.motor.maxRpm-18)
 							end
 						end
 					end
 					
+					
+					-- MOTORDREHZAHL (Handgas-digital)
+					local maxRpm = self.spec_motorized.motor.maxRpm
+					local minRpm = self.spec_motorized.motor.minRpm
+					spec.lastPTORot = self.spec_motorized.motor.lastPtoRpm
+					if self.spec_motorized.motor.lastPtoRpm == nil then
+						self.spec_motorized.motor.lastPtoRpm = 0
+					end
+					if self.spec_vca == nil then
+						-- Handgas Stufen
+						if spec.vFive == 1 then
+							self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1
+						end
+						if spec.vFive > 1 then
+							self.spec_motorized.motor.lastMotorRpm = math.min((math.max(math.max(minRpm + spec.vFive*120+spec.vFive*4, (self.spec_motorized.motor.lastMotorRpm)), self.spec_motorized.motor.lastPtoRpm*0.75)), maxRpm)
+						end
+					end
+					if self.spec_vca ~= nil then
+						-- Handgas Stufen
+						if spec.vFive == 1 then
+							if self.spec_vca.handThrottle ~= 0 then	self.spec_vca.handThrottle = 0 end
+						end
+						if spec.vFive > 1 then
+							self.spec_vca.handThrottle = math.min((minRpm / 1000) * (spec.vFive / 8), 1)
+						end
+					end
 					
 					-- RPM Modus
 					if spec.rpmrange == 2 then
@@ -2233,7 +2196,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				
 				self.spec_motorized.motor.lastTurboScale = self.spec_motorized.motor.lastTurboScale * 0.95 + ((self.spec_motorized.motor.lastMotorRpm - math.max(self.spec_motorized.motor.lastPtoRpm or self.spec_motorized.motor.minRpm, self.spec_motorized.motor.minRpm)) / (self.spec_motorized.motor.maxRpm - self.spec_motorized.motor.minRpm)*self.spec_motorized.motor.smoothedLoadPercentage) * 0.05
 										
-				if math.max(0, self.spec_drivable.axisForward) < 0.1 then
+				if math.max(0, self.spec_drivable.axisForward) < 0.2 then
 					self.spec_motorized.motor.blowOffValveState = self.spec_motorized.motor.lastTurboScale
 				else
 					self.spec_motorized.motor.blowOffValveState = 0

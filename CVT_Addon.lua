@@ -10,9 +10,9 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.3.0.49";
-local modversion = "0.9.9.71"; -- moddesc
-local lastupdate = "27.09.23";
+local scrversion = "0.3.0.50";
+local modversion = "0.9.9.72"; -- moddesc
+local lastupdate = "28.09.23";
 -- last change	-- dbl values, server rpm
 				
 -- known issue	Neutral does'n sync lastDirection mp, you have to press a forward or reward directionbutton, not change direction
@@ -110,6 +110,11 @@ function CVTaddon:onRegisterActionEvents()
 			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV2, false)
 			-- g_inputBinding:setActionEventTextVisibility(spec.eventIdV2, true) -- test if works
 			
+			-- D toggle
+			_, CVTaddon.eventIdVt = self:addActionEvent(CVTaddon.actionEventsVt, 'SETVARIOTOGGLE', self, CVTaddon.VarioToggle, false, true, false, true)
+			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdVt, GS_PRIO_NORMAL)
+			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdVt, false)
+			
 			-- AR
 			_, CVTaddon.eventIdV3 = self:addActionEvent(CVTaddon.actionEventsV3, 'LMBF_TOGGLE_RAMP', self, CVTaddon.AccRamps, false, true, false, true)
 			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV3, GS_PRIO_NORMAL)
@@ -145,9 +150,9 @@ function CVTaddon:onRegisterActionEvents()
 			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV9, false)
 	
 			-- rpmDmax
-			_, CVTaddon.eventIdV10 = self:addActionEvent(CVTaddon.actionEventsV10, 'SETVARIORPMDMAX', self, CVTaddon.VarioRpmDmax, false, true, false, true)
-			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV10, GS_PRIO_NORMAL)
-			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV10, CVTaddon.eventActiveV10)
+			-- _, CVTaddon.eventIdV10 = self:addActionEvent(CVTaddon.actionEventsV10, 'SETVARIORPMDMAX', self, CVTaddon.VarioRpmDmax, false, true, false, true)
+			-- g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV10, GS_PRIO_NORMAL)
+			-- g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV10, CVTaddon.eventActiveV10)
 
 		end
 		if sbshDebugOn then
@@ -294,6 +299,7 @@ function CVTaddon:onLoad()
 	
 	CVTaddon.eventActiveV1 = true
 	CVTaddon.eventActiveV2 = true
+	CVTaddon.eventActiveVt = true
 	CVTaddon.eventActiveV3 = true
 	CVTaddon.eventActiveV4 = true
 	CVTaddon.eventActiveV5 = true
@@ -304,6 +310,7 @@ function CVTaddon:onLoad()
 	CVTaddon.eventActiveV10 = true
 	CVTaddon.eventIdV1 = nil
 	CVTaddon.eventIdV2 = nil
+	CVTaddon.eventIdVt = nil
 	CVTaddon.eventIdV3 = nil
 	CVTaddon.eventIdV4 = nil
 	CVTaddon.eventIdV5 = nil
@@ -325,6 +332,7 @@ function CVTaddon.initSpecialization()
 	local schemaSavegame = Vehicle.xmlSchemaSavegame
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV1")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV2")
+    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveVt")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV3")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV4")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#eventActiveV5")
@@ -388,7 +396,9 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
         -- StI = string.sub(storeItem.categoryName, 1, 8)
         StI = storeItem.categoryName
     end
-    local intVehicles = StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL" or StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES" or StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES" or StI == "WOODHARVESTING" or StI == "FORKLIFTS"
+	
+	local addXtraCats = string.find(tostring(StI), "sdf") or string.find(tostring(StI), "SDF")
+    local intVehicles = addXtraCats or StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL" or StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES" or StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES" or StI == "WOODHARVESTING" or StI == "FORKLIFTS"
     if intVehicles then
         local xmlFile = XMLFile.load("vehicle", storeItem.xmlFilename, Vehicle.xmlSchema)
         local isVario = true
@@ -400,7 +410,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
 		-- print("CVTa specspower: " .. tostring(specspower))
 		-- print("CVTa Getriebename: " .. tostring(manualShift))
 				
-		if string.find(tostring(manualShift), "cvt") or string.find(tostring(manualShift), "cvx") or string.find(tostring(manualShift), "vario") or string.find(tostring(manualShift), "stufenlos") then
+		if string.find(tostring(manualShift), "cvt") or string.find(tostring(manualShift), "cvx") or string.find(tostring(manualShift), "vario") or string.find(tostring(manualShift), "stufenlos") or string.find(tostring(manualShift), "auto") then
 			isVario = true
 		end
 
@@ -437,7 +447,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
             local name6 = g_i18n:getText("text_CVTmodB2_installed_short")
             local name7 = g_i18n:getText("text_HST_installed_short")
             local name8 = g_i18n:getText("text_CVT_notInstalled_short")
-            local name9 = "manuell"
+            -- local name9 = "manuell"
             configurations["CVTaddon"] = {
                 {name = name1, index = 1, isDefault = false, price = 0, dailyUpkeep = 0, isSelectable = true},
                 {name = name2, index = 2, isDefault = false, price = 750, dailyUpkeep = 0, isSelectable = true},
@@ -446,8 +456,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
                 {name = name5, index = 5, isDefault = false, price = 750, dailyUpkeep = 0, isSelectable = true},
                 {name = name6, index = 6, isDefault = false, price = 1000, dailyUpkeep = 0, isSelectable = true},
                 {name = name7, index = 7, isDefault = false, price = 0, dailyUpkeep = 5, isSelectable = true},
-				{name = name8, index = 8, isDefault = false, price = 0, dailyUpkeep = 0, isSelectable = true},
-				{name = name9, index = 9, isDefault = false, price = 0, dailyUpkeep = 0, isSelectable = false}
+				{name = name8, index = 8, isDefault = false, price = 0, dailyUpkeep = 0, isSelectable = true}
             }
         end
     end
@@ -471,6 +480,7 @@ function CVTaddon:onPostLoad(savegame)
 				local key = savegame.key .. ".FS22_CVT_Addon.CVTaddon"
 				CVTaddon.eventActiveV1 = xmlFile:getValue(key.."#eventActiveV1", CVTaddon.eventActiveV1)
 				CVTaddon.eventActiveV2 = xmlFile:getValue(key.."#eventActiveV2", CVTaddon.eventActiveV2)
+				CVTaddon.eventActiveVt = xmlFile:getValue(key.."#eventActiveVt", CVTaddon.eventActiveVt)
 				CVTaddon.eventActiveV3 = xmlFile:getValue(key.."#eventActiveV3", CVTaddon.eventActiveV3)
 				CVTaddon.eventActiveV4 = xmlFile:getValue(key.."#eventActiveV4", CVTaddon.eventActiveV4)
 				CVTaddon.eventActiveV5 = xmlFile:getValue(key.."#eventActiveV5", CVTaddon.eventActiveV5)
@@ -518,7 +528,7 @@ function CVTaddon:onPostLoad(savegame)
 	
  -- to make it easier read with dashbord-live
 	spec.forDBL_pedalpercent = tostring(self.spec_motorized.motor.lastAcceleratorPedal*100)
-	spec.forDBL_rpmrange = tostring(spec.rpmDmax .. " - " .. self.spec_motorized.motor.minRpm)
+	spec.forDBL_rpmrange = 1
 	spec.forDBL_rpmDmin = tostring(0)
 	spec.forDBL_autoDiffs = tostring(0)
 	spec.forDBL_IPMactive = tostring(0)
@@ -589,6 +599,7 @@ function CVTaddon:saveToXMLFile(xmlFile, key, usedModNames)
 		if spec.isVarioTM then
 			xmlFile:setValue(key.."#eventActiveV1", CVTaddon.eventActiveV1)
 			xmlFile:setValue(key.."#eventActiveV2", CVTaddon.eventActiveV2)
+			xmlFile:setValue(key.."#eventActiveVt", CVTaddon.eventActiveVt)
 			xmlFile:setValue(key.."#eventActiveV3", CVTaddon.eventActiveV3)
 			xmlFile:setValue(key.."#eventActiveV4", CVTaddon.eventActiveV4)
 			xmlFile:setValue(key.."#eventActiveV5", CVTaddon.eventActiveV5)
@@ -1000,6 +1011,85 @@ function CVTaddon:VarioOne() -- FAHRSTUFE 1 field
 		spec.forDBL_drivinglevel = tostring(1)
 	end
 end -- VarioOne
+
+function CVTaddon:VarioToggle() -- FAHRSTUFEN WECHSELN
+	-- changeFlag = true -- tryout
+	local spec = self.spec_CVTaddon
+	spec.BlinkTimer = -1
+	spec.Counter = 0
+	if spec.CVTconfig ~= 4 or spec.CVTconfig ~= 5 or spec.CVTconfig ~= 6 then
+		if g_client ~= nil then
+			if sbshDebugOn then
+				print("VarioOne Taste gedrückt vOne: ".. tostring(spec.vOne))
+				print("Entered: " .. tostring(self:getIsEntered()))
+				print("Started: " .. tostring(self:getIsMotorStarted()))
+				print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+			end
+			if self.CVTaddon == nil then 
+				return
+			end
+			if not CVTaddon.eventActiveV1 or not CVTaddon.eventActiveV2 then
+				return
+			end
+
+			if self:getIsEntered() and self:getIsMotorStarted() then
+				if self:getLastSpeed() >= 11 and spec.vFour == 1 then
+					g_currentMission:showBlinkingWarning(g_i18n:getText("txt_warn_tofastDn"), 3072)
+					self:addDamageAmount(math.min(0.0002*(self:getOperatingTime()/1000000)+(self:getLastSpeed()/100), 1))
+					-- CVTaddon.eventActiveV1 = true
+					-- CVTaddon.eventActiveV2 = false
+				end
+
+				if spec.vOne == 1 then
+					if self:getLastSpeed() <=10 then
+						if self:getLastSpeed() > 1 and spec.vFour == 1 then
+							self:addDamageAmount(math.min(0.00008*(self:getOperatingTime()/1000000)+(self.spec_motorized.motor.lastMotorRpm/10000)+(self:getLastSpeed()/100), 1))
+						end
+						spec.vOne = 2
+						local SpeedScale = spec.PedalResolution
+						CVTaddon.eventActiveV1 = true
+						CVTaddon.eventActiveV2 = true
+						if sbshDebugOn then
+							print("VarioOne vOne: ".. tostring(spec.vOne))
+							print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+						end
+					end
+				elseif spec.vOne == 2 then
+					spec.vOne = 1
+					local SpeedScale = spec.PedalResolution
+					self.spec_motorized.motor.maxForwardSpeed = self.spec_motorized.motor.maxForwardSpeedOrigin
+					self.spec_motorized.motor.maxBackwardSpeed = self.spec_motorized.motor.maxBackwardSpeedOrigin
+
+					CVTaddon.eventActiveV1 = true
+					CVTaddon.eventActiveV2 = true
+					if sbshDebugOn then
+						print("VarioTwo vOne: "..tostring(spec.vOne))
+						print("VarioTwo : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+						print("VarioTwo : BMFwSpd/BMBwSpd:"..tostring(spec.BackupMaxFwSpd).."/"..tostring(spec.BackupMaxBwSpd))
+					end
+				end
+			end
+			
+			if sbshDebugOn then
+				print("VarioOne Taste losgelassen vOne: ".. tostring(spec.vOne))
+				print("VarioOne : FwS/BwS/lBFS/cBF:"..self.spec_motorized.motor.maxForwardSpeed.."/"..self.spec_motorized.motor.maxBackwardSpeed.."/"..self.spec_motorized.motor.lowBrakeForceScale.."/"..spec.calcBrakeForce)
+			end
+			
+			self:raiseDirtyFlags(spec.dirtyFlag) 
+			if g_server ~= nil then
+				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			else
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+			end		 
+		end -- g_client
+	end
+	-- DBL convert
+	if spec.vOne == 1 then
+		spec.forDBL_drivinglevel = tostring(2)
+	elseif spec.vOne == 2 then
+		spec.forDBL_drivinglevel = tostring(1)
+	end
+end -- VarioToggle
 
 function CVTaddon:VarioTwo() -- FAHRSTUFE 2 street
 	-- changeFlag = true -- tryout
@@ -2165,30 +2255,30 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					end
 					
 					-- RPM Modus
-					if spec.rpmrange == 2 then
-						-- Eco field
-						self.spec_motorized.lastFuelUsage = self.spec_motorized.lastFuelUsage * 0.95
-						self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm, self.spec_motorized.motor.maxRpm * 0.94)
-						-- self.spec_motorized.motor.peakMotorPower = self.spec_motorized.motor.peakMotorPower * 0.93
-						self.spec_motorized.motor.motorAppliedTorque = self.spec_motorized.motor.motorAppliedTorque * 0.93
-						g_currentMission:addExtraPrintText("range: 2 eco field")
-					elseif spec.rpmrange == 3 then
-						-- Eco 1
-						self.spec_motorized.lastFuelUsage = self.spec_motorized.lastFuelUsage * 0.92
-						self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm, self.spec_motorized.motor.maxRpm * 0.87 )
-						self.spec_motorized.motor.motorAppliedTorque = self.spec_motorized.motor.motorAppliedTorque * 0.51
-						g_currentMission:addExtraPrintText("range: 3 eco 1")
-					elseif spec.rpmrange == 4 then
-						-- Eco 2
-						self.spec_motorized.lastFuelUsage = self.spec_motorized.lastFuelUsage * 0.85
-						self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm, self.spec_motorized.motor.maxRpm * 0.80 )
-						self.spec_motorized.motor.motorAppliedTorque = self.spec_motorized.motor.motorAppliedTorque * 0.3
-						g_currentMission:addExtraPrintText("range: 4 eco 2")
-					else
-						-- Full / off
-						-- g_currentMission:addExtraPrintText("range: 1 full")
-						-- g_currentMission:addExtraPrintText("isVarioTM: " .. tostring(spec.isVarioTM))
-					end
+					-- if spec.rpmrange == 2 then
+						-- -- Eco field
+						-- self.spec_motorized.lastFuelUsage = self.spec_motorized.lastFuelUsage * 0.95
+						-- self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm, self.spec_motorized.motor.maxRpm * 0.94)
+						-- -- self.spec_motorized.motor.peakMotorPower = self.spec_motorized.motor.peakMotorPower * 0.93
+						-- self.spec_motorized.motor.motorAppliedTorque = self.spec_motorized.motor.motorAppliedTorque * 0.93
+						-- g_currentMission:addExtraPrintText("range: 2 eco field")
+					-- elseif spec.rpmrange == 3 then
+						-- -- Eco 1
+						-- self.spec_motorized.lastFuelUsage = self.spec_motorized.lastFuelUsage * 0.92
+						-- self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm, self.spec_motorized.motor.maxRpm * 0.87 )
+						-- self.spec_motorized.motor.motorAppliedTorque = self.spec_motorized.motor.motorAppliedTorque * 0.51
+						-- g_currentMission:addExtraPrintText("range: 3 eco 1")
+					-- elseif spec.rpmrange == 4 then
+						-- -- Eco 2
+						-- self.spec_motorized.lastFuelUsage = self.spec_motorized.lastFuelUsage * 0.85
+						-- self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm, self.spec_motorized.motor.maxRpm * 0.80 )
+						-- self.spec_motorized.motor.motorAppliedTorque = self.spec_motorized.motor.motorAppliedTorque * 0.3
+						-- g_currentMission:addExtraPrintText("range: 4 eco 2")
+					-- elseif spec.rpmrange < 2 or nil then
+						-- -- Full / off
+						-- -- g_currentMission:addExtraPrintText("range: 1 full")
+						-- -- g_currentMission:addExtraPrintText("isVarioTM: " .. tostring(spec.isVarioTM))
+					-- end
 					-- print("motorPeakPower: " .. tostring(self.spec_motorized.motor.peakMotorPower))
 					-- print("spec.rpmrange: " .. tostring(spec.rpmrange))
 				end
@@ -2284,6 +2374,27 @@ function CVTaddon:cCVTaVer()
 	print("CVT-Addon Date: " .. lastupdate)
 end
 addConsoleCommand("cvtaVER", "Versions CVT-Addon", "cCVTaVer", CVTaddon)
+
+function CVTaddon:cCVTaHappyBirthday()
+	print(" ")
+	print(" ")
+	print(" ")
+	print("° ")
+	print("*___________________________________________________/\\")
+	print(" |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯SbSh-PooL¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|\\")
+	print(" |   Das Team vom CVT-Addon und das Script selbst,   |¯")
+	print(" |   wünschen allen Geburtstagskindern frohe Ostern. |")
+	print(" |   365 Tage Freude wie heute,                      |")
+	print(" |   525.600 Minuten Zufriedenheit,                  |")
+	print(" |   genieße die Jahre und die Zeit!                 |")
+	print(" |   Ostern? 365 Tage/Jahr gibt's B-Day's der Leute, |")
+	print(" |   alle anderen Feierlichkeiten, ebenso wunderbar- |")
+	print(" |   gibt's nur einmal im Jahr'.                     |")
+	print(" |___________________________________________________|")
+	print(" ´¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯`")
+	print(" ")
+end
+addConsoleCommand("CvTaHappyBirthday", "Versions CVT-Addon", "cCVTaHappyBirthday", CVTaddon)
 
 function CVTaddon:cCVTaDBL(DBLcommand)
 	local spec = self.spec_CVTaddon
@@ -2875,9 +2986,6 @@ function CVTaddon:onWriteStream(streamId, connection)
 	streamWriteInt32(streamId, spec.CVTconfig)
 	-- streamWriteFloat32(streamId, spec.mcRPMvar)
 end
-
--- if connection:getIsServer() then
--- if not connection:getIsServer() then
 
 function CVTaddon:onReadUpdateStream(streamId, timestamp, connection)
 	if not connection:getIsServer() then

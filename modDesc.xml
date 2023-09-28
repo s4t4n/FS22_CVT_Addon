@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="77">
     <author>SbSh</author>
-	<version>0.9.9.71</version>
+	<contributor>Glowin</contributor>
+	<version>0.9.9.72</version>
 	<title>
         <en>CVT Addon</en>
         <de>CVT Addon</de>
@@ -137,7 +138,7 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
         <action name="SETVARIOADIFFS" />
         <action name="SETVARIORPMP" />
         <action name="SETVARIORPMM" />
-        <action name="SETVARIORPMDMAX" />
+        <!-- <action name="SETVARIORPMDMAX" /> -->
         <action name="SETPEDALTMS" />
     </actions>
 	<inputBinding>
@@ -165,9 +166,9 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
 		<actionBinding action="SETVARIORPMM">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
-		<actionBinding action="SETVARIORPMDMAX">
-			<binding device="KB_MOUSE_DEFAULT" input="" />
-		</actionBinding>
+		<!-- <actionBinding action="SETVARIORPMDMAX"> -->
+			<!-- <binding device="KB_MOUSE_DEFAULT" input="" /> -->
+		<!-- </actionBinding> -->
 		<actionBinding action="SETPEDALTMS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>

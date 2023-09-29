@@ -25,7 +25,6 @@ function LMBFRegister:register(name)
 				local CVTaddon = false;
 				local vehicles = false;
 				local powerConsumer = false;
-				-- local CVTaddonHUD = false;
 				
 				for _, spec in pairs(vehicle.specializationNames) do
 				

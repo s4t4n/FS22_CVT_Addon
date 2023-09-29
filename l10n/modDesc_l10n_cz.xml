@@ -22,6 +22,7 @@
         
 		<text name="input_SETVARIOONE" 				text="CVTa: Jízdní stupeň 1"/>
 		<text name="input_SETVARIOTWO" 				text="CVTa: Jízdní stupeň 2"/>
+		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Toggle Drivinglevel"/>
 		<text name="input_SETVARION" 				text="CVTa: Neutral"/>
 		<text name="input_SETVARIOADIFFS" 			text="CVTa: automaticky AWD a uzávěrka dif."/>
 		<text name="input_SETVARIORPMP" 			text="CVTa: Zvýšit otáčky motoru"/>

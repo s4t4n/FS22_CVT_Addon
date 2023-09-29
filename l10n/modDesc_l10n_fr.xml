@@ -22,6 +22,7 @@
         
 		<text name="input_SETVARIOONE" 				text="CVTa: Vitesse programmée: 1"/>
 		<text name="input_SETVARIOTWO" 				text="CVTa: Vitesse programmée: 2"/>
+		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Toggle Drivinglevel"/>
 		<text name="input_SETVARION" 				text="CVTa: Neutre"/>
 		<text name="input_SETVARIOADIFFS" 			text="CVTa: AWD et DIFF Automatique"/>
 		<text name="input_SETVARIORPMP" 			text="CVTa: Augmenter régime moteur"/>

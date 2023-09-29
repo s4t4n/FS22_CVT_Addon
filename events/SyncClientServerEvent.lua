@@ -28,7 +28,6 @@ function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, au
     self.vFive = vFive
     self.autoDiffs = autoDiffs
     self.lastDirection = lastDirection
-    -- self.check = check
     self.isVarioTM = isVarioTM
     self.isTMSpedal = isTMSpedal
     self.PedalResolution = PedalResolution
@@ -54,7 +53,6 @@ function SyncClientServerEvent:readStream(streamId, connection)
     self.vFive = streamReadInt32(streamId)
     self.autoDiffs = streamReadInt32(streamId)
     self.lastDirection = streamReadInt32(streamId)
-    -- self.check = streamReadBool(streamId)
     self.isVarioTM = streamReadBool(streamId)
     self.isTMSpedal = streamReadInt32(streamId)
     self.PedalResolution = streamReadInt32(streamId)

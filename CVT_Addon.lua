@@ -10,10 +10,10 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.3.0.50";
+local scrversion = "0.3.0.51";
 local modversion = "0.9.9.72"; -- moddesc
-local lastupdate = "28.09.23";
--- last change	-- dbl values, server rpm
+local lastupdate = "01.10.23";
+-- last change	-- sync fix dirtyflag(Neutral) & event fail . and int+bool false value
 				
 -- known issue	Neutral does'n sync lastDirection mp, you have to press a forward or reward directionbutton, not change direction
 -- shop configuration produced call stacks
@@ -1242,7 +1242,7 @@ function CVTaddon:VarioN() -- neutral
 			end
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.autoDiffs, spec.vFive, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 			else
 				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
 			end	

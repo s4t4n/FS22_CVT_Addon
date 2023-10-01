@@ -1,5 +1,5 @@
 -- Date: 28.01.2023
--- edit: 28.04.2023
+-- edit: 01.10.2023
 SyncClientServerEvent = {}
 
 local SyncClientServerEvent_mt = Class(SyncClientServerEvent, Event)
@@ -34,7 +34,6 @@ function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, au
     self.rpmDmax = rpmDmax
     self.rpmrange = rpmrange
     self.CVTconfig = CVTconfig
-    -- self.mcRPMvar = mcRPMvar
     self.vehicle = vehicle
     return self
 end
@@ -45,7 +44,6 @@ end
 -- @param integer connection connection
 function SyncClientServerEvent:readStream(streamId, connection)
     self.vehicle = NetworkUtil.readNodeObject(streamId)
-	-- self.vOne = streamReadUIntN(streamId, 1)
     self.vOne = streamReadInt32(streamId)
     self.vTwo = streamReadInt32(streamId)
     self.vThree = streamReadInt32(streamId)
@@ -59,7 +57,6 @@ function SyncClientServerEvent:readStream(streamId, connection)
     self.rpmDmax = streamReadInt32(streamId)
     self.rpmrange = streamReadInt32(streamId)
     self.CVTconfig = streamReadInt32(streamId)
-    -- self.mcRPMvar = streamReadFloat32(streamId)
     self:run(connection)
 end
 
@@ -69,10 +66,9 @@ end
 -- @param integer connection connection
 function SyncClientServerEvent:writeStream(streamId, connection)
     NetworkUtil.writeNodeObject(streamId, self.vehicle)
-    streamWriteInt32(streamId, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig)
+    -- streamWriteInt32(streamId, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig)
+    streamWriteInt32(streamId, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig)
     streamWriteBool(streamId, self.isVarioTM)
-    -- streamWriteFloat32(streamId, self.mcRPMvar)
-	-- streamWriteUIntN(streamId, self.vOne, 1)  -- what does it do?
 end
 
 
@@ -83,7 +79,7 @@ function SyncClientServerEvent:run(connection)
         CVTaddon.SyncClientServer(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig)
 		
 		if not connection:getIsServer() then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, selfautoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig), nil, connection, self.vehicle)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig), nil, connection, self.vehicle)
 		end
     end
 end

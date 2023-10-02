@@ -13,7 +13,7 @@
 local scrversion = "0.3.0.52";
 local modversion = "0.9.9.72"; -- moddesc
 local lastupdate = "02.10.23";
--- last change	-- send event spec than self
+-- last change	-- send event spec than self, syntax
 				
 -- known issue	Neutral does'n sync lastDirection mp, you have to press a forward or reward directionbutton, not change direction
 -- shop configuration produced call stacks

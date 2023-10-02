@@ -2405,7 +2405,7 @@ addConsoleCommand("cvtaDBL", "Versions CVT-Addon", "cCVTaDBL", self)
 function CVTaddon:cCVTaDBL(b)
 	local spec = self.spec_CVTaddon
 	-- local spec = CVTaddon.spec_CVTaddon
-	return b
+	-- return b
 	if b == 1 then
 		print("spec.forDBL_drivinglevel: " .. spec.forDBL_drivinglevel)
 		print("spec.vOne: " .. spec.vOne)

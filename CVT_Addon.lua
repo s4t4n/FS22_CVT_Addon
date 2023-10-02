@@ -10,10 +10,10 @@
 -- changelog	Anpassung an FS22_realismAddon_gearbox von modelleicher
 --				+ Vario Fahrstufen und Beschleunigungsrampen
 --				RegisterScript Umstellung, der Dank geht hier an modelleicher!
-local scrversion = "0.3.0.51";
+local scrversion = "0.3.0.52";
 local modversion = "0.9.9.72"; -- moddesc
-local lastupdate = "01.10.23";
--- last change	-- sync fix dirtyflag(Neutral) & event fail . and int+bool false value
+local lastupdate = "02.10.23";
+-- last change	-- send event spec than self
 				
 -- known issue	Neutral does'n sync lastDirection mp, you have to press a forward or reward directionbutton, not change direction
 -- shop configuration produced call stacks
@@ -700,9 +700,9 @@ function CVTaddon:VarioRpmDmax() -- RPM range max
 		spec.forDBL_rpmDmax = tostring(spec.rpmDmax)
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
 		end				 
 	end -- g_client
 end -- rpmDmin
@@ -772,9 +772,9 @@ function CVTaddon:BrakeRamps() -- BREMSRAMPEN - Ab kmh X wird die Betriebsbremse
 		end
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
 		end	
 		if debug_for_DBL then
 			print("CVTa BR event: " .. spec.vThree)		
@@ -852,9 +852,9 @@ function CVTaddon:AccRamps() -- BESCHLEUNIGUNGSRAMPEN - Motorbremswirkung wird k
 		
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
 		end			 
 	end -- g_client
 end -- AccRamps
@@ -892,10 +892,10 @@ function CVTaddon:VarioRpmPlus() -- Handgas hoch
 		end
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
-		end																																						  
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+		end																																					  
 	end -- g_client
 	-- DBL convert
 	spec.forDBL_digitalhandgasstep = tostring(spec.vFive)
@@ -920,6 +920,9 @@ function CVTaddon:VarioRpmMinus() -- Handgas runter
 		end
 		if spec.vFive <= 1 then
 			spec.vFive = 1
+			if self.spec_vca.handThrottle ~= nil then
+				self.spec_vca.handThrottle = 0
+			end
 			CVTaddon.eventActiveV7 = true
 		end
 		CVTaddon.eventActiveV6 = true
@@ -934,9 +937,9 @@ function CVTaddon:VarioRpmMinus() -- Handgas runter
 		end
 		self:raiseDirtyFlags(spec.dirtyFlag) 
 		if g_server ~= nil then
-			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 		else
-			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
 		end	
 	end -- g_client
 	-- DBL convert
@@ -998,10 +1001,10 @@ function CVTaddon:VarioOne() -- FAHRSTUFE 1 field
 			
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
-			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
-			end		 
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+		else
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+		end	
 		end -- g_client
 	end
 	-- DBL convert
@@ -1077,10 +1080,10 @@ function CVTaddon:VarioToggle() -- FAHRSTUFEN WECHSELN
 			
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
-			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
-			end		 
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+		else
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+		end	
 		end -- g_client
 	end
 	-- DBL convert
@@ -1148,10 +1151,10 @@ function CVTaddon:VarioTwo() -- FAHRSTUFE 2 street
 			
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
-			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
-			end		 
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+		else
+			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+		end	
 		end
 	end
 	-- DBL convert
@@ -1242,9 +1245,9 @@ function CVTaddon:VarioN() -- neutral
 			end
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
 			end	
 		end
 	end
@@ -1296,9 +1299,9 @@ function CVTaddon:VarioADiffs() -- autoDiffs
 			end
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
 			end	
 		end
 	end
@@ -1337,10 +1340,10 @@ function CVTaddon:VarioPedalRes() -- Pedal Resolution TMS like
 			end
 			self:raiseDirtyFlags(spec.dirtyFlag) 
 			if g_server ~= nil then
-				g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig), nil, nil, self)
 			else
-				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, self.isTMSpedal, self.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
-			end		  
+				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.vFour, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.PedalResolution, spec.rpmDmax, spec.rpmrange, spec.CVTconfig))
+			end	
 		end
 	end
 	-- DBL convert
@@ -2235,6 +2238,9 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					if self.spec_motorized.motor.lastPtoRpm == nil then
 						self.spec_motorized.motor.lastPtoRpm = 0
 					end
+					if spec.vFive == nil then
+						spec.vFive = 1;
+					end
 					if self.spec_vca == nil then
 						-- Handgas Stufen
 						if spec.vFive == 1 then
@@ -2247,9 +2253,9 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					if self.spec_vca ~= nil then
 						-- Handgas Stufen
 						if spec.vFive == 1 then
-							if self.spec_vca.handThrottle ~= 0 then	self.spec_vca.handThrottle = 0 end
+							-- if self.spec_vca.handThrottle ~= 0 then	self.spec_vca.handThrottle = 0 end
 						end
-						if spec.vFive > 1 then
+						if spec.vFive > 1 then -- nil 
 							self.spec_vca.handThrottle = math.min((minRpm / 1000) * (spec.vFive / 8), 1)
 						end
 					end
@@ -2367,14 +2373,14 @@ end -- onUpdate
 
 
 
-
+addConsoleCommand("cvtaVER", "Versions CVT-Addon", "cCVTaVer", CVTaddon)
 function CVTaddon:cCVTaVer()
 	print("CVT-Addon Mod Version: " .. modversion)
 	print("CVT-Addon Script Version: " .. scrversion)
 	print("CVT-Addon Date: " .. lastupdate)
 end
-addConsoleCommand("cvtaVER", "Versions CVT-Addon", "cCVTaVer", CVTaddon)
 
+addConsoleCommand("CvTaHappyBirthday", "Versions CVT-Addon", "cCVTaHappyBirthday", CVTaddon)
 function CVTaddon:cCVTaHappyBirthday()
 	print(" ")
 	print(" ")
@@ -2394,80 +2400,79 @@ function CVTaddon:cCVTaHappyBirthday()
 	print(" ´¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯`")
 	print(" ")
 end
-addConsoleCommand("CvTaHappyBirthday", "Versions CVT-Addon", "cCVTaHappyBirthday", CVTaddon)
 
-function CVTaddon:cCVTaDBL(DBLcommand)
+addConsoleCommand("cvtaDBL", "Versions CVT-Addon", "cCVTaDBL", self)
+function CVTaddon:cCVTaDBL(b)
 	local spec = self.spec_CVTaddon
 	-- local spec = CVTaddon.spec_CVTaddon
-	print("select: "..DBLcommand.."-------------------------------------")
-	if DBLcommand == 1 then
+	return b
+	if b == 1 then
 		print("spec.forDBL_drivinglevel: " .. spec.forDBL_drivinglevel)
 		print("spec.vOne: " .. spec.vOne)
-	elseif DBLcommand == 2 then
+	elseif b == 2 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_accramp: " .. spec.forDBL_accramp)
 		print("spec.vTwo: " .. spec.vTwo)
-	elseif DBLcommand == 3 then
+	elseif b == 3 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_brakeramp: " .. spec.forDBL_brakeramp)
 		print("spec.vThree: " .. spec.vThree)
-	elseif DBLcommand == 4 then
+	elseif b == 4 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_neutral: " .. spec.forDBL_neutral)
 		print("spec.vFour: " .. spec.vFour)
-	elseif DBLcommand == 5 then
+	elseif b == 5 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_autoDiffs: " .. tostring(spec.forDBL_autoDiffs))
 		print("spec.autoDiffs: " .. tostring(spec.autoDiffs))
-	elseif DBLcommand == 6 then
+	elseif b == 6 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_tmspedal: " .. tostring(spec.forDBL_tmspedal))
 		print("spec.isTMSpedal: " .. tostring(spec.isTMSpedal))
-	elseif DBLcommand == 7 then
+	elseif b == 7 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_tmspedalVmax: " .. spec.forDBL_tmspedalVmax)
-	elseif DBLcommand == 8 then
+	elseif b == 8 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_pedalpercent: " .. spec.forDBL_pedalpercent)
-	elseif DBLcommand == 9 then
+	elseif b == 9 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_tmspedalVmaxActual: " .. spec.forDBL_tmspedalVmaxActual)
-	elseif DBLcommand == 10 then
+	elseif b == 10 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_digitalhandgasstep: " .. spec.forDBL_digitalhandgasstep)
 		print("spec.vFive: " .. spec.vFive)
-	elseif DBLcommand == 11 then
+	elseif b == 11 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_rpmrange: " .. spec.forDBL_rpmrange)
-	elseif DBLcommand == 12 then
+	elseif b == 12 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_rpmDmin: " .. spec.forDBL_rpmDmin)
-	elseif DBLcommand == 13 then
+	elseif b == 13 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_rpmDmax: " .. spec.forDBL_rpmDmax)
-	elseif DBLcommand == 14 then
+	elseif b == 14 then
 		print("-------------------------------------------------------------")
 		print("spec.forDBL_IPMactive: " .. spec.forDBL_IPMactive)
-	elseif DBLcommand == 15 then
+	elseif b == 15 then
 		print("-------------------------------------------------------------")
 		-- print("spec.forDBL_rpmrange: " .. spec.forDBL_rpmrange)
-	elseif DBLcommand == 16 then
+	elseif b == 16 then
 		print("-------------------------------------------------------------")
 	else
 		-- return "1:DL | 2:AR | 3:BR | 4:N | 5:aD | 6:TP | 7:TPm | 8:P% | 9:TPa | 10:DHg | 11:RR | 12:Rn | 13:Rx | 14:IPM | 15: | 16: "
 		print("1:DL | 2:AR | 3:BR | 4:N | 5:aD | 6:TP | 7:TPm | 8:P% | 9:TPa | 10:DHg | 11:RR | 12:Rn | 13:Rx | 14:IPM | 15: | 16: ")
 	end
 end
-addConsoleCommand("cvtaDBL", "Versions CVT-Addon", "cCVTaDBL", nil)
 
-function CVTaddon:cCVTaSetCfg(cfgID)
+addConsoleCommand("cvtaSETcfg", "Versions CVT-Addon", "cCVTaSetCfg", self)
+function CVTaddon:cCVTaSetCfg(c)
 	local spec = self.spec_CVTaddon
-	print("CVT-Addon Sets " .. tostring(cfgID))
+	print("CVT-Addon Sets " .. tostring(c))
 	print("CVT-Addon Sets Config from: " .. tostring(spec.CVTconfig))
-	spec.CVTconfig = cfgID
+	spec.CVTconfig = c
 	print("to " .. spec.CVTconfig)
 end
-addConsoleCommand("cvtaSETcfg", "Versions CVT-Addon", "cCVTaSetCfg", CVTaddon)
 
 ----------------------------------------------------------------------------------------------------------------------	
 ----------------------------------------------------------------------------------------------------------------------			

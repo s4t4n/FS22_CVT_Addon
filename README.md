@@ -1,13 +1,13 @@
 # FS22_CVT_Addon
 ## Download, please use the  [latest release](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
-[![Latest](https://img.shields.io/github/downloads-pre/s4t4n/FS22_CVT_Addon/latest/FS22_CVT_Addon.zip?label=Downloads%20of%20Latest)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
+[![GitHub release (by tag)](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/latest/total?label=Latest%20Version%20Downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![GitHub all releases](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/total?label=Total%20downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
-[![Last update](https://img.shields.io/github/release-date-pre/s4t4n/FS22_CVT_Addon?label=Last%20update)](#)
-[![GitHub release (with filter)](https://img.shields.io/github/v/release/s4t4n/FS22_CVT_Addon?label=Latests%20Version)](#) \
+[![Last update](https://img.shields.io/github/release-date-pre/s4t4n/FS22_CVT_Addon?label=Last%20update)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
+[![GitHub release (with filter)](https://img.shields.io/github/v/release/s4t4n/FS22_CVT_Addon?label=Latests%20Version)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip) \
 [![GitHub Repo stars](https://img.shields.io/github/stars/s4t4n/FS22_CVT_Addon)](#)
 [![GitHub User's stars](https://img.shields.io/github/stars/s4t4n?label=All%20stars)](#)
 [![GitHub watchers](https://img.shields.io/github/watchers/s4t4n/FS22_CVT_Addon)](#)
-[![GitHub forks](https://img.shields.io/github/forks/s4t4n/FS22_CVT_Addon)]()
+[![GitHub forks](https://img.shields.io/github/forks/s4t4n/FS22_CVT_Addon)](#)
 [![GitHub followers](https://img.shields.io/github/followers/s4t4n)](#) \
 [![issues](https://img.shields.io/github/issues/s4t4n/FS22_CVT_Addon)](https://github.com/s4t4n/FS22_CVT_Addon/issues)
 [![language count](https://img.shields.io/github/languages/count/s4t4n/FS22_CVT_Addon)](#)

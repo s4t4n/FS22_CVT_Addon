@@ -15,7 +15,8 @@
 [![issues](https://img.shields.io/github/issues/s4t4n/FS22_CVT_Addon)](https://github.com/s4t4n/FS22_CVT_Addon/issues)
 [![language count](https://img.shields.io/github/languages/count/s4t4n/FS22_CVT_Addon)](#)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/s4t4n/FS22_CVT_Addon)](#)
-[![GitHub top language](https://img.shields.io/github/languages/top/s4t4n/FS22_CVT_Addon)](#) 
+[![GitHub top language](https://img.shields.io/github/languages/top/s4t4n/FS22_CVT_Addon)](#) \
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/s4t4n)](https://www.tipeeestream.com/sbshs4t4n/donation)
 
 [![Discord](https://img.shields.io/discord/660942481118199811?logo=discord&logoColor=%23ffffff&label=SbSh-PooL%20Discord)](https://discord.gg/mfergkwhDu) \
 [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UC_Yn6bN1MMyd7Sn8wUyXnIg) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UC_Yn6bN1MMyd7Sn8wUyXnIg)](https://www.youtube.com/@SbSh-Modastian) \

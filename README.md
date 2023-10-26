@@ -24,6 +24,8 @@ Instructions how to download the code and use it as modfile zip here -> [Wiki: H
 
 ![CVTa_github](https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/f3f66c42-fe3e-419c-b4f7-552e2ebe2ea6)
 
+[![YouTube Video Views](https://img.shields.io/youtube/views/lhM3yu9weCI?logo=youtube&label=Technical%20Tutorial%20-%20Teil%201)](#) \
+[![Watch the video](https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=lhM3yu9weCI)
 
 https://discord.gg/mfergkwhDu 
 
@@ -197,4 +199,3 @@ Wichtig:
 
 
 [![Watch the video](https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg)](https://www.youtube.com/watch?v=rdKwO8u5Zd0)
-

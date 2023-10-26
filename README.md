@@ -22,13 +22,13 @@
 [![Twitch Status](https://img.shields.io/twitch/status/sbsh_modasti4n?logo=twitch&label=sbsh_modasti4n%20Live-Stream%20now&labelColor=%23ffffff&color=%23aa11ff)](https://www.twitch.tv/sbsh_modasti4n)
 
 Also you can watch it live in progress at AgrarPlay streams:
-[![Twitch Status](https://img.shields.io/twitch/status/agrarplay?logo=twitch&label=agrarplay%20Live-Stream%20now&labelColor=%23aaaaaa&color=%23aa55ff)](https://www.twitch.tv/agrarplay)
+[![Twitch Status](https://img.shields.io/twitch/status/agrarplay?logo=twitch&label=agrarplay%20Live-Stream%20now&labelColor=%23aaaaaa&color=%23aa55ff)](https://www.twitch.tv/agrarplay?target=_blank)
 
 Instructions how to download the code and use it as modfile zip here -> [Wiki: How to download and use master code](https://github.com/s4t4n/FS22_CVT_Addon/wiki/How-to-download-and-use-master-code)
 
 [![YouTube Video Views](https://img.shields.io/youtube/views/lhM3yu9weCI?logo=youtube&label=Technical%20Tutorial%20-%20Teil%201)](#)
 <div align="left">
-  <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
+  <a href="https://www.youtube.com/watch?v=lhM3yu9weCI?target=_blank" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
 </div>
 
 [#deutsch](#deutsch)   [#english](#english)   [to the top](#FS22_CVT_Addon)

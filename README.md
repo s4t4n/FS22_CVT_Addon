@@ -31,7 +31,7 @@ Instructions how to download the code and use it as modfile zip here -> [Wiki: H
   <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
 </div>
 
-[#deutsch](#deutsch)  [#english](#english)  [to the top](#FS22_CVT_Addon)
+[#deutsch](#deutsch)   [#english](#english)   [to the top](#FS22_CVT_Addon)
 
 ### english
 
@@ -110,7 +110,9 @@ Important:
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
 
-### deutsch  [english](#english)
+
+[goto english](#english)
+### deutsch  
 
 Dieses Skript berechnet je nach Einstellung die Motorbremswirkung völlig neu
 
@@ -203,4 +205,6 @@ Wichtig:
 
 [nach oben](#FS22_CVT_Addon)
 
-[![Watch the video](https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg)](https://www.youtube.com/watch?v=rdKwO8u5Zd0)
+<div align="left">
+  <a href="https://www.youtube.com/watch?v=rdKwO8u5Zd0" target="_blank"><img src="https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
+</div>

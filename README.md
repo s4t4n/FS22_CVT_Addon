@@ -1,4 +1,9 @@
 # FS22_CVT_Addon
+
+[#deutsch](deutsch) [#english](english)
+
+<img src="https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/f3f66c42-fe3e-419c-b4f7-552e2ebe2ea6" alt="" width="400"/>
+
 ## Download, please use the  [latest release](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![GitHub release (by tag)](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/latest/total?label=Latest%20Version%20Downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![GitHub all releases](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/total?label=Total%20downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
@@ -16,25 +21,23 @@
 
 [![Discord](https://img.shields.io/discord/660942481118199811?logo=discord&logoColor=%23ffffff&label=SbSh-PooL%20Discord)](https://discord.gg/mfergkwhDu) \
 [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UC_Yn6bN1MMyd7Sn8wUyXnIg) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UC_Yn6bN1MMyd7Sn8wUyXnIg)](https://www.youtube.com/@SbSh-Modastian) \
-[![Twitch Status](https://img.shields.io/twitch/status/sbsh_modasti4n?logo=twitch&label=sbsh_modasti4n%20Live-Stream%20now&labelColor=%23ffffff&color=%23aa55ff)](https://www.twitch.tv/sbsh_modasti4n)
+[![Twitch Status](https://img.shields.io/twitch/status/sbsh_modasti4n?logo=twitch&label=sbsh_modasti4n%20Live-Stream%20now&labelColor=%23ffffff&color=%23aa11ff)](https://www.twitch.tv/sbsh_modasti4n)
 
-
-
+Also you can watch it live in progress at AgrarPlay streams:
+[![Twitch Status](https://img.shields.io/twitch/status/agrarplay?logo=twitch&label=agrarplay%20Live-Stream%20now&labelColor=%23aaaaaa&color=%23aa55ff)](https://www.twitch.tv/agrarplay)
 
 Instructions how to download the code and use it as modfile zip here -> [Wiki: How to download and use master code](https://github.com/s4t4n/FS22_CVT_Addon/wiki/How-to-download-and-use-master-code)
 
-![CVTa_github](https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/f3f66c42-fe3e-419c-b4f7-552e2ebe2ea6)
 
 [![YouTube Video Views](https://img.shields.io/youtube/views/lhM3yu9weCI?logo=youtube&label=Technical%20Tutorial%20-%20Teil%201)](#) \
-[![Watch the video](https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg)](https://www.youtube.com/watch?v=lhM3yu9weCI)
+<div align="left">
+  <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
+</div>
 
-https://discord.gg/mfergkwhDu 
 
-#english
-#deutsch
+### english
 
 Known issues:
-- multiplayer* is in sync. but the driving feeling have to be readjust at rpm - I'm on it.
 - Neutral doesnt work correct in multiplayer, because of a bug(giants part), can't sync the lastDirection
 
 *A very big thanks goes to Glowin, for fixing the mp sync issue.
@@ -108,6 +111,8 @@ Important:
 
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
+
+### deutsch
 
 Dieses Skript berechnet je nach Einstellung die Motorbremswirkung völlig neu
 

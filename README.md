@@ -31,7 +31,7 @@ Instructions how to download the code and use it as modfile zip here -> [Wiki: H
   <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
 </div>
 
-[#deutsch](#deutsch) [#english](#english)
+[#deutsch](#deutsch)  [#english](#english)  [to the top](#FS22_CVT_Addon)
 
 ### english
 
@@ -110,7 +110,7 @@ Important:
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
 
-### deutsch
+### deutsch  [english](#english)
 
 Dieses Skript berechnet je nach Einstellung die Motorbremswirkung völlig neu
 
@@ -201,5 +201,6 @@ Wichtig:
 - U.a. zusammen mit realismAddon_GearBox von modelleicher, macht es noch mehr Sinn alles so real/manuell wie möglich einzustellen.
 - CVT-Addon sollte aktiv benutzt werden und nicht nur ein "es läuft im Hintergund" mod ( für die jeweilige Anwendung anpassen )
 
+[nach oben](#FS22_CVT_Addon)
 
 [![Watch the video](https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg)](https://www.youtube.com/watch?v=rdKwO8u5Zd0)

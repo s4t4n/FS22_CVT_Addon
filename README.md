@@ -1,4 +1,26 @@
 # FS22_CVT_Addon
+## Download, please use the  [latest release](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
+[![Latest](https://img.shields.io/github/downloads-pre/s4t4n/FS22_CVT_Addon/latest/FS22_CVT_Addon.zip?label=Downloads%20of%20Latest)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
+[![GitHub all releases](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/total?label=Total%20downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
+[![Last update](https://img.shields.io/github/release-date-pre/s4t4n/FS22_CVT_Addon?label=Last%20update)](#)
+[![GitHub release (with filter)](https://img.shields.io/github/v/release/s4t4n/FS22_CVT_Addon?label=Latests%20Version)](#) \
+![GitHub Repo stars](https://img.shields.io/github/stars/s4t4n/FS22_CVT_Addon)
+![GitHub User's stars](https://img.shields.io/github/stars/s4t4n?label=All%20stars)
+![GitHub watchers](https://img.shields.io/github/watchers/s4t4n/FS22_CVT_Addon)
+![GitHub forks](https://img.shields.io/github/forks/s4t4n/FS22_CVT_Addon)
+![GitHub followers](https://img.shields.io/github/followers/s4t4n) \
+[![issues](https://img.shields.io/github/issues/s4t4n/FS22_CVT_Addon)](https://github.com/s4t4n/FS22_CVT_Addon/issues)
+[![language count](https://img.shields.io/github/languages/count/s4t4n/FS22_CVT_Addon)](#)
+[![GitHub top language](https://img.shields.io/github/languages/top/s4t4n/FS22_CVT_Addon)](#) 
+
+[![Discord](https://img.shields.io/discord/660942481118199811?logo=discord&logoColor=%23ffffff&label=SbSh-PooL%20Discord)](https://discord.gg/mfergkwhDu) \
+[![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UC_Yn6bN1MMyd7Sn8wUyXnIg) ![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UC_Yn6bN1MMyd7Sn8wUyXnIg)](https://www.youtube.com/@SbSh-Modastian) \
+[![Twitch Status](https://img.shields.io/twitch/status/sbsh_modasti4n?logo=twitch&label=sbsh_modasti4n%20Live-Stream%20now&labelColor=%23ffffff&color=%23aa55ff)](https://www.twitch.tv/sbsh_modasti4n)
+
+
+
+
+Instructions how to download the code and use it as modfile zip here -> [Wiki: How to download and use master code](https://github.com/s4t4n/FS22_CVT_Addon/wiki/How-to-download-and-use-master-code)
 
 ![CVTa_github](https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/f3f66c42-fe3e-419c-b4f7-552e2ebe2ea6)
 

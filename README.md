@@ -11,6 +11,7 @@
 [![GitHub followers](https://img.shields.io/github/followers/s4t4n)](#) \
 [![issues](https://img.shields.io/github/issues/s4t4n/FS22_CVT_Addon)](https://github.com/s4t4n/FS22_CVT_Addon/issues)
 [![language count](https://img.shields.io/github/languages/count/s4t4n/FS22_CVT_Addon)](#)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/s4t4n/FS22_CVT_Addon)](#)
 [![GitHub top language](https://img.shields.io/github/languages/top/s4t4n/FS22_CVT_Addon)](#) 
 
 [![Discord](https://img.shields.io/discord/660942481118199811?logo=discord&logoColor=%23ffffff&label=SbSh-PooL%20Discord)](https://discord.gg/mfergkwhDu) \

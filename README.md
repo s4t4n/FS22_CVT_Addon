@@ -1,6 +1,6 @@
 # FS22_CVT_Addon
 
-[#deutsch](deutsch) [#english](english)
+[#deutsch](#deutsch) [#english](#english)
 
 <img src="https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/f3f66c42-fe3e-419c-b4f7-552e2ebe2ea6" alt="" width="400"/>
 

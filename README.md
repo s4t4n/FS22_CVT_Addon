@@ -31,7 +31,7 @@ Instructions how to download the code and use it as modfile zip here -> [Wiki: H
   <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
 </div>
 
-[#deutsch](#deutsch)   [#english](#english)   [to the top](#FS22_CVT_Addon){:target="_blank" rel="noopener"}
+[#deutsch](#deutsch)   [#english](#english)   [to the top](#FS22_CVT_Addon)
 
 ### english
 

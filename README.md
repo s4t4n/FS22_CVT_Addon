@@ -26,9 +26,9 @@ Also you can watch it live in progress at AgrarPlay streams:
 
 Instructions how to download the code and use it as modfile zip here -> [Wiki: How to download and use master code](https://github.com/s4t4n/FS22_CVT_Addon/wiki/How-to-download-and-use-master-code)
 
-[![YouTube Video Views](https://img.shields.io/youtube/views/lhM3yu9weCI?logo=youtube&label=Technical%20Tutorial%20-%20Teil%201)](#) \
+[![YouTube Video Views](https://img.shields.io/youtube/views/lhM3yu9weCI?logo=youtube&label=Technical%20Tutorial%20-%20Teil%201)](#)
 <div align="left">
-  <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
+  <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
 </div>
 
 [#deutsch](#deutsch)   [#english](#english)   [to the top](#FS22_CVT_Addon)
@@ -206,5 +206,5 @@ Wichtig:
 [nach oben](#FS22_CVT_Addon)
 
 <div align="left">
-  <a href="https://www.youtube.com/watch?v=rdKwO8u5Zd0" target="_blank"><img src="https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
+  <a href="https://www.youtube.com/watch?v=rdKwO8u5Zd0" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
 </div>

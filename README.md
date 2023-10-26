@@ -7,7 +7,7 @@
 [![GitHub Repo stars](https://img.shields.io/github/stars/s4t4n/FS22_CVT_Addon)](#)
 [![GitHub User's stars](https://img.shields.io/github/stars/s4t4n?label=All%20stars)](#)
 [![GitHub watchers](https://img.shields.io/github/watchers/s4t4n/FS22_CVT_Addon)](#)
-[![GitHub forks](https://img.shields.io/github/forks/s4t4n/FS22_CVT_Addon)](#)
+[![GitHub forks](https://img.shields.io/github/forks/s4t4n/FS22_CVT_Addon)]()
 [![GitHub followers](https://img.shields.io/github/followers/s4t4n)](#) \
 [![issues](https://img.shields.io/github/issues/s4t4n/FS22_CVT_Addon)](https://github.com/s4t4n/FS22_CVT_Addon/issues)
 [![language count](https://img.shields.io/github/languages/count/s4t4n/FS22_CVT_Addon)](#)

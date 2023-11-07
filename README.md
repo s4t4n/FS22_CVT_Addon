@@ -42,9 +42,6 @@ Known issues:
 *A very big thanks goes to Glowin, for fixing the mp sync issue.
 
 LessMotorBrakeforce to new Edition CVT_Addon 
-by SbSh(Modastian) and Frvetz
-also in credits: modelleicher
-
 
 Depending on the setting, this script completely recalculates the engine braking effect
 

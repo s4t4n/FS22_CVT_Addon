@@ -19,7 +19,7 @@ end
 ---Create new instance of event
 -- @param table vehicle vehicle
 -- @param integer state state
-function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, autoDiffs, lastDirection, isVarioTM, isTMSpedal, moveRpmL, rpmDmax, rpmrange, CVTconfig, warnHeat, critHeat, warnDamage, critDamage, CVTdamage, HandgasPercent, ClutchInputValue)
+function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, autoDiffs, lastDirection, isVarioTM, isTMSpedal, PedalResolution, rpmDmax, rpmrange, CVTconfig, warnHeat, critHeat, warnDamage, critDamage, CVTdamage, HandgasPercent, ClutchInputValue)
     local self = SyncClientServerEvent.emptyNew()
     self.vOne = vOne
     self.vTwo = vTwo
@@ -30,7 +30,7 @@ function SyncClientServerEvent.new(vehicle, vOne, vTwo, vThree, vFour, vFive, au
     self.lastDirection = lastDirection
     self.isVarioTM = isVarioTM
     self.isTMSpedal = isTMSpedal
-    self.moveRpmL = moveRpmL -- placeholder
+    self.PedalResolution = PedalResolution -- placeholder
     self.rpmDmax = rpmDmax
     self.rpmrange = rpmrange
     self.CVTconfig = CVTconfig
@@ -60,7 +60,7 @@ function SyncClientServerEvent:readStream(streamId, connection)
     self.lastDirection = streamReadInt32(streamId)
     self.isVarioTM = streamReadBool(streamId)
     self.isTMSpedal = streamReadInt32(streamId)
-    self.moveRpmL = streamReadFloat32(streamId)
+    self.PedalResolution = streamReadInt32(streamId)
     self.rpmDmax = streamReadInt32(streamId)
     self.rpmrange = streamReadInt32(streamId)
     self.CVTconfig = streamReadInt32(streamId)
@@ -89,7 +89,7 @@ function SyncClientServerEvent:writeStream(streamId, connection)
     streamWriteInt32(streamId, self.autoDiffs)
     streamWriteInt32(streamId, self.lastDirection)
     streamWriteInt32(streamId, self.isTMSpedal)
-    streamWriteFloat32(streamId, self.moveRpmL)
+    streamWriteInt32(streamId, self.PedalResolution)
     streamWriteInt32(streamId, self.rpmDmax)
     streamWriteInt32(streamId, self.rpmrange)
     streamWriteInt32(streamId, self.CVTconfig)
@@ -108,9 +108,9 @@ end
 -- @param integer connection connection
 function SyncClientServerEvent:run(connection)
     if self.vehicle ~= nil and self.vehicle:getIsSynchronized() then
-        CVTaddon.SyncClientServer(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.moveRpmL, self.rpmDmax, self.rpmrange, self.CVTconfig, self.warnHeat, self.critHeat, self.warnDamage, self.critDamage, self.CVTdamage, self.HandgasPercent, self.ClutchInputValue)
+        CVTaddon.SyncClientServer(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig, self.warnHeat, self.critHeat, self.warnDamage, self.critDamage, self.CVTdamage, self.HandgasPercent, self.ClutchInputValue)
 		if not connection:getIsServer() then --
-			g_server:broadcastEvent(SyncClientServerEvent.new(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.moveRpmL, self.rpmDmax, self.rpmrange, self.CVTconfig, self.warnHeat, self.critHeat, self.warnDamage, self.critDamage, self.CVTdamage, self.HandgasPercent, self.ClutchInputValue), nil, connection, self.vehicle)
+			g_server:broadcastEvent(SyncClientServerEvent.new(self.vehicle, self.vOne, self.vTwo, self.vThree, self.vFour, self.vFive, self.autoDiffs, self.lastDirection, self.isVarioTM, self.isTMSpedal, self.PedalResolution, self.rpmDmax, self.rpmrange, self.CVTconfig, self.warnHeat, self.critHeat, self.warnDamage, self.critDamage, self.CVTdamage, self.HandgasPercent, self.ClutchInputValue), nil, connection, self.vehicle)
 		end
     end
 end

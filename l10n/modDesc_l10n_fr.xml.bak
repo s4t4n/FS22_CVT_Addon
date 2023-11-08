@@ -25,8 +25,6 @@
 		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Toggle Drivinglevel"/>
 		<text name="input_SETVARION" 				text="CVTa: Neutre"/>
 		<text name="input_SETVARIOADIFFS" 			text="CVTa: AWD et DIFF Automatique"/>
-		<text name="input_SETVARIORPM_AXIS"			text="CVTa: Motordrehzahl Achse"/>
-		<text name="input_SETVARIOCLUTCH_AXIS"		text="CVTa: Clutch (Doublebinding)"/>															  
 		<text name="input_SETVARIORPMP" 			text="CVTa: Augmenter régime moteur"/>
 		<text name="input_SETVARIORPMM" 			text="CVTa: Diminuer régime moteur"/>
 		<text name="input_SETVARIORPMDMAX" 			text="CVTa: Limiteur régime moteur"/>
@@ -46,9 +44,6 @@
 		<text name="txt_bRamp5" 					text="FR 17"/>
 		
 		<text name="txt_vcaInfo" 					text="Merci de configurer le Frein moteur à 100% dans VCA et de désactiver Modification du régime moteur"/>
-		<text name="txt_needClutch2start" 			text="Press clutch to start the engine."/>
-		<text name="txt_needBrake2start" 			text="Light press gaspedal to start the engine and release it after started."/>
-		<text name="txt_needNoHG2start" 			text="Turn off Handgas to start the engine."/>																		 
 		<text name="txt_attCVTpressure" 			text="Attention, pression trop élevée dans la transmision. Vérifier la température"/>
 		<text name="txt_warn_tofastDn" 				text="Trop vite! Changez de vitesse à une vitesse maximale de 10 km/h, sinon la transmission sera endommagée"/>
 		<text name="txt_warn_tofastUp" 				text="Prudence! Changez de vitesse à une vitesse maximale de 10 km/h, arrêtez-vous de préférence un instant."/>

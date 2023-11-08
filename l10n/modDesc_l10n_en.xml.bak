@@ -47,7 +47,7 @@
 		
 		<text name="txt_vcaInfo" 					text="The Low Brake Force was set to 100% in VCA and the engine modifications were disabled. You can reactivate the latter as you wish, depending on the vehicle it works more or less."/>
 		<text name="txt_needClutch2start" 			text="Press clutch to start the engine."/>
-		<text name="txt_needBrake2start" 			text="Pull handbrake to start the engine."/>
+		<text name="txt_needBrake2start" 			text="Light press gaspedal to start the engine and release it after started."/>
 		<text name="txt_needNoHG2start" 			text="Turn off Handgas to start the engine."/>
 		<text name="txt_attCVTpressure" 			text="Caution, too much pressure in the powertrain. Watch temp."/>
 		<text name="txt_warn_tofastDn" 				text="Too fast! Change gears at a maximum of 10 km/h, otherwise the transmission will be damaged."/>

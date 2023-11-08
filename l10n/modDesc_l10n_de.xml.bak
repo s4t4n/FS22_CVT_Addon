@@ -47,7 +47,7 @@
 		
 		<text name="txt_vcaInfo" 					text="Die Niedrige Bremskraft wurde in VCA auf 100% eingestellt und die Motormodifikationen deaktiviert. Letzteres kannst du belieben wieder aktivieren, je nach Fahrzeug funktioniert es mehr oder weniger."/>
 		<text name="txt_needClutch2start" 			text="Kupplung treten zum Motor starten."/>
-		<text name="txt_needBrake2start" 			text="Handbremse anziehen zum Motor starten."/>
+		<text name="txt_needBrake2start" 			text="Gaspedal leicht betätigen zum Motor starten und danach sofort wieder lösen."/>
 		<text name="txt_needNoHG2start" 			text="Handgas raus zum Motor starten."/>
 		<text name="txt_attCVTpressure" 			text="Achtung, Zu hoher Druck im Triebsatz. Temp. beobachten."/>
 		<text name="txt_warn_tofastDn" 				text="Zu schnell! Fahrstufenwechsel maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden."/>

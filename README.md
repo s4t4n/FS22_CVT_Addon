@@ -32,6 +32,12 @@ Instructions how to download the code and use it as modfile zip here -> [Wiki: H
   <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
 </div>
 
+[![YouTube Video Views](https://img.shields.io/youtube/views/pxxFl0TlcxY?logo=youtube&label=Technical%20Tutorial%20-%20Teil%202)](#)
+<div align="left">
+  <a href="https://www.youtube.com/watch?v=pxxFl0TlcxY" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/pxxFl0TlcxY/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
+</div>
+
+
 [#deutsch](#deutsch)   [#english](#english)   [to the top](#FS22_CVT_Addon)
 
 ### english

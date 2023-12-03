@@ -6,7 +6,7 @@
 [![GitHub release (by tag)](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/latest/total?label=Latest%20Version%20Downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![GitHub all releases](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/total?label=Total%20downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![Last update](https://img.shields.io/github/release-date-pre/s4t4n/FS22_CVT_Addon?label=Last%20update)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
-[![GitHub release (with filter)](https://img.shields.io/github/v/release/s4t4n/FS22_CVT_Addon?label=Latests%20Version)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip) \
+[![GitHub release (with filter)](https://img.shields.io/github/v/release/s4t4n/FS22_CVT_Addon?label=Latests%20Script%20Version)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip) \
 [![GitHub Repo stars](https://img.shields.io/github/stars/s4t4n/FS22_CVT_Addon)](#)
 [![GitHub User's stars](https://img.shields.io/github/stars/s4t4n?label=All%20stars)](#)
 [![GitHub watchers](https://img.shields.io/github/watchers/s4t4n/FS22_CVT_Addon)](#)

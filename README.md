@@ -88,9 +88,6 @@ Important:
  - Automatic engine start must be “off”.
  
 
-
-![CVT_Addon_Explain](https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/090a90af-d47a-455d-a59b-b9fea431db5c)
-
 ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
 

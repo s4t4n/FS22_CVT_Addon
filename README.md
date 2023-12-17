@@ -82,6 +82,7 @@ Important:
  - Together with realismAddon_GearBox from modelleicher, it makes even more sense to set everything as real/manually as possible.
  - CVT addon should be used actively and not just a "it runs in the background" mod (adapt for the respective application)
  - For the temperature to work in multiplayer, DashboardLive must be active.
+ - Automatic engine start must be “off”.
  
 
 
@@ -131,6 +132,7 @@ Wichtig:
 - U.a. zusammen mit realismAddon_GearBox von modelleicher, macht es noch mehr Sinn alles so real/manuell wie möglich einzustellen.
 - CVT-Addon sollte aktiv benutzt werden und nicht nur ein "es läuft im Hintergund" mod ( für die jeweilige Anwendung anpassen )
 - Damit die Temperatur im Multiplayer funktioniert, muß DashbordLive aktiv sein.
+- Automatische Motorstart muß "aus" sein.
 
 [nach oben](#FS22_CVT_Addon)
 

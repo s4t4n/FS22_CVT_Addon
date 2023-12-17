@@ -7,6 +7,10 @@
 [![GitHub all releases](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/total?label=Total%20downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![Last update](https://img.shields.io/github/release-date-pre/s4t4n/FS22_CVT_Addon?label=Last%20update)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![GitHub release (with filter)](https://img.shields.io/github/v/release/s4t4n/FS22_CVT_Addon?label=Latests%20Script%20Version)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip) \
+
+[![Modhub Version (latest by date)](https://img.shields.io/badge/dynamic/xml?color=blue&style=flat-square&label=Modhub+Version&prefix=v&query=%2F%2Fdiv%5B%40class%3D%27table-cell%27%5D%5B2%5D%5Bcontains%28text%28%29%2C%221.%22%29%5D&url=https%3A%2F%2Fwww.farming-simulator.com%2Fmod.php%3Flang%3Dde%26country%3Dde%26mod_id%3D269645%26title%3Dfs2022)](https://www.farming-simulator.com/mod.php?lang=de&country=de&mod_id=269645&title=fs2022)
+[![Modhub Datum (latest by date)](https://img.shields.io/badge/dynamic/xml?color=blue&style=flat-square&label=Modhub+Datum&query=%2F%2Fdiv%5B%40class%3D%27table-cell%27%5D%5B2%5D%5Bcontains%28text%28%29%2C%22.2023%22%29%5D&url=https%3A%2F%2Fwww.farming-simulator.com%2Fmod.php%3Flang%3Dde%26country%3Dde%26mod_id%3D269645%26title%3Dfs2022)](https://www.farming-simulator.com/mod.php?lang=de&country=de&mod_id=269645&title=fs2022)
+
 [![GitHub Repo stars](https://img.shields.io/github/stars/s4t4n/FS22_CVT_Addon)](#)
 [![GitHub User's stars](https://img.shields.io/github/stars/s4t4n?label=All%20stars)](#)
 [![GitHub watchers](https://img.shields.io/github/watchers/s4t4n/FS22_CVT_Addon)](#)

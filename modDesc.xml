@@ -1,135 +1,227 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="77">
+<modDesc descVersion="79">
     <author>SbSh</author>
-	<contributor>Glowin</contributor>
-	<version>0.9.9.75</version>
+	<contributor>Glowin, frvetz, AgrarPlay - LUWZ</contributor>
+	<version>1.0.0.01</version>
 	<title>
         <en>CVT Addon</en>
-        <de>CVT Addon</de>
     </title>
 
     <description>
         <en>
-<![CDATA[This script completely recalculates the engine braking effect depending on the setting
-and adds various options for Vario and CVT transmissions.
-The calculations depend on various factors - e.g.:
-  speeds
-  Weight & weight of equipment and trailers and their filling
-  Surface, tires, friction
-  Engine speed
-  Engine performance/hp class (displacement would be nice, unfortunately not available in the LS)
-  wind
-  Vehicle condition
-There are 2 speed levels, II. is intended for road trips, transport and light work. Level I. more for heavy field work and heavy transport.
-The maximum speed is also reduced and the torque provides more thrust, especially when starting off.
-A key assignment must be assigned for each level. Changing the driving ranges should be done while stationary,
-as damage can also occur here. *Little tip if you use the group switching buttons for up/down,
-you can use the same buttons for the speed levels. Furthermore, there is now an acceleration ramp in 4 levels,
-which can be switched through with a button. This influences the acceleration behavior when accelerating and reducing the driving speed.
-Gentle and with feeling or full power and rough. With heavy equipment or trailers,
-High pressures can occur in the planetary gear and damage can occur! Here the acceleration ramp should be set to 3 or less.
-Level 4 is more suitable for empty trips.
-For light field work, you can safely pull on speed level 1 in acceleration ramp 4 - for example, disc harrow, flat cultivator.
-Some vehicles / implements have a hydrostatic drive in speed level 1. Which vehicles should or should have this?
-you are welcome to give me feedback. In order not to miss out on the convenient setting options, you can also change the braking ramp.
-There is also a button that can be used to switch between 5 levels.
-The braking ramp in different speed levels of 1 km/h (standard) 4, 8, 15 and 17 km/h causes
-that when the accelerator pedal or driving joystick is released, the engine braking effect is supported by the service brake from the set braking ramp.
-This can be helpful for shunting or front loader work - or simply for stop & go road trips. Manually shifted transmissions are not affected.
-Then there is the TMS “Pedal” mode, with this you can control the pedal resolution. I.e. set the maximum speed of the pedal.
-With the cruise control deactivated, you can set the levels there. Example 1 could be a maximum of 3 km/h. The Padal then reacts in percentage terms,
-i.e. 50% pedal travel corresponds to 6 km/h at a maximum of 12 km/h.
-Digital hand throttle only has a decorative function - but together with it
-e.g. RealismAddon_rpmAnimSpeeds is then used to control, among other things, the hydraulic and PTO performance.
-Improper operation can lead to higher temperatures, pressures and even damage to the gearbox!
-New function (VCA required), automatic differential lock depending on steering angle and four-wheel drive depending on speed in gear I. for field work
-with additional automatic preselection from DL II. to DL I.
-(You have to assign a new key for this)
-
-My script "Reduced engine braking effect" is no longer needed with this new edition or should not be used together.
-
-EV: 100%
-     no restrictions
-
-VCA: 99%
-     Update VCA to build 130 or higher
-     The vca:engine modification should be turned off
-     then it is 100%
-
-realismAddon_Gearbox: 100%
-     no restrictions
-     Complements each other in the two types of transmission.
+<![CDATA[This script adds all vehicles with continuously variable transmissions
+a genuine CVT transmission or hydrostatic transmission.
+This can be configured in the shop. You can also choose between a classic
+or modern variant.
+- Realistically, it is always selected to match the vehicle.
 
 Important:
-     All settings in the LS must be set to manual.
-     Manual gearshift and clutch.
-     No automatic controls may be active. If you want to drive realistically, you do that anyway.
-     Together with realismAddon_GearBox from modelleicher, among other things, it makes even more sense to set everything as realistically/manually as possible.
-     CVT addon should be used actively and not just a “it runs in the background” mod (adapt for the respective application)
+ The key bindings for the CVT add-on must first be assigned.
+ All settings in the LS should be set to manual.
+ Manual shifting and clutch.
+ No automatic control systems may be active.
+ If you want to drive realistically, you will do this anyway.
+ The CVT addon should be actively used and not just a "it runs in the background" mod
+ (customise for the respective application)
 
-GITHUB: https://github.com/s4t4n/FS22_CVT_Addon
+Setting options:
+ General CVT:
+ -4 acceleration ramps can be set.
+ -Braking ramps can also be set.
+ -TMS pedal mode can be activated.
+ -Automatic differential lock can be activated or preselected. This requires the mod
+  FS22_VehicleControlAddon or FS22_EnhancedVehicle is required.
+ -Efficient working with the machine at maximum power.
+ -To be able to start the engine, the clutch must be actuated
+  a button or a clutch pedal must be assigned for this purpose.
+  This may also be the same clutch that is used for manual transmissions.
+ Classic CVT:
+ -2 driving ranges can be shifted here.
+ Modern CVT:
+ -The driving ranges shift automatically.
+ -The parking brake is activated as soon as you move away from the driver's seat.
+  FS22_VehicleControlAddon or FS22_EnhancedVehicle required.
+ -Low-speed concept, enables even more eficient working.
+ -Convenient operation thanks to fewer required setting parameters.
+ Hydrostat and HST drive:
+ -The 2 basic variants are selected by switching the drive ranges.
+ -In this configuration, the single acceleration ramps are declared as speed levels.
+ -Both hydraulic drive types can be set in motion by a percentage accelerator pedal.
+  With the hydrostat (the older or simple variant), the hand throttle must be used to
+  A. reach the final speed,
+  B. increase the hydraulic pump capacity, e.g. to increase the speed and lifting power
+  of the frontloader on the yard or wheelloader
+  to achieve more speed and lifting power.
+ -In the newer version, this is largely regulated automatically,
+  but the hand throttle can still be used to
+  to carry out front loader work more agilely.
+ -If FS22_VehicleControlAddon is active,
+  the parking brake must be applied to start the engine.
+ Heat, overheating and wear:
+ -Engines must first run warm enough to avoid generating increased wear under load.
+ -Improper use and incorrect adjustment when driving, especially under load,
+  can cause the gearbox to wear out more quickly.
+ -If the pressure is too high, the gearbox can overheat and thus cause wear.
+ -The engine temperatures are only synchronised with FS22_DashboardLive in Multiplayer!
+  DBL must be active at least with .
+
+Influence on the functions and functions that create influence:
+ The engine braking effect:
+ -Is calculated dynamically by various factors. Among other things, weight, speed, wind,
+  incline or decline play a role, engine power (unfortunately not cubic capacity),
+  engine speed range and speed, etc. play a role.
+  Also depending on which acceleration ramp is selected.
+
+ Starting the engine:
+  For continuously variable vehicles, the clutch must be depressed,
+  which must be assigned separately - i.e. the same input,
+  which is also the normal clutch. In hydrostatic configuration, if VCA is active
+  the handbrake must be applied in order to start the engine.
+  In addition, the hand throttle must not be pulled up, it must be set to 0.
+
+ Driving ranges:
+  There are 2 driving ranges, II. is intended for road travel, transport and light work.
+  Stage I. is more for heavy field work and heavy transport.
+  Here the maximum speed is also reduced and the torque provides more thrust,
+  especially when starting off.
+  A button assignment must be assigned for each level.
+  The driving ranges should be changed when the machine is stationary,
+  as this can also cause damage. *A little tip, if you use the group shift buttons for up/down,
+  you can use the same buttons for the speed steps.
+  A special feature of the "modern" configuration is that the driving ranges are regulated.
+
+ Acceleration ramps:
+  Furthermore, there is now an acceleration ramp in 4 stages, which can be switched through with one button.
+  This influences the acceleration behaviour when accelerating and reducing the driving speed.
+  Smooth and with feeling or full power and rough. With heavy implements or trailers,
+  can cause high pressure in the planetary gearbox and damage it!
+  In this case, the acceleration ramp should be set to 3 or less.
+  Level 4 is more suitable for empty runs.
+  For light field work, you can easily pull at speed level 1 in acceleration ramp 4 - for example, disc harrow, flat cultivator.
+
+Further detailed explanations of the details
+can be found in the Escape help menu and
+in the Wiki on Github, as well as tutorial videos.
+
+Almost all values and settings can be used with FS22_DashboardLive.
+More detailed informations about it at the wiki on Github.
+
+Feel free to provide ideas, feedback and reports at <a href"https://github.com/s4t4n/FS22_CVT_Addon">Github: FS22_CVT_Addon</a> please.
+
 
 ]]></en>
         <de>
-<![CDATA[Dieses Skript berechnet je nach Einstellung die Motorbremswirkung völlig neu
-und fügt diverse Optionen für Vario und CVT Getriebe hinzu.
-Die Berechnungen sind von verschiedenen Faktoren abhängig - z.B.:
- Geschwindigkeiten
- Gewicht & Gewicht angangener Geräter und Anhänger und deren Füllung
- Untergrund, Reifen, Reibung
- Motordrehzahl
- Motorleistung/ PS-Klasse (Hubraum wäre noch schön, gibt es leider nicht im LS)
- Wind
- Fahrzeugzustand
-Es gibt 2 Fahrstufen, II. ist für Straßenfahrten, Transport und leichte Arbeiten gedacht. Stufe I. eher für schwere Feldarbeiten und schwere Transporte.
-Hierbei wird auch die Maximalgeschwindigkeit reduziert und das Drehmoment sorgt vorallem beim anfahren für mehr Schub.
-Für jede Stufe ist eine Tastenbelegung zu vergeben. Das wechseln der Fahrbereiche sollte im Stillstand geschehen,
-da auch hier Schäden entstehen können. *Kleiner Tipp, wenn ihr die Gruppenschaltungs-Tasten für hoch/runter nutzt,
-könnt ihr die selben Tasten für die Fahrstufen verwenden. Desweiteren gibt es nun eine Beschleunigungsrampe in 4 Stufen,
-die mit einer Taste durchgeschaltet werden können. Hier werden das Anzugverhalten beim Beschleunigen und reduzieren der Fahrgeschwindigkeit beeinflusst.
-Sanft und mit Gefühl oder volle Power und ruppig. Mit schweren Geräten oder Anhänger,
-kann es zu hohen Drücken im Planetengetriebe kommen und es kann Schaden nehmen! Hier sollte die Beschleunigungsrampe auf 3 oder weniger eingestellt werden.
-Stufe 4 ist eher für Leerfahrten geeignet.
-In der leichten Feldarbeit kann man ruhig auf Fahrstufe 1 in der Beschleunigungsrampe 4 ziehen - Beispielsweise Scheibenegge, Flachgrubber.
-Manche Fahrzeuge / Arbeitsgeräte haben einen Hydrostatischen Antrieb in der Fahrstufe 1. Welche Fahzeuge genau dies besitzen sollen oder sollten,
-könnt ihr mir gerne ein Feedback zu geben. Um Komfortable Einstellungsmöglichkeiten nicht auszulasen, kann man ebenfalls noch die Bremsrampe verändern.
-Hierzu gibt es auch wieder eine Taste mit der in 5 Stufen umgeshaltet werden kann.
-Die Bremsrampe in unterschiedlichen Geschwindigkeitsstufen von 1 km/h(Standard)4, 8, 15 und 17 km/h bewirken,
-daß beim loslassen des Fahrpedals oder Fahrjoysticks die Motorbremswirkung ab der eingestellten Bremsrampe mit der Betriebsbremse unterstützt.
-Dies kann hilfreich bei Rangier- oder Frontladerarbeiten sein - oder einfach bei Stop&Go Straßenfahrten. Manuell geschaltete Getriebe werden nicht beeinflusst.
-Dann gibt es noch den TMS "Pedal" Modus, mit diesem kann man die Pedalauflösung kontrollieren. D.h. die maximale Geschwindigkeit des Pedals festlegen.
-Mit deaktiviertem Tempomat, stellt man dort die Stufen ein. Bsp. 1 könnte max 3 km/h sein. Dazu reagiert das Padal dann prozentual,
-sprich 50% Pedalweg entspricht bei max 12 km/h, 6 km/h.
-Digitales Handgas, hat ohne weiteres nur eine Deko Funktion - jedoch zusammen mit
-z.B. RealismAddon_rpmAnimSpeeds wird damit dann u.a. die Hydraulik- und PTO-Leistung gesteuert.
-Unsachgemäße Bedienung kann zu höheren Temperaturen, Drücken und sogar Schäden im Getriebe führen!
-Neue Funktion (VCA erforderlich), automatische Differenzialsperre je nach Lenkwinkel und Allradantrieb je nach Geschwindigkeit in Fahrstufe I. für Feldarbeiten
-mit zusätzlicher automatischer Vorwahl von DL II. zu DL I.
-(Sie müssen hierfür eine neue Taste belegen)
+<![CDATA[Dieses Skript fügt allen Fahrzeugen mit stufenlosen Getrieben
+ein echtes CVT Getriebe oder auch Hydrostat Getriebe hinzu.
+Dies ist im Shop konfigurierbar. Es kann zudem zwischen klassischer
+oder moderner Variante gewählt werden.
+- Realistisch betrachtet wählt man es immer passend zum Fahrzeug aus.
 
-Mein Skript "Verringerte Motorbremswirkung" wird mit dieser Neuauflage nicht mehr benötigt, bzw. sollte nicht zusammen genutzt werden.
+Wichtiges:
+ Die Tasten für das CVT-Addon müssen erst Belegt werden.
+ Alle Einstellungen im LS sollten auf manuell gesetzt sein.
+ Manuelle Schaltung und Kupplung.
+ Es dürfen keine Automatiken für die Steuerung aktiv sein.
+ Wenn man realistisch fahren möchte, macht man das sowieso.
+ Das CVT-Addon sollte aktiv benutzt werden und nicht nur ein "es läuft im Hintergund" Mod
+ ( für die jeweilige Anwendung anpassen )
 
-EV: 100%
-    keine Einschränkungen
+Einstellungsmöglichkeiten:
+ Allgemein CVT:
+ -Es können 4 Beschleunigungsrampen eingestellt werden.
+ -Ebenso sind Bremsrampen einstellbar.
+ -TMS Pedalmodus ist aktivierbar.
+ -Automatische Differentialsperre kann aktiviert oder oder vorgewählt werden.
+  Hierzu ist der Mod FS22_VehicleControlAddon oder FS22_EnhancedVehicle nötig.
+ -Effizientes Arbeiten mit der Maschine, bei maximaler Leistung.
+ -Um den Motor starten zu können, muß die Kupplung betätigt werden,
+  hierzu muß eine Taste oder ein Kupplungpedal belegt werden.
+  Diese darf auch die gleiche Kupplung sein,
+  die für manuelle Getriebe verwendet wird.
+ 
+ Klassisches CVT:
+ -Hier können 2 Fahrbereiche umgeschalten werden.
+ 
+ Modernes CVT:
+ -Die Fahrbereiche schalten automatisch.
+ -Die Parkbremse wird aktiviert, sobald man sich vom Fahrersitz entfernt.
+  FS22_VehicleControlAddon oder FS22_EnhancedVehicle benötigt.
+ -Niedrigdrehzahl-Konzept, ermöglicht ein noch efizienteres Arbeiten.
+ -Komfortable Arbeitsweise durch weniger notwendige Einstellungsparameter.
+ 
+ Hydrostat und HST Antrieb:
+ -Die 2 Grundvarianten werden durch umschalten der Fahrbereiche gewählt.
+ -In dieser Konfiguration werden die einst Beschleunigungsrampen als Geschwinigkeits-Stufen deklariert.
+ -Beide hydraulischen Fahrantriebsarten lassen sich durch ein Prozentuales Fahrpedal in Bewegung setzen.
+  Beim Hydrostat (die ältere oder einfache Variante),
+  muß man das Handgas benutzen um
+  A. die Endgeschwindigkeit zu erreichen,
+  B. die Hydraulikpumpleistung zu erhöhen, um z.B. den Frontlader am Hof- oder Radlader
+  auf mehr Tempo und Hubkraft zu bringen.
+ -Bei der neueren Variante wird diese weitgehen automatisch geregelt, dennoch kann man mit dem Handgas
+  die Frontladerarbeiten agiler durchführen.
+ -Wenn FS22_VehicleControlAddon aktiv ist, muß hier zum Motorstarten die Parkbremse gezogen sein.
+ 
+ Hitze, Überhitzung und Verschleiß:
+ -Motoren müssen erst einmal warm genug laufen,
+  um nicht unter Last erhöhten Verschleiß zu generieren.
+ -Bei unsachgemäßer Benutzung und Falscheinstellung beim fahren,
+  vor allem unter Last, kann das Getriebe schneller Verschleißen.
+ -Das Getriebe kann bei zu hohem Druck eine Überhitzung erleiden
+  und damit den Verschleiß antreiben.
+ -Die Motortemperaturen werden nur mit FS22_DashboardLive im Multiplayer syncronisiert!
+  Dazu muß DBL mindestens nur mit aktiv sein.
 
-VCA: 99%
-    Update VCA auf Build 130 oder höher
-    Die vca:Motormodifikation sollte ausgeschalten sein
-    dann sind es 100%
+Einfluß auf die Funktionen und Funktionen die Einfluß schaffen:
+ Die Motorbremswirkung:
+ -Wird durch verschiedene Faktoren dynamisch berechnet.
+  U.a. spielen Gewicht, Geschwindigkeit, Wind,
+  Steigung oder Gefälle, Motorleistung(Leider kein Hubraum),
+  Motordrehzahlband und Drehzahl, uvm. eine Rolle.
+  Auch je nachdem welche Beschleunigunsrampe gewählt ist.
 
-realismAddon_Gearbox: 100%
-    keine Einschränkungen
-    Ergänzt sich Gegenseitig in den zwei Getriebearten.
+ Motor Starten:
+  Bei Stufenlosen Fahrzeugen muß die Kupplung getreten werden,
+  die separat belegt werden muß - also die selbe Eingabe,
+  welche auch die normale Kupplung ist.
+  Bei Hydrostatischer Konfiguration muß, wenn VCA aktiv ist,
+  die Handbremse gezogen sein um den Motor starten zu können.
+  Außerdem darf das Handgas nicht hochgezogen sein, diese muß auf 0 sein.
 
-Wichtig:
-    Alle Einstellungen im LS müssen auf manuell gesetzt sein.
-    Manuelle Schaltung und Kupplung.
-    Es dürfen keine Automatiken für die Steuerung aktiv sein. Wenn man realistisch fahren möchte, macht man das sowieso.
-    U.a. zusammen mit realismAddon_GearBox von modelleicher, macht es noch mehr Sinn alles so real/manuell wie möglich einzustellen.
-    CVT-Addon sollte aktiv benutzt werden und nicht nur ein "es läuft im Hintergund" mod ( für die jeweilige Anwendung anpassen )
-				
-GitHub: https://github.com/s4t4n/FS22_CVT_Addon
+ Fahrbereiche:
+  Es gibt 2 Fahrstufen, II. ist für Straßenfahrten, Transport und leichte Arbeiten gedacht.
+  Stufe I. eher für schwere Feldarbeiten und schwere Transporte.
+  Hierbei wird auch die Maximalgeschwindigkeit reduziert und
+  das Drehmoment sorgt vorallem beim anfahren für mehr Schub.
+  Für jede Stufe ist eine Tastenbelegung zu vergeben.
+  Das wechseln der Fahrbereiche sollte im Stillstand geschehen,
+  da auch hier Schäden entstehen können. *Kleiner Tipp,
+  wenn ihr die Gruppenschaltungs-Tasten für hoch/runter nutzt,
+  könnt ihr die selben Tasten für die Fahrstufen verwenden.
+  Besonderheit bei der "modernen" Konfiguration ist,
+  daß die Fahrbereiche geregelt werden.
 
+ Beschleunigungs-Rampen:
+  Desweiteren gibt es nun eine Beschleunigungsrampe in 4 Stufen,
+  die mit einer Taste durchgeschaltet werden können.
+  Hier werden das Anzugverhalten beim Beschleunigen
+  und reduzieren der Fahrgeschwindigkeit beeinflusst.
+  Sanft und mit Gefühl oder volle Power und ruppig.
+  Mit schweren Geräten oder Anhänger,
+  kann es zu hohen Drücken im Planetengetriebe kommen und es kann Schaden nehmen!
+  Hier sollte die Beschleunigungsrampe auf 3 oder weniger eingestellt werden.
+  Stufe 4 ist eher für Leerfahrten geeignet.
+  In der leichten Feldarbeit kann man ruhig auf Fahrstufe 1
+  in der Beschleunigungsrampe 4 ziehen - Beispielsweise Scheibenegge, Flachgrubber.
+
+Weitere detaillierte Erklärungen der Einzelheiten
+gibt es im Escape Hilfemenü und
+im Wiki auf Github, sowie Tutorial Videos.
+
+So gut wie alle Werte und Einstellungen können mit FS22_DashboardLive verwendet werden.
+Genauere Informationen dazu im Wiki auf Github.
+
+Ideen und Feedback sowie Reports gerne unter <a href"https://github.com/s4t4n/FS22_CVT_Addon">Github: FS22_CVT_Addon</a> bereitstellen.
 ]]></de>
     </description> 
 
@@ -143,6 +235,8 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
 
 	<actions>
         <action name="LMBF_TOGGLE_RAMP" />
+        <action name="LMBF_TOGGLE_RAMPT" />
+        <action name="LMBF_TOGGLE_RAMPD" />
 		<action name="LMBF_TOGGLE_BRAMP" />
         <action name="SETVARIOONE" />
         <action name="SETVARIOTWO" />
@@ -153,7 +247,7 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
         <action name="SETVARIOCLUTCH_AXIS" />
         <!-- <action name="SETVARIORPMP" /> -->
         <!-- <action name="SETVARIORPMM" /> -->
-        <action name="SETVARIORPMDMAX" />
+        <!-- <action name="SETVARIORPMDMAX" /> -->
         <action name="SETPEDALTMS" />
     </actions>
 	<inputBinding>
@@ -167,6 +261,12 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 		<actionBinding action="LMBF_TOGGLE_RAMP">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="LMBF_TOGGLE_RAMPT">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="LMBF_TOGGLE_RAMPD">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
 		<actionBinding action="LMBF_TOGGLE_BRAMP">
@@ -190,9 +290,9 @@ GitHub: https://github.com/s4t4n/FS22_CVT_Addon
 		<!-- <actionBinding action="SETVARIORPMM"> -->
 			<!-- <binding device="KB_MOUSE_DEFAULT" input="" /> -->
 		<!-- </actionBinding> -->
-		<actionBinding action="SETVARIORPMDMAX">
-			<binding device="KB_MOUSE_DEFAULT" input="" />
-		</actionBinding>
+		<!-- <actionBinding action="SETVARIORPMDMAX"> -->
+			<!-- <binding device="KB_MOUSE_DEFAULT" input="" /> -->
+		<!-- </actionBinding> -->
 		<actionBinding action="SETPEDALTMS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>

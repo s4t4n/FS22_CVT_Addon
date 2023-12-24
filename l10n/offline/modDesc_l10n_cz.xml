@@ -10,50 +10,44 @@
 		<text name="txt_VarioRpmPlus" 				text="UPM +"/>
 		<text name="txt_VarioRpmMinus" 				text="UPM -"/>
 
-		<text name="text_CVT_title" 				text="CVTaddon Variante"/>
-		<text name="text_CVT_notInstalled_short" 	text="Nein"/>
-		<text name="text_CVTclas_installed_short" 	text="CVT klassisch"/>
-		<text name="text_CVTclasB1_installed_short" text="CVT klassisch + IPM15"/>
-		<text name="text_CVTclasB2_installed_short" text="CVT klassisch + IPM27"/>
-		<text name="text_CVTmod_installed_short" 	text="CVT modern"/>
-		<text name="text_CVTmodB1_installed_short" 	text="CVT modern + IPM15"/>
-		<text name="text_CVTmodB2_installed_short" 	text="CVT modern + IPM27"/>
+		<text name="text_CVT_title" 				text="CVTaddon Variant"/>
+		<text name="text_CVT_notInstalled_short" 	text="Ne"/>
+		<text name="text_CVTclas_installed_short" 	text="CVT klasik"/>
+		<text name="text_CVTclasB1_installed_short" text="CVT klasik + IPM15"/>
+		<text name="text_CVTclasB2_installed_short" text="CVT klasik + IPM27"/>
+		<text name="text_CVTmod_installed_short" 	text="CVT moderní"/>
+		<text name="text_CVTmodB1_installed_short" 	text="CVT moderní + IPM15"/>
+		<text name="text_CVTmodB2_installed_short" 	text="CVT moderní + IPM27"/>
 		<text name="text_HST_installed_short" 		text="HST Hydrostat"/>
         
-		<text name="input_SETVARIOONE" 				text="CVTa: Fahrbereich 1"/>
-		<text name="input_SETVARIOTWO" 				text="CVTa: Fahrbereich 2"/>
-		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Fahrbereiche wechseln"/>
+		<text name="input_SETVARIOONE" 				text="CVTa: Jízdní stupeň 1"/>
+		<text name="input_SETVARIOTWO" 				text="CVTa: Jízdní stupeň 2"/>
+		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Toggle Drivinglevel"/>
 		<text name="input_SETVARION" 				text="CVTa: Neutral"/>
-		<text name="input_SETVARIOADIFFS" 			text="CVTa: AWD und DIFF Automatik"/>
-		<text name="input_SETVARIORPM_AXIS"			text="CVTa: Handgas Achse"/>
-		<text name="input_SETVARIOCLUTCH_AXIS"		text="CVTa: Kupplung (Doppelbelegung)"/>
-		<text name="input_SETVARIORPMP" 			text="CVTa: Motordrehzahl erhöhen"/>
-		<text name="input_SETVARIORPMM" 			text="CVTa: Motordrehzahl verringern"/>
-		<text name="input_SETVARIORPMDMAX" 			text="CVTa: RPM Begrenzng (experiment)"/>
-		<text name="input_SETPEDALTMS" 				text="CVTa: TMS Pedal Modus"/>
-		<text name="input_LMBF_TOGGLE_RAMP" 		text="CVTa: Beschleunigungsrampe erhöhen"/>
-		<text name="input_LMBF_TOGGLE_RAMPT" 		text="CVTa: Beschleunigungsrampe wechseln"/>
-		<text name="input_LMBF_TOGGLE_RAMPD" 		text="CVTa: Beschleunigungsrampe verringern"/>
-		<text name="input_LMBF_TOGGLE_BRAMP" 		text="CVTa: Bremsrampe ändern"/>
+		<text name="input_SETVARIOADIFFS" 			text="CVTa: automaticky AWD a uzávěrka dif."/>
+		<text name="input_SETVARIORPMP" 			text="CVTa: Zvýšit otáčky motoru"/>
+		<text name="input_SETVARIORPMM" 			text="CVTa: Snížit otáčky motoru"/>
+		<text name="input_SETVARIORPMDMAX" 			text="CVTa: Omezení otáček motoru"/>
+		<text name="input_SETPEDALTMS" 				text="CVTa: pedál plynu - režim TMS"/>
+		<text name="input_LMBF_TOGGLE_RAMP" 		text="CVTa: Přepnout křivku zrychlení"/>
+		<text name="input_LMBF_TOGGLE_BRAMP" 		text="CVTa: Přepnout křivku brzdy"/>
 		
 		<text name="txt_accRamp1" 					text="AR 1"/>
 		<text name="txt_accRamp2" 					text="AR 2"/>
 		<text name="txt_accRamp3" 					text="AR 3"/>
 		<text name="txt_accRamp4" 					text="AR 4"/>
 
-		<text name="txt_bRamp1" 					text="BR aus"/>
+		<text name="txt_bRamp1" 					text="BR vyp."/>
 		<text name="txt_bRamp2" 					text="BR  4"/>
 		<text name="txt_bRamp3" 					text="BR  8"/>
 		<text name="txt_bRamp4" 					text="BR 15"/>
 		<text name="txt_bRamp5" 					text="BR 17"/>
 		
-		<text name="txt_vcaInfo" 					text="Die Niedrige Bremskraft wurde in VCA auf 100% eingestellt und die Motormodifikationen deaktiviert. Letzteres kannst du belieben wieder aktivieren, je nach Fahrzeug funktioniert es mehr oder weniger."/>
-		<text name="txt_needClutch2start" 			text="Kupplung treten zum Motor starten."/>
-		<text name="txt_needBrake2start" 			text="Handbremse anziehen zum Motor starten."/>
-		<text name="txt_needNoHG2start" 			text="Handgas raus zum Motor starten."/>
-		<text name="txt_attCVTpressure" 			text="Achtung, Zu hoher Druck im Triebsatz. Temp. beobachten."/>
-		<text name="txt_warn_tofastDn" 				text="Zu schnell! Fahrstufenwechsel maximal mit 10 km/h durchführen, sonst nimmt das Getriebe schaden."/>
-		<text name="txt_warn_tofastUp" 				text="Vorsicht! Fahrstufen maximal mit 10 km/h wechseln, am besten kurz stehen bleiben."/>
+		<text name="txt_vcaInfo" 					text="Prosím, nastavte VCA brzdnou sílu na 100% a možná i vypněte úpravu otáček motoru (udržovat volnoběh)"/>
+		<text name="txt_attCVTpressure" 			text="VÝSTRAHA! Příliš velký krouticí moment v převodovce. Hlídejte teplotu motoru."/>
+		<text name="txt_warn_tofastDn" 				text="Příliš vysoká rychlost! Převod je mmožné změnit nejvýše do rychlosti 10 kmm/h, jinak poškodíte převodovku."/>
+		<text name="txt_warn_tofastUp" 				text="VÝSTRAHA! Změna převod je možná do max. rychlosti 10 km/h, nejlépe na chvilku zastavte."/>
+		
 		
 		
 		<text name="help_page_title" 				text="CVT-Addon"/>
@@ -215,8 +209,7 @@ wie z.B. die für die Gruppenschalter."/>
 				<text name="help_page_cold_text"				text="
 Motor ist unter 45 °C zu kalt für Vollgas, max. weniger als max-U/min : 1,5
 Vorsicht, zu hohe Motordrehzahlen bei kaltem Motor erhöhen den Verschleiß drastisch.
-Aufwärmen durch leichtes Gasgeben oder langsames Fahren, ohne die Drehzahl hoch zu treiben.
-Diese Funktion wirkt sich auf alle Fahrzeuge aus."/>
+Aufwärmen durch leichtes Gasgeben oder langsames Fahren, ohne die Drehzahl hoch zu treiben."/>
 
 				<text name="help_page_warnHeat_title"		text="Hoher Druck im Triebsatz, heizt sich auf"/>
 				<text name="help_page_warnHeat_text"			text="
@@ -250,29 +243,6 @@ lassen Sie sie abkühlen und schalten Sie den Motor aus und wieder an."/>
 Wird ein bestimmtes Maß zusammen mit anderen Faktoren überschritten,
 kommt es zu tatsächlichen Schäden bis hin zum Totalausfall.
 In der Realität sind Reparaturen oder der Austausch des Getriebes extrem teuer – seien Sie also Vorsichtig."/>
-	  
-		<text name="title_PosOfHUD" text="CVT Addon" />
-		<text name="setting_PosOf_HUD" text="HUD Position" />
-		<text name="explanation_PosOf_HUD" text="Verändert die Position des HUDs oder schaltet aus.
-Die Einstellung und Speicherung geschiet je Spieler." />
-		<!-- Auswahlmöglichkeiten -->
-		<text name="selection_CVTaddonHUDpos_1" text="Standard" />
-		<text name="selection_CVTaddonHUDpos_2" text="Oben" />
-		<text name="selection_CVTaddonHUDpos_3" text="Aus" />
-
-		<text name="SettingChanged_title" text="CVT-Addon" />
-
-		<text name="SettingChanged" text="HUD geändert" />
-		<text name="SettingNorm" text="in Standard" />
-		<text name="SettingTop" text="nach Oben" />
-		<text name="SettingOff" text=".. wurde deaktiviert!" />
-		<text name="damageWT" text="Bitte reparieren, der Verschleiß des Triebsatzes liegt bei über " />
-		
-		<text name="help_page_HUDset_title"	text="Hud Position"/>
-		<text name="help_page_HUDset_text"	text="Im Escape-Menü, Einstellungen mit dem Traktor-Symbol,
-lässt sich die Position des HUD in 2 Varianten verändern
-oder deaktivieren. Diese Einstellung gilt pro Spieler." />
-
-	</texts> 
+	</texts>   
 
 </l10n>

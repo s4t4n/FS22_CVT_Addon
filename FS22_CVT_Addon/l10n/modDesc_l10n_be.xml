@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+	<texts>
+		<text name="txt_VarioOne" 					text=". "/>
+		<text name="txt_VarioTwo" 					text=" ."/>
+		<text name="txt_VarioN" 					text="N"/>
+		<text name="txt_VarioR" 					text="↓"/>
+		<text name="txt_VarioD" 					text="↑"/>
+
+		<text name="txt_VarioRpmPlus" 				text="UPM +"/>
+		<text name="txt_VarioRpmMinus" 				text="UPM -"/>
+
+		<text name="text_CVT_title" 				text="CVTaddon Variant"/>
+		<text name="text_CVT_notInstalled_short" 	text="No"/>
+		<text name="text_CVTclas_installed_short" 	text="CVT classic"/>
+		<text name="text_CVTclasB1_installed_short" text="CVT classic + IPM15"/>
+		<text name="text_CVTclasB2_installed_short" text="CVT classic + IPM27"/>
+		<text name="text_CVTmod_installed_short" 	text="CVT modern"/>
+		<text name="text_CVTmodB1_installed_short" 	text="CVT modern + IPM15"/>
+		<text name="text_CVTmodB2_installed_short" 	text="CVT modern + IPM27"/>
+		<text name="text_HST_installed_short" 		text="HST Hydrostate"/>
+        
+		<text name="input_SETVARIOONE" 				text="CVTa: Drivinglevel 1"/>
+		<text name="input_SETVARIOTWO" 				text="CVTa: Drivinglevel 2"/>
+		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Toggle Drivinglevel"/>
+		<text name="input_SETVARION" 				text="CVTa: Neutral"/>
+		<text name="input_SETVARIOADIFFS" 			text="CVTa: AWD and DIFF automatic"/>
+		<text name="input_SETVARIORPMP" 			text="CVTa: Increase engine rpm"/>
+		<text name="input_SETVARIORPMM" 			text="CVTa: Decrease engine rpm"/>
+		<text name="input_SETVARIORPMDMAX" 			text="CVTa: RPM Limiter"/>
+		<text name="input_SETPEDALTMS" 				text="CVTa: TMS Pedalmode"/>
+		<text name="input_LMBF_TOGGLE_RAMP" 		text="CVTa: Toggle Accelerationramp"/>
+		<text name="input_LMBF_TOGGLE_BRAMP" 		text="CVTa: Change brakeramp"/>
+		
+		<text name="txt_accRamp1" 					text="AR 1"/>
+		<text name="txt_accRamp2" 					text="AR 2"/>
+		<text name="txt_accRamp3" 					text="AR 3"/>
+		<text name="txt_accRamp4" 					text="AR 4"/>
+
+		<text name="txt_bRamp1" 					text="BR off"/>
+		<text name="txt_bRamp2" 					text="BR  4"/>
+		<text name="txt_bRamp3" 					text="BR  8"/>
+		<text name="txt_bRamp4" 					text="BR 15"/>
+		<text name="txt_bRamp5" 					text="BR 17"/>
+		
+		<text name="txt_vcaInfo" 					text="Please set the Low Brake Force in VCA to 100% and ph. disable the Modify Motor RPM"/>
+		<text name="txt_attCVTpressure" 			text="Caution, too much pressure in the powertrain. Watch temp."/>
+		<text name="txt_warn_tofastDn" 				text="Too fast! Change gears at a maximum of 10 km/h, otherwise the transmission will be damaged."/>
+		<text name="txt_warn_tofastUp" 				text="Caution! Change gears at a maximum of 10 km/h, preferably stop for a moment."/>
+	</texts>   
+
+</l10n>

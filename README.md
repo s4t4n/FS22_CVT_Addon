@@ -2,7 +2,11 @@
 
 <img src="https://github.com/s4t4n/FS22_CVT_Addon/assets/4678246/f3f66c42-fe3e-419c-b4f7-552e2ebe2ea6" alt="" width="250"/>
 
-## Download, please use the  [latest release](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
+### [latest dev release](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
+### [Modhub](https://www.farming-simulator.com/mod.php?lang=de&country=de&mod_id=269645&title=fs2022)
+### [Tutorial Videos](https://github.com/s4t4n/FS22_CVT_Addon/wiki/Videos)
+### [CVT Addon Wiki](https://github.com/s4t4n/FS22_CVT_Addon/wiki/Features)
+
 [![GitHub release (by tag)](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/latest/total?label=Latest%20Version%20Downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![GitHub all releases](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/total?label=Total%20downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![Last update](https://img.shields.io/github/release-date-pre/s4t4n/FS22_CVT_Addon?label=Last%20update)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
@@ -29,16 +33,6 @@ Also you can watch it live in progress at AgrarPlay streams:
 [![Twitch Status](https://img.shields.io/twitch/status/agrarplay?logo=twitch&label=agrarplay%20Live-Stream%20now&labelColor=%23aaaaaa&color=%23aa55ff)](https://www.twitch.tv/agrarplay)
 
 Instructions how to download the code and use it as modfile zip here -> [Wiki: How to download and use master code](https://github.com/s4t4n/FS22_CVT_Addon/wiki/How-to-download-and-use-master-code)
-
-[![YouTube Video Views](https://img.shields.io/youtube/views/lhM3yu9weCI?logo=youtube&label=Technical%20Tutorial%20-%20Teil%201)](#)
-<div align="left">
-  <a href="https://www.youtube.com/watch?v=lhM3yu9weCI" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/lhM3yu9weCI/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
-</div>
-
-[![YouTube Video Views](https://img.shields.io/youtube/views/pxxFl0TlcxY?logo=youtube&label=Technical%20Tutorial%20-%20Teil%202)](#)
-<div align="left">
-  <a href="https://www.youtube.com/watch?v=pxxFl0TlcxY" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/pxxFl0TlcxY/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
-</div>
 
 
 [#deutsch](#deutsch)   [#english](#english)   [to the top](#FS22_CVT_Addon)
@@ -135,7 +129,3 @@ Wichtig:
 - Automatischer Motorstart muß "aus" sein.
 
 [nach oben](#FS22_CVT_Addon)
-
-<div align="left">
-  <a href="https://www.youtube.com/watch?v=rdKwO8u5Zd0" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/rdKwO8u5Zd0/maxresdefault.jpg" width="600" alt="click or open in new tab to playback"></a>
-</div>

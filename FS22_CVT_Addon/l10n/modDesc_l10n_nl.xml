@@ -7,46 +7,235 @@
 		<text name="txt_VarioR" 					text="↓"/>
 		<text name="txt_VarioD" 					text="↑"/>
 
-		<text name="txt_VarioRpmPlus" 				text="UPM +"/>
-		<text name="txt_VarioRpmMinus" 				text="UPM -"/>
+		<text name="txt_VarioRpmPlus" 				text="RPM +"/>
+		<text name="txt_VarioRpmMinus" 				text="RPM -"/>
 
 		<text name="text_CVT_title" 				text="CVTaddon Variant"/>
-		<text name="text_CVT_notInstalled_short" 	text="No"/>
-		<text name="text_CVTclas_installed_short" 	text="CVT classic"/>
-		<text name="text_CVTclasB1_installed_short" text="CVT classic + IPM15"/>
-		<text name="text_CVTclasB2_installed_short" text="CVT classic + IPM27"/>
+		<text name="text_CVT_notInstalled_short" 	text="Nee"/>
+		<text name="text_CVTclas_installed_short" 	text="CVT klassiek"/>
+		<text name="text_CVTclasB1_installed_short" text="CVT klassiek + IPM15"/>
+		<text name="text_CVTclasB2_installed_short" text="CVT klassiek + IPM27"/>
 		<text name="text_CVTmod_installed_short" 	text="CVT modern"/>
 		<text name="text_CVTmodB1_installed_short" 	text="CVT modern + IPM15"/>
 		<text name="text_CVTmodB2_installed_short" 	text="CVT modern + IPM27"/>
-		<text name="text_HST_installed_short" 		text="HST Hydrostate"/>
+		<text name="text_HST_installed_short" 		text="HST Hydrostaat"/>
         
-		<text name="input_SETVARIOONE" 				text="CVTa: Drivinglevel 1"/>
-		<text name="input_SETVARIOTWO" 				text="CVTa: Drivinglevel 2"/>
-		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Toggle Drivinglevel"/>
-		<text name="input_SETVARION" 				text="CVTa: Neutral"/>
-		<text name="input_SETVARIOADIFFS" 			text="CVTa: AWD and DIFF automatic"/>
-		<text name="input_SETVARIORPMP" 			text="CVTa: Increase engine rpm"/>
-		<text name="input_SETVARIORPMM" 			text="CVTa: Decrease engine rpm"/>
-		<text name="input_SETVARIORPMDMAX" 			text="CVTa: RPM Limiter"/>
-		<text name="input_SETPEDALTMS" 				text="CVTa: TMS Pedalmode"/>
-		<text name="input_LMBF_TOGGLE_RAMP" 		text="CVTa: Toggle Accelerationramp"/>
-		<text name="input_LMBF_TOGGLE_BRAMP" 		text="CVTa: Change brakeramp"/>
+		<text name="input_SETVARIOONE" 				text="CVTa: Rij niveau 1"/>
+		<text name="input_SETVARIOTWO" 				text="CVTa: Rij niveau 2"/>
+		<text name="input_SETVARIOTOGGLE" 			text="CVTa: Verander rijniveau"/>
+		<text name="input_SETVARION" 				text="CVTa: Neutraal"/>
+		<text name="input_SETVARIOADIFFS" 			text="CVTa: AWD en DIFF automatisch"/>
+		<text name="input_SETVARIORPMP" 			text="CVTa: Verhoog toeren"/>
+		<text name="input_SETVARIORPMM" 			text="CVTa: Verlaag toeren"/>
+		<text name="input_SETVARIORPMDMAX" 			text="CVTa: RPM Begrenzer"/>
+		<text name="input_SETPEDALTMS" 				text="CVTa: TMS Pedaalmodus"/>
+		<text name="input_LMBF_TOGGLE_RAMP" 		text="CVTa: Verhoog acceleratie niveau"/>
+		<text name="input_LMBF_TOGGLE_BRAMP" 		text="CVTa: Verander Rem niveau"/>
+		<text name="input_LMBF_TOGGLE_RAMPT" 		text="CVTa: Wissel acceleratie niveau"/>
+		<text name="input_LMBF_TOGGLE_RAMPD" 		text="CVTa: Verlaag acceleratie niveau"/>
+		<text name="input_SETVARIORPM_AXIS"			text="CVTa: Handgas axis"/>
+		<text name="input_SETVARIOCLUTCH_AXIS"		text="CVTa: Koppeling (Doublebinding)"/>
 		
-		<text name="txt_accRamp1" 					text="AR 1"/>
-		<text name="txt_accRamp2" 					text="AR 2"/>
-		<text name="txt_accRamp3" 					text="AR 3"/>
-		<text name="txt_accRamp4" 					text="AR 4"/>
+		<text name="txt_accRamp1" 					text="AN 1"/>
+		<text name="txt_accRamp2" 					text="AN 2"/>
+		<text name="txt_accRamp3" 					text="AN 3"/>
+		<text name="txt_accRamp4" 					text="AN 4"/>
 
-		<text name="txt_bRamp1" 					text="BR off"/>
-		<text name="txt_bRamp2" 					text="BR  4"/>
-		<text name="txt_bRamp3" 					text="BR  8"/>
-		<text name="txt_bRamp4" 					text="BR 15"/>
-		<text name="txt_bRamp5" 					text="BR 17"/>
+		<text name="txt_bRamp1" 					text="RN uit"/>
+		<text name="txt_bRamp2" 					text="RN  4"/>
+		<text name="txt_bRamp3" 					text="RN  8"/>
+		<text name="txt_bRamp4" 					text="RN 15"/>
+		<text name="txt_bRamp5" 					text="RN 17"/>
 		
-		<text name="txt_vcaInfo" 					text="Please set the Low Brake Force in VCA to 100% and ph. disable the Modify Motor RPM"/>
-		<text name="txt_attCVTpressure" 			text="Caution, too much pressure in the powertrain. Watch temp."/>
-		<text name="txt_warn_tofastDn" 				text="Too fast! Change gears at a maximum of 10 km/h, otherwise the transmission will be damaged."/>
-		<text name="txt_warn_tofastUp" 				text="Caution! Change gears at a maximum of 10 km/h, preferably stop for a moment."/>
+		<text name="txt_vcaInfo" 				text="Please set the Low Brake Force in VCA to 100% and ph. disable the Modify Motor RPM"/>
+		<text name="txt_attCVTpressure" 			text="Pas op, aandrijving overbelast. let op temperatuur."/>
+		<text name="txt_warn_tofastDn" 				text="Te Snel! verander de versnelling bij een maximum van 10 km/h, anders beschadigd de transmissie."/>
+		<text name="txt_warn_tofastUp" 				text="Pas op! verander de versnelling bij een maximum van 10 km/h, bij voorkeur stoppen."/>
+		<text name="txt_needClutch2start" 			text="Koppeling bedienen om te starten. "/>
+		<text name="txt_needBrake2start" 			text="Activeer de handrem om te starten."/>
+		<text name="txt_needNoHG2start" 			text="Zet handgas uit om te starten."/>
+
+
+		<text name="help_page_title" 				text="CVT-Addon"/>
+			<text name="help_page_Functions" 			text="Functies"/>
+				<text name="help_page_startEngine_title"	text="Motor starten"/>
+				<text name="help_page_startEngine_text"		text="Voor voertuigen met CVT moet de koppeling bediend worden,
+				dit moet ingesteld worden bij de toetsenbord instellingen
+				(zelfde toets/pedaal als koppeling bij manuele versnellingen).
+				Als hydrostaat geselecteerd is en je gebruikt de VCA mod, 
+				dan moet de handrem aan staan en handgas moet op 0 staan "/>
+				
+				<text name="help_page_DL_title"				text="Rij niveau"/>
+				<text name="help_page_BLANK_text"					text=" "/>
+				<text name="help_page_DLimg_text"					text="
+
+
+
+De linker punt laat rij niveau I zien.
+De rechter punt laat rij niveau II zien."/>
+				<text name="help_page_DL_text"					text="Er zijn 2 rijniveaus, II. is voor op de weg, transport en licht werk. Niveau I. voor zwaar veld werk en zwaar transport werk.
+De maximum snelheid is verlaagd en de kracht is verhoogd, vooral tijdens het optrekken.
+Toetsen moeten worden ingesteld voor elk niveau.
+Wisselen tussen niveau I en II mag alleen als je stil staat,
+anders treed er schade op.
+*Kleine tip voor als de knoppen voor groep omhoog/omlaag gebruikt,
+je kunt de zelfde toetsen voor rijniveau I en II gebruiken.
+Bij CVT klassiek moet je zelf het rijniveau kiezen, bij CVT modern gaat dit automatisch ."/>
+				
+				<text name="help_page_AR_title"				text="Acceleratie niveaus"/>
+				<text name="help_page_AR_text"					text="Er zijn 4 acceleratie niveaus,
+die je met een toets kan wisselen.
+Hierdoor wordt het gedrag voor optrekken en uitrollen beinvloed.
+Met zwaare machines of aanhangers kan er schade ontstaan in de versnellingsbak!
+Daarom moet het niveau niet hoger staan dan 3.
+Niveau 4 gebruik je zonder dat er iets aangekoppeld is.
+Bij veldwerk kun je beter niveau 1 of 2 gebruiken.
+"/>
+<text name="help_page_ARimg_text"					text="
+
+
+
+AN standen  1 tot 4"/>
+				
+				<text name="help_page_BR_title"				text="Rem niveaus (rode blokken)"/>
+				<text name="help_page_BR_text"					text="je kunt ook verschillende rem niveaus instellen,
+er zijn 5 standen.
+Van 1 km/h (standaard) 4, 8, 15 and 17 km/h,
+Dit zorgt er voor dat er vanaf de ingestelde rem niveau automatisch geremd wordt,
+dit kan handig zijn bij manoeuvreren of werken met de voorlader. 
+"/>
+<text name="help_page_BRimg_text"					text="
+
+
+
+
+RN standen Uit en 1 tot 4"/>
+
+				<text name="help_page_tmsP_title"			text="TMS pedaal modus"/>
+				<text name="help_page_tmsP_text"				text="Met TMS 'Pedal' modus, kun je instellen hoe het gaspedaal reageert.
+Dit doe je door de cruisecontrol uit te zetten en dan de snelheid van de cruisecontrol naar beneden te zetten,
+Stel dat je hem op 1 zet dan komt dat bijvoorbeeld overeen met 3km/h, dus als je vol gas geeft gaat hij niet harden dan 3km/h.
+Als je hem op 7 zet gaat hij bij vol gas niet harder dan bijvoorbeeld 25km/h "/>
+				
+				<text name="help_page_HG_title"				text="Handgas"/>
+				<text name="help_page_HG_text"					text="Handgas heeft eigenlijk (nog) geen funtie,
+- maar samen met een andere mod zal dit effect hebben op de Hydrolica en PTO , Deze mod is nog niet openenbaar.
+Voor Hydrostaat aandrijving is er wel een speciale functie voor handgas."/>
+				
+				<text name="help_page_aDiff_title"			text="Automatische diffrentieel (VCA of EV nodig)"/>
+				<text name="help_page_aDiff_text"				text="Automatische diffrentieel slot afhankelijk van stuurhoek en 4 wiel aandrijving
+ en de snelheid in rijniveau I.
+In CVT modern is 4 wiel aandrijving altijd actief en automatisch geregeld,
+je kunt dan alleen het automatische diffrentieel slot inschakelen."/>
+				
+				<text name="help_page_HST_title"			text="Hydrostaat HST aandrijving"/>
+				<text name="help_page_HST_text"					text="Als een voertuig als HST is ingesteld zijn er 2 verschillende hydrostaat aandrijvingen,
+Die je kunt veranderen met de knoppen van rijniveau I en II.
+hier moet je nu beslissen welk soort voertuig je hebt.
+-in het echt zijn er geen 2 keuzes mogelijk natuurlijk"/>
+				
+				<text name="help_page_HST1_text"				text="I is een klassieke HST,
+Is een bedinening meestal met 2 pedalen 1 voor vooruit en 1 voor achteruit
+- het toerental blijf onveranderd (stationair).
+Dit zorgd ervoor dat je niet de maximum snelheid haalt,
+Hiervoor is handgas dus nodig.
+Bij 100% handgas, kun je nog steeds verschillende snelheid rijden omdat het een hydrostaat is.
+het toerental heeft ook invloed op de voorlader van shovel of verrijker zoals 
+-de snelheid.
+-de kracht.
+als je iets zwaars tilt zakt het toerental ook.
+pas op! als de motor nog koud is kan hij afslaan.
+
+"/>
+				
+				<text name="help_page_HST2_text"				text="II is de nieuwe variant, die er in verschillende variaties is 
+				afhankelijk	van de producent, maar daar gaan we verder niet op in.
+Meestal is er een gas en rempedaal.
+Ook is er vaak een joystick of iets vergelijkbaars om van richting te wisselen,
+Als je gas geeft, begint het voertuig te rijden, het toerental wordt automatisch geregeld.
+Het toerental gaat automatisch omhoog als voorlader bediend wordt.
+."/>
+				<text name="help_page_HST3_text"				text="Rij opties: Hydro motoren zitten direct op de wielen
+of er is een HST transmissie, met een cardan die zorgt voor 4 wiel aandrijving, 
+als er teminste 4 wiel aandrijving is. Bij nieuwere machines vooral met knik besturing 
+zit er voor en achter een hydrolische aandrijving.
+De acceleratie niveaus hebben een iets andere functie bij HST's!
+Het Hud scherm geeft nu HySt aan die je kunt veranderen van 1 naar 4.
+Dit zijn de verschillende stappen
+    1 Langzaamste
+    2 Langzaam
+    3 Snel
+	4 Snelste
+"/>
+				
+			<text name="help_page_beginning"			text="Voorbereiding"/>
+			<text name="help_page_keybinds_title"		text="Toetensbord instellingen"/>
+			<text name="help_page_keybinds_text"		text="Er zijn geen standaard toetsen vastgelegd, je moet dit zelf instellen."/>
+			<text name="help_page_keysInfo_text"		text="Voor de koppeling kun je de zelfde toets/pedaal gebruiken als die bij handmatige versnellingen. 
+			voor de acceleratie niveaus kun je de zelfde toets gebruiken als de van de groep wisselen. "/>
+			
+			<text name="help_page_heatSystem"		text="Schade en Over verhitting"/>
+				<text name="help_page_cold_title"					text="Motor te koud"/>
+				<text name="help_page_cold_text"				text=" 
+Motor is te koud voor vol gas, beneden 45 °C, minder dan 1500 toeren.
+Pas op, als de temperatuur te laag is en de motor heeft te veel toeren treed er extra schade op aan het voertuig.
+Warm het voortuig langzaam op door langzaam te rijden of gewoon even wachten.
+Dit werkt prima bij alle voertuigen."/>
+
+				<text name="help_page_warnHeat_title"		text="Aandrijving overbelast"/>
+				<text name="help_page_warnHeat_text"			text=" 
+Pas op de temperatuur, er is te veel druk,
+Bij minder dan 50% kracht en minder dan 50% gas of wanneer je stopt,
+Verdwijnt de melding als hij genoeg afgekoeld is."/>
+				
+				<text name="help_page_warnDmg_title"		text="Waarschuwing: Kan schade veroorzaken"/>
+				<text name="help_page_warnDmg_text"			text=" 
+Een waarschuwings lamp, die aangeeft dat
+de huidige Acceleratie niveau schade kan veroorzaken"/>
+				
+				<text name="help_page_critHeat_title"		text="Te heet"/>
+				<text name="help_page_critHeat_text"			text="
+Rood is een waarschuwing voor een te hoge temperatuur.
+Het is beter om te stoppen en het voertuig te laten afkoelen."/>
+				
+				<text name="help_page_critDmg_title"		text="Kritieke schade"/>
+				<text name="help_page_critDmg_text"				text="
+Er is nu groote of kleine schade
+Om te resseten: laat de motor afkoelen en zet hem uit en weer aan.
+Als de schade te groot is en de lamp gaat weer aan, dan
+gaat het systeem in veiligheids modus, acceleratie en snelheid worden gereduceerd.
+Als uit zetten en opnieuw starten niet helpt, moet het voertuig eerst gerepareerd worden.
+"/>
+				
+				<text name="help_page_wearTear_title"		text="Slijtage"/>
+				<text name="help_page_wearTear_text"			text="Schade ontstaat niet direct; dit ontstaat gelijdelijk.
+				Als er een bepaald niveau overschreden is samen met wat ander factoren,
+				komt er schade of zelfs uitval.
+				in realiteit komt dat neer op repareren of vernieuwen van de versnellingsbak, dit is heel duur - dus wees voorzichtig.
+"/>
+
+		<text name="title_PosOfHUD" text="CVT Addon" />
+		<text name="setting_PosOf_HUD" text="HUD positie" />
+		<text name="explanation_PosOf_HUD" text="Verander de positie van de Hud of zet hem uit.
+De instelling is per speler in te stellen." />
+		<!-- Auswahlmöglichkeiten -->
+		<text name="selection_CVTaddonHUDpos_1" text="Default" />
+		<text name="selection_CVTaddonHUDpos_2" text="Boven" />
+		<text name="selection_CVTaddonHUDpos_3" text="Uit" />
+
+		<text name="SettingChanged_title" text="CVT-Addon" />
+
+		<text name="SettingChanged" text="HUD veranderd" />
+		<text name="SettingNorm" text="naar default" />
+		<text name="SettingTop" text="to boven" />
+		<text name="SettingOff" text=".. uit!" />
+		<text name="damageWT" text="Graag repareren, slijtage van de aandrijving is boven " />
+		
+		<text name="help_page_HUDset_title"	text="Hud positie"/>
+		<text name="help_page_HUDset_text"	text="In het Escapemenu, Bij settings met het trekker icoon,
+kun je de positie van de Hud aanpassen " />
+
+
 	</texts>   
 
 </l10n>

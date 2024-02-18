@@ -1,4 +1,5 @@
-@ECHO off
+@echo off & setlocal
+REM @echo off
 REM @ECHO >> _ZiP_log.txt
 REM by sÀtÁñ
 REM echo dir_2_zip
@@ -9,9 +10,10 @@ set modname=FS22_RandomFuelsPrices
 
 set path_self=%~dp0
 for %%i in ("%path_self:~0,-1%") do set name_parent=%%~nxi
-echo %name_parent%
-echo 
+REM echo %name_parent%
+REM echo 
 goto zipit
+REM goto cleanzip
 
 
 :startit
@@ -40,11 +42,33 @@ timeout /T 0
 goto end
 
 :cleanzip
-echo _______________ cleaning from .bak files of np++
+REM echo _______________ cleaning from .bak files of np++
+echo _______________ Aktualisiere...
 REM echo _______________ cleaning from .bak files of np++ >> _ZiP_log.txt
 REM del %1\*.bak
 REM del %1\*.bak /s
-del %1\*.bak /s >> _ZiP_log.txt
+REM del %1\*.bak /s >> _ZiP_log.txt
+REM setlocal enabledelayedexpansion
+REM setlocal DisableDelayedExpansion
+
+REM set zeileNrAustausch=19
+REM set zeileNeu=local scrversion = "0.3.2.5+";
+
+REM if exist CVT_Addon.tmp del CVT_Addon.tmp
+
+REM set zeileNr=0
+
+REM for /f "delims=" %%A in (CVT_Addon.lua) do (
+REM ( set /a zeileNr+=1 >NUL)
+  REM (if !zeileNr!==%zeileNrAustausch% (echo %zeileNeu%>>CVT_Addon.tmp) else (echo %%A>>CVT_Addon.tmp))
+REM )
+
+REM if exist CVT_Addon.akt del CVT_Addon.akt
+REM ren CVT_Addon.lua CVT_Addon.akt
+REM ren CVT_Addon.tmp CVT_Addon.lua
+REM pause
+
+REM timeout /T 3
 goto zipit
 
 :zipit
@@ -52,7 +76,7 @@ echo.
 echo.
 echo.
 echo ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ >> _ZiP_log.txt
-C:\Programme\7-Zip\7z.exe a "%~dp0"%name_parent% -w "%~dp0"* -xr!*.cmd -xr!*.bak -xr!*.7z -xr!*.zip -xr!*.png -xr!*.jpg -xr!Old -xr!VCA_modified -xr!*.psd -xr!screenshots -xr!_ZiP_log.txt  -tzip >> _ZiP_log.txt
+C:\Programme\7-Zip\7z.exe a "%~dp0"%name_parent% -w "%~dp0"* -xr!*.cmd -xr!*.bak -xr!*.7z -xr!*.zip -xr!*.png -xr!*.jpg -xr!Old -xr!VCA_modified -xr!log -xr!*.psd -xr!screenshots -xr!_ZiP_log.txt -xr!offline -tzip >> _ZiP_log.txt
 echo ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ >> _ZiP_log.txt
 echo.
 echo.
@@ -90,7 +114,9 @@ goto end
 
 :moveit
 echo MOOOOOOOOOVE
+copy /Y "%~dp0"%name_parent%.zip "D:\__LS-MODS\Mod-Sets\G-Portal LUpool" >> _ZiP_log.txt
 move /Y "%~dp0"%name_parent%.zip "C:\Users\SbSh\Documents\My Games\FarmingSimulator2022\mods" >> _ZiP_log.txt
+echo                                   nach "C:\Users\SbSh\Documents\My Games\FarmingSimulator2022\mods\%name_parent%.zip" >> _ZiP_log.txt
 timeout /T 1
 REM pause
 goto end

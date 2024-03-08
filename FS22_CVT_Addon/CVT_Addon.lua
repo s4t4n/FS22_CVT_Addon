@@ -1990,8 +1990,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 		
 		
 		-- Anbaugeräte ermitteln und prüfen ob abgesenkt Front/Back
-		local moveDownFront
-		local moveDownBack
+		local moveDownFront = false
+		local moveDownBack = false
 		if #self.spec_attacherJoints.attachedImplements ~= nil then
 			for attachedImplement = 1, #self.spec_attacherJoints.attachedImplements do
 				local object = self.spec_attacherJoints.attachedImplements[attachedImplement].object;

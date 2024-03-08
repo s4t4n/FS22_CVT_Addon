@@ -25,7 +25,7 @@ CVTaddon.author = getXMLString(modDesc, "modDesc.author");
 CVTaddon.contributor = getXMLString(modDesc, "modDesc.contributor");
 source(CVTaddon.modDirectory.."events/SyncClientServerEvent.lua")
 
-local scrversion = "0.3.0.91";
+local scrversion = "0.3.0.92";
 local modversion = CVTaddon.modversion; -- moddesc
 local lastupdate = "24.12.23";
 

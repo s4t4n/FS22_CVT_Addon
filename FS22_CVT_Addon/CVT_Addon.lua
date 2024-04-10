@@ -4119,7 +4119,7 @@ end
 ------------- Should be external in CVT_Addon_HUD.lua, but I can't sync spec between 2 lua's -------------------------			
 function CVTaddon:onDraw(dt)
 	local spec = self.spec_CVTaddon
-	if g_client ~= nil then
+	if g_client ~= nil and g_currentMission.controlledVehicle ~= nil then
 		-- motor need warmup and show it for manual transmissions.
 		if g_currentMission.hud.isVisible and spec.isVarioTM == false and not isPKWLKW then
 			local TposX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY - 0.02

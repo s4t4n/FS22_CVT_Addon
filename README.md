@@ -6,6 +6,8 @@
 ### [Modhub](https://www.farming-simulator.com/mod.php?lang=de&country=de&mod_id=269645&title=fs2022)
 ### [Tutorial Videos](https://github.com/s4t4n/FS22_CVT_Addon/wiki/Videos)
 ### [CVT Addon Wiki](https://github.com/s4t4n/FS22_CVT_Addon/wiki/Features)
+### [CVT Addon DBL Features]([https://github.com/s4t4n/FS22_CVT_Addon/wiki/Features](https://github.com/s4t4n/FS22_CVT_Addon/wiki/Dashboard%E2%80%90Live-features#dbl-specs-overview)
+
 
 [![GitHub release (by tag)](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/latest/total?label=Latest%20Version%20Downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)
 [![GitHub all releases](https://img.shields.io/github/downloads/s4t4n/FS22_CVT_Addon/total?label=Total%20downloads)](https://github.com/s4t4n/FS22_CVT_Addon/releases/latest/download/FS22_CVT_Addon.zip)

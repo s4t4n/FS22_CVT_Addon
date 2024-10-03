@@ -2,7 +2,7 @@
 <modDesc descVersion="80">
     <author>SbSh</author>
 	<contributor>Glowin, frvetz, modelleicher, LUWZ</contributor>
-	<version>1.3.0.1</version>
+	<version>1.2.9.0</version>
 	<title>
         <en>CVT Addon</en>
     </title>
@@ -107,15 +107,7 @@ in the Wiki on Github, as well as tutorial videos.
 Almost all values and settings can be used with FS22_DashboardLive.
 More detailed informations about it at the wiki on Github.
 
-Feel free to provide ideas, feedback and reports at <a href="https://github.com/s4t4n/FS22_CVT_Addon" target="_blank">Github: FS22_CVT_Addon</a> please.
-
-Changelog 1.3.0.0
-  - Fix for TerraLifePlus milk taxi.
-  - HST variant 1 no longer uses gas when accelerating.
-  - Shop config system revised.
-  - Mission vehicles no longer have a CVT addon.
-  - Link in the description corrected.
-  - AutoDiffs activated for HSTs.
+Feel free to provide ideas, feedback and reports at <a href"https://github.com/s4t4n/FS22_CVT_Addon">Github: FS22_CVT_Addon</a> please.
 
 Changelog 1.2.9.0
   - Warmup for wheelloader fixed.
@@ -271,15 +263,7 @@ im Wiki auf Github, sowie Tutorial Videos.
 So gut wie alle Werte und Einstellungen können mit FS22_DashboardLive verwendet werden.
 Genauere Informationen dazu im Wiki auf Github.
 
-Ideen und Feedback sowie Reports gerne unter <a href="https://github.com/s4t4n/FS22_CVT_Addon" target="_blank">Github: FS22_CVT_Addon</a> bereitstellen.
-
-Changelog 1.3.0.0
-  - Fix für TerraLifePlus Milchtaxi.
-  - HST Variante 1 kein Gas mehr beim beschleunigen.
-  - Shop Configsystem überarbeitet.
-  - Missionsfahrzeuge haben kein CVTaddon mehr.
-  - Link in der Beschreibung korregiert.
-  - AutoDiffs bei HST's aktiviert.
+Ideen und Feedback sowie Reports gerne unter <a href"https://github.com/s4t4n/FS22_CVT_Addon">Github: FS22_CVT_Addon</a> bereitstellen.
 
 Changelog 1.2.9.0
   - Motor-Aufwärmen Problem bei Radladern behoben.

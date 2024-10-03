@@ -490,10 +490,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
 	local addXtraCats = string.find(tostring(StI), "sdf") or string.find(tostring(StI), "SDF") or string.find(tostring(StI), "LSFM") or string.find(tostring(StI), "CLAAS")
 						or string.find(tostring(StI), "JOHN") or string.find(tostring(StI), "DEUTZ") or string.find(tostring(StI), "JD") or string.find(tostring(StI), "PACK")
     local int2ndVehicles = StI == "GRAPEVEHICLES" or StI == "OLIVEVEHICLES" or StI == "FORAGEHARVESTERCUTTERS" or StI == "MOWERVEHICLES" or StI == "SLURRYVEHICLES"
-    local intVehicles = addXtraCats or StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL" or StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" 
-						or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES" 
-						or StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES" or StI == "WOODHARVESTING" 
-						or StI == "FORKLIFTS" or StI == "ANIMALSVEHICLES" or StI == "CARS" or StI == "TRUCKS" or StI == "VEGETABLEVEHICLES" or StI == "ANIMALS" 
+    local intVehicles = addXtraCats or StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL" or StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES" or StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES" or StI == "WOODHARVESTING" or StI == "FORKLIFTS" or StI == "ANIMALSVEHICLES"
 	-- print("CVTa ShopCat: " .. tostring(StI))
     if intVehicles or int2ndVehicles then
 		local isVario = true -- ToDo: find a way to check if one of a motorconfig has cvt, when the first one is a manual shift
@@ -512,7 +509,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
         local integrateConfig = true
         if storeItem.isMod == false then
             if StI == "TRUCKS" then
-                integrateConfig = true
+                integrateConfig = false
             end
         else
             if StI == "TRUCKS" then
@@ -561,7 +558,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
                 {name = name5, index = 5, isDefault = false, price = 750, dailyUpkeep = 0, isSelectable = true},
                 {name = name6, index = 6, isDefault = false, price = 1000, dailyUpkeep = 0, isSelectable = true},
                 {name = name7, index = 7, isDefault = false, price = 0, dailyUpkeep = 5, isSelectable = true},
-				{name = name8, index = 8, isDefault = true, price = 1, dailyUpkeep = 0, isSelectable = true},
+				{name = name8, index = 8, isDefault = false, price = 1, dailyUpkeep = 0, isSelectable = true},
 				{name = name9, index = 9, isDefault = false, price = 0, dailyUpkeep = 0, isSelectable = true},
 				{name = name10, index = 10, isDefault = false, price = 3016, dailyUpkeep = 3, isSelectable = true},
 				{name = name11, index = 11, isDefault = false, price = 0, dailyUpkeep = 2, isSelectable = true}
@@ -2398,35 +2395,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							end
 						end
 					end
-					if spec.vOne ~= nil then
-						if spec.CVTconfig == 7 then -- always for hst's
-							if self.spec_vca ~= nil then
-								if spec.autoDiffs == 1 then
-									-- awd
-									if self:getLastSpeed() > 16 then
-										self:vcaSetState("diffLockAWD", false)
-									elseif self:getLastSpeed() < 13 then
-										self:vcaSetState("diffLockAWD", true)
-									end
-									-- diff front
-									if self:vcaGetState("diffLockFront") == true and math.abs(self.rotatedTime) > 0.39 then
-										self:vcaSetState("diffLockFront", false)
-									elseif math.abs(self.rotatedTime) < 0.25 then
-										self:vcaSetState("diffLockFront", true)
-									end
-									-- diff rear
-									if self:vcaGetState("diffLockBack") == true and math.abs(self.rotatedTime) > 0.28 then
-										self:vcaSetState("diffLockBack", false)
-									elseif math.abs(self.rotatedTime) < 0.21 then
-										self:vcaSetState("diffLockBack", true)
-									end
-								else
-									self:vcaSetState("diffLockFront", false)
-									self:vcaSetState("diffLockBack", false)
-								end
-							end
-						end
-					end
 				end
 				
 				-- Enhanced Vehicle 
@@ -3100,10 +3068,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										if spec.HandgasPercent > 0 then
 											self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm*0.95, self.spec_motorized.motor.maxRpm*spec.HandgasPercent)
 											self.spec_motorized.motor.smoothedLoadPercentage = self.spec_motorized.motor.smoothedLoadPercentage * 0.9
-											-- print("## hier NOT 0")
 										else
-											self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm * 0.95, (self.spec_motorized.motor.maxRpm * spec.HandgasPercent) )
-											-- print("## hier 0")
+											self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm * 0.95, self.spec_motorized.motor.maxRpm * spec.HandgasPercent)
 										end
 									end
 								else
@@ -3112,7 +3078,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										self.spec_motorized.motor.smoothedLoadPercentage = self.spec_motorized.motor.smoothedLoadPercentage * 0.9
 									else
 										self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm * 0.95, self.spec_motorized.motor.maxRpm * spec.HandgasPercent)
-										-- print("## hier")
 									end
 								end
 								if self.spec_vca ~= nil then
@@ -4159,7 +4124,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				
 				-- print("raG-HG: ", tostring(self.spec_realismAddon_gearbox_inputs.handThrottlePercent))
 				if spec.autoDiffs == 1 then
-					if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 11 then
+					if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 7 or spec.CVTconfig == 11 then
 						if spec.vOne == 1 then
 							spec.forDBL_autodiffs = 0 -- Vorwahl und inaktiv
 							spec.forDBL_preautodiffs = 1 -- Vorwahl und inaktiv
@@ -4177,11 +4142,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								spec.forDBL_preautodiffs = 1 -- Vorwahl
 							
 							end
-						end
-					elseif spec.CVTconfig == 7 then -- HST I&II
-						if spec.vOne ~= nil then
-							spec.forDBL_autodiffs = 1 -- aktiv
-							spec.forDBL_preautodiffs = 0 -- n.V.
 						end
 					end
 				elseif spec.autoDiffs ~= 1 then
@@ -4834,7 +4794,7 @@ function CVTaddon:onDraw(dt)
 					
 					-- VCA DiffLocks AutoDiffsAWD
 					if spec.autoDiffs == 1 then
-						if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 11 then
+						if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 7 or spec.CVTconfig == 11 then
 							if spec.vOne == 1 then
 								setTextColor(0.8, 0.8, 0, 0.8)
 								setTextAlignment(RenderText.ALIGN_LEFT)
@@ -4865,16 +4825,6 @@ function CVTaddon:onDraw(dt)
 									spec.forDBL_preautodiffs = 1 -- Vorwahl
 								
 								end
-							end
-							renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
-						elseif spec.CVTconfig == 7 then
-							if spec.vOne ~= nil then
-								setTextColor(0, 0.95, 0, 0.8)
-								setTextAlignment(RenderText.ALIGN_LEFT)
-								setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
-								setTextBold(false)
-								spec.forDBL_autodiffs = 1 -- aktiv
-								spec.forDBL_preautodiffs = 0 -- n.V.
 							end
 							renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
 						end

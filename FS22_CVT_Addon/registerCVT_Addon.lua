@@ -14,7 +14,7 @@ local specName = g_currentModName..".CVTaddon"
 if g_specializationManager:getSpecializationByName("CVTaddon") == nil then
 	print("CVTa ModName: ".. g_currentModName)
 	if g_currentModName ~= "FS22_CVT_Addon" then
-		if string.find(tostring(g_currentModName), "master") or string.find(tostring(g_currentModName), "main") then
+		if string.find(tostring(g_currentModName), "master") or string.find(tostring(g_currentModName), "main") or string.find(tostring(g_currentModName), "update") then
 			print("Please download the Github Version from the Releases or repack it correctly. Description at the Wiki.")
 			print("Or otherwise, download it from the official Modhub.")
 		else

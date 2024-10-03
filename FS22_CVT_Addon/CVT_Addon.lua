@@ -25,9 +25,9 @@ CVTaddon.author = getXMLString(modDesc, "modDesc.author");
 CVTaddon.contributor = getXMLString(modDesc, "modDesc.contributor");
 source(CVTaddon.modDirectory.."events/SyncClientServerEvent.lua")
 
-local scrversion = "0.3.4.0";
+local scrversion = "0.5.3.2";
 local modversion = CVTaddon.modversion; -- moddesc
-local lastupdate = "20.04.24";
+local lastupdate = "09.08.24";
 
 -- _______________________
 cvtaDebugCVTon = false	 -- \
@@ -56,7 +56,6 @@ end
 
 function CVTaddon.registerEventListeners(vehicleType) 
 	SpecializationUtil.registerEventListener(vehicleType, "onRegisterActionEvents", CVTaddon) 
-	-- SpecializationUtil.registerEventListener(vehicleType, "onMissionLoaded", CVTaddon)
 	SpecializationUtil.registerEventListener(vehicleType, "onLoad", CVTaddon)
 	SpecializationUtil.registerEventListener(vehicleType, "onPreLoad", CVTaddon)
 	SpecializationUtil.registerEventListener(vehicleType, "onPostLoad", CVTaddon)
@@ -66,7 +65,6 @@ function CVTaddon.registerEventListeners(vehicleType)
     SpecializationUtil.registerEventListener(vehicleType, "onCVTaHUDposChanged", CVTaddon)
     SpecializationUtil.registerEventListener(vehicleType, "onUpdateTick", CVTaddon)
     SpecializationUtil.registerEventListener(vehicleType, "onDraw", CVTaddon)
-    -- SpecializationUtil.registerEventListener(vehicleType, "addNewStoreConfig", CVTaddon)
 	
 	SpecializationUtil.registerEventListener(vehicleType, "onReadStream", CVTaddon);
 	SpecializationUtil.registerEventListener(vehicleType, "onWriteStream", CVTaddon);
@@ -77,11 +75,7 @@ function CVTaddon.registerEventListeners(vehicleType)
 end 
 function CVTaddon.registerOverwrittenFunctions(vehicleType)
 	SpecializationUtil.registerOverwrittenFunction(vehicleType, "getCanMotorRun", CVTaddon.getCanMotorRun)
-	-- SpecializationUtil.registerOverwrittenFunction(vehicleType, "getTorqueCurveValue", CVTaddon.getTorqueCurveValue_new)
-	-- SpecializationUtil.registerOverwrittenFunction(vehicleType, "getLastModulatedMotorRpm", CVTaddon.getLastModulatedMotorRpm_new)
 end
-----------------------------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
 
 function CVTaddon:onRegisterActionEvents()
@@ -178,21 +172,7 @@ function CVTaddon:onRegisterActionEvents()
 			_, CVTaddon.eventIdV4 = self:addActionEvent(CVTaddon.actionEventsV4, 'LMBF_TOGGLE_BRAMP', self, CVTaddon.BrakeRamps, false, true, false, true)
 			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV4, GS_PRIO_NORMAL)
 			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV4, false)
-			
-			-- neutral 
-			-- _, CVTaddon.eventIdV5 = self:addActionEvent(CVTaddon.actionEventsV5, 'SETVARION', self, CVTaddon.VarioN, false, true, false, true)
-			-- g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV5, GS_PRIO_NORMAL)
-			-- g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV5, false)
-			
-			-- -- rpmUP
-			-- _, CVTaddon.eventIdV6 = self:addActionEvent(CVTaddon.actionEventsV6, 'SETVARIORPMP', self, CVTaddon.VarioRpmPlus, false, true, false, true)
-			-- g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV6, GS_PRIO_NORMAL)
-			-- g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV6, CVTaddon.eventActiveV6)
-			-- -- rpmDn
-			-- _, CVTaddon.eventIdV7 = self:addActionEvent(CVTaddon.actionEventsV7, 'SETVARIORPMM', self, CVTaddon.VarioRpmMinus, false, true, false, true)
-			-- g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV7, GS_PRIO_NORMAL)
-			-- g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV7, CVTaddon.eventActiveV7)
-			
+
 			-- rpm axis
 			_, CVTaddon.eventIdV12 = self:addActionEvent(CVTaddon.actionEventsV12, 'SETVARIORPM_AXIS', self, CVTaddon.VarioRpmAxis, false, false, true, true)
 			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV12, GS_PRIO_NORMAL)
@@ -200,10 +180,9 @@ function CVTaddon:onRegisterActionEvents()
 			
 			-- clutch axis
 			if spec.isVarioTM == true then 
-			-- _, CVTaddon.eventIdV13 = self:addActionEvent(CVTaddon.actionEventsV13, 'SETVARIOCLUTCH_AXIS', self, CVTaddon.VarioClutchAxis, false, false, true, true)
-			_, CVTaddon.eventIdV13 = self:addActionEvent(CVTaddon.actionEventsV13, 'AXIS_CLUTCH_VEHICLE', self, CVTaddon.VarioClutchAxis, false, false, true, true)
-			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV13, GS_PRIO_NORMAL)
-			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV13, false)
+				_, CVTaddon.eventIdV13 = self:addActionEvent(CVTaddon.actionEventsV13, 'AXIS_CLUTCH_VEHICLE', self, CVTaddon.VarioClutchAxis, false, false, true, true)
+				g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV13, GS_PRIO_NORMAL)
+				g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV13, false)
 			end
 			
 			-- Fahrpedalauflösung -- needed?   oder ändern in RPM aka gearbox
@@ -215,18 +194,11 @@ function CVTaddon:onRegisterActionEvents()
 			_, CVTaddon.eventIdV9 = self:addActionEvent(CVTaddon.actionEventsV9, 'SETVARIOADIFFS', self, CVTaddon.VarioADiffs, false, true, false, true)
 			g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV9, GS_PRIO_NORMAL)
 			g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV9, false)
-	
-			-- rpmDmax
-			-- _, CVTaddon.eventIdV10 = self:addActionEvent(CVTaddon.actionEventsV10, 'SETVARIORPMDMAX', self, CVTaddon.VarioRpmDmax, false, true, false, true)
-			-- g_inputBinding:setActionEventTextPriority(CVTaddon.eventIdV10, GS_PRIO_NORMAL)
-			-- g_inputBinding:setActionEventTextVisibility(CVTaddon.eventIdV10, CVTaddon.eventActiveV10)
-
 		end
 		if cvtaDebugCVTon then
 			print("CVTaddon: onRegisterActionEvents a vOne: ".. tostring(spec.vOne))
 			print("CVTaddon: onRegisterActionEvents a vTwo: ".. tostring(spec.vTwo))
 			print("CVTaddon: onRegisterActionEvents a vThree: ".. tostring(spec.vThree))
-			-- print("CVTaddon: onRegisterActionEvents a CVTCanStart: ".. tostring(spec.CVTCanStart))
 			print("CVTaddon: onRegisterActionEvents a eventActiveV1: ".. tostring(CVTaddon.eventActiveV1))
 			print("CVTaddon: onRegisterActionEvents a eventActiveV2: ".. tostring(CVTaddon.eventActiveV2))
 			print("CVTaddon: onRegisterActionEvents a eventActiveV3: ".. tostring(CVTaddon.eventActiveV3))
@@ -236,12 +208,7 @@ function CVTaddon:onRegisterActionEvents()
 	end -- g_client
 end -- onRegisterActionEvents
 
--- function CVTaddon.registerSoundXMLPaths(schema, baseKey)
-    -- SoundManager.registerSampleXMLPaths(schema, baseKey, "motorFAN")
--- end
-
 function CVTaddon:onLoad()
-	-- if g_client ~= nil then
 	self.spec_CVTaddon = {}
 	local spec = self.spec_CVTaddon
 	local pcspec = self.spec_powerConsumer
@@ -286,17 +253,13 @@ function CVTaddon:onLoad()
 	spec.CVTIconBr4 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDbr4.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
 	
 	spec.CVTIconHydro = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDhydro.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-	-- spec.CVTIconN = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
-	-- spec.CVTIconN2 = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDn2.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
 	
 	spec.CVTIconR = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDr.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
 	spec.CVTIconV = Overlay.new(Utils.getFilename("hud/CVTaddon_HUDv.dds", CVTaddon.modDirectory), 0, 0, 1, 1);
 	
 	spec.BG1width, spec.BG1height = 0.005, 0.09;
 	spec.currBGcolor = { 0.02, 0.02, 0.02, 0.7 }
-	-- if self.spec_motorized.motor.currentDirection == nil then
-		-- spec.lastDirection = 1
-	-- end
+
 	-- defaults if allother nil
 	spec.smoother = 0
 	spec.DTadd = 0
@@ -322,9 +285,6 @@ function CVTaddon:onLoad()
 	spec.CVTconfig = 0
 	spec.CVTcfgExists = false
 	spec.CVTdamage = 0.000
-	-- spec.RpmInputValue = 0
-	-- spec.mcRPMvar = 1
-	-- spec.CVTCanStart = false
 	
  -- to make it easier read with dashbord-live
 	spec.forDBL_pedalpercent = tostring(self.spec_motorized.motor.lastAcceleratorPedal*100)
@@ -341,6 +301,11 @@ function CVTaddon:onLoad()
 	spec.forDBL_critdamage = 0
 	spec.forDBL_cvtwear = 0.000
 	
+	spec.forDBL_cvtclutch = 0.0
+	spec.forDBL_handthrottle = 0.0
+	spec.forDBL_vmaxfoward = 0.0
+	spec.forDBL_vmaxbackward = 0.0
+	
 	-- #GLOWIN-TEMP-SYNC
 	spec.SyncMotorTemperature = 0
 	spec.SyncFanEnabled = false
@@ -353,13 +318,7 @@ function CVTaddon:onLoad()
 			spec.forDBL_tmspedal = 1
 		end
 	end
-	-- if spec.CVTCanStart ~= nil then
-		-- if spec.CVTCanStart == 0 then
-			-- spec.forDBL_neutral = 1
-		-- elseif spec.CVTCanStart == 1 then
-			-- spec.forDBL_neutral = 0
-		-- end
-	-- end
+
 	if spec.vOne ~= nil then
 		if spec.vOne == 1 then
 			spec.forDBL_drivinglevel = tostring(2)
@@ -471,8 +430,6 @@ function CVTaddon.initSpecialization()
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#vThree")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#CVTCanStart")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#vFive")
-    -- schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#lastDirection")
-    -- schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#PedalResolution")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#rpmDmax")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#autoDiffs")
 	schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).FS22_CVT_Addon.CVTaddon#CvtConfigId")
@@ -524,10 +481,6 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
         StI = storeItem.categoryName
     end
 	local modNamez = getXMLString(xmlFile.handle, "vehicle.storeData.name")
-	-- local indCatName = "catoff"
-	-- if getXMLString(xmlFile.handle, "vehicle.storeData.indCatCVT") ~= nil then
-		-- indCatName = getXMLString(xmlFile.handle, "vehicle.storeData.indCatCVT")
-	-- end
 	if modNamez == nil then
 		modNamez = getXMLString(xmlFile.handle, "vehicle.storeData.name.en")
 	end
@@ -537,7 +490,10 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
 	local addXtraCats = string.find(tostring(StI), "sdf") or string.find(tostring(StI), "SDF") or string.find(tostring(StI), "LSFM") or string.find(tostring(StI), "CLAAS")
 						or string.find(tostring(StI), "JOHN") or string.find(tostring(StI), "DEUTZ") or string.find(tostring(StI), "JD") or string.find(tostring(StI), "PACK")
     local int2ndVehicles = StI == "GRAPEVEHICLES" or StI == "OLIVEVEHICLES" or StI == "FORAGEHARVESTERCUTTERS" or StI == "MOWERVEHICLES" or StI == "SLURRYVEHICLES"
-    local intVehicles = addXtraCats or StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL" or StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES" or StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES" or StI == "WOODHARVESTING" or StI == "FORKLIFTS" or StI == "ANIMALSVEHICLES"
+    local intVehicles = addXtraCats or StI == "TRACTORSS" or StI == "TRACTORSM" or StI == "TRACTORSL" or StI == "HARVESTERS" or StI == "FORAGEHARVESTERS" 
+						or StI == "POTATOVEHICLES" or StI == "BEETVEHICLES" or StI == "SUGARCANEVEHICLES" or StI == "COTTONVEHICLES" or StI == "MISCVEHICLES" 
+						or StI == "FRONTLOADERVEHICLES" or StI == "TELELOADERVEHICLES" or StI == "SKIDSTEERVEHICLES" or StI == "WHEELLOADERVEHICLES" or StI == "WOODHARVESTING" 
+						or StI == "FORKLIFTS" or StI == "ANIMALSVEHICLES" or StI == "CARS" or StI == "TRUCKS" or StI == "VEGETABLEVEHICLES" or StI == "ANIMALS" 
 	-- print("CVTa ShopCat: " .. tostring(StI))
     if intVehicles or int2ndVehicles then
 		local isVario = true -- ToDo: find a way to check if one of a motorconfig has cvt, when the first one is a manual shift
@@ -556,7 +512,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
         local integrateConfig = true
         if storeItem.isMod == false then
             if StI == "TRUCKS" then
-                integrateConfig = false
+                integrateConfig = true
             end
         else
             if StI == "TRUCKS" then
@@ -605,7 +561,7 @@ function addNewStoreConfig(xmlFile, superFunc, baseXMLName, baseDir, customEnvir
                 {name = name5, index = 5, isDefault = false, price = 750, dailyUpkeep = 0, isSelectable = true},
                 {name = name6, index = 6, isDefault = false, price = 1000, dailyUpkeep = 0, isSelectable = true},
                 {name = name7, index = 7, isDefault = false, price = 0, dailyUpkeep = 5, isSelectable = true},
-				{name = name8, index = 8, isDefault = false, price = 1, dailyUpkeep = 0, isSelectable = true},
+				{name = name8, index = 8, isDefault = true, price = 1, dailyUpkeep = 0, isSelectable = true},
 				{name = name9, index = 9, isDefault = false, price = 0, dailyUpkeep = 0, isSelectable = true},
 				{name = name10, index = 10, isDefault = false, price = 3016, dailyUpkeep = 3, isSelectable = true},
 				{name = name11, index = 11, isDefault = false, price = 0, dailyUpkeep = 2, isSelectable = true}
@@ -661,11 +617,9 @@ function CVTaddon:onPostLoad(savegame, mission, node, state)
 				spec.vTwo = xmlFile:getValue(key.."#vTwo", spec.vTwo)
 				spec.vThree = xmlFile:getValue(key.."#vThree", spec.vThree)
 				spec.CVTCanStart = xmlFile:getValue(key.."#CVTCanStart", spec.CVTCanStart)
-				spec.vFive = xmlFile:getValue(key.."#vFive", spec.vFive)
+				spec.vFive = 0
+				-- spec.vFive = xmlFile:getValue(key.."#vFive", spec.vFive)
 				spec.autoDiffs = xmlFile:getValue(key.."#autoDiffs", spec.autoDiffs)
-				-- spec.lastDirection = xmlFile:getValue(key.."#lastDirection", spec.lastDirection)
-				-- spec.PedalResolution = xmlFile:getValue(key.."#PedalResolution", spec.PedalResolution)
-				-- spec.rpmDmax = xmlFile:getValue(key.."#rpmDmax", spec.rpmDmax)
 				spec.CVTconfig = xmlFile:getValue(key.."#CvtConfigId", spec.CVTconfig)
 				spec.CVTdamage = xmlFile:getValue(key.."#CVTdamage", spec.CVTdamage)
 				
@@ -684,33 +638,12 @@ function CVTaddon:onPostLoad(savegame, mission, node, state)
 		if CvtConfigId > 0 then
 			spec.CVTconfig = CvtConfigId
 		end
-		-- print("CVTa: if spec.CVTcfgExists then : " .. tostring(spec.CVTcfgExists))
-		-- print("CVTa: CvtConfigId: " .. CvtConfigId)
-		-- print("CVTa: CVTconfig: " .. tostring(spec.CVTconfig))
-		-- print("CVTa: isVarioTM PL: " .. tostring(spec.isVarioTM))
 	end
 	
 	gU_targetSelf = self
-	
-	-- local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
-	-- local MODxmlFile = XMLFile.load("vehicle", storeItem.xmlFilename, Vehicle.xmlSchema)
-	-- local XMLCVTaddonNDLv = getXMLString(MODxmlFile.handle, "vehicle.motorized.motorConfigurations.motorConfiguration(?).CVTaddon.NumDrivingLevels#dlvalue")
-	-- local XMLCVTaddonFCNv = getXMLString(MODxmlFile.handle, "vehicle.motorized.motorConfigurations.motorConfiguration(?).CVTaddon.ForceConfigNumber#fcnvalue")
 
-	-- print("CVTa Shop XMLCVTaddonNDLv: " .. tostring(XMLCVTaddonNDLv))
-	-- print("CVTa Shop XMLCVTaddonFCNv: " .. tostring(XMLCVTaddonFCNv))
 	print("CVTa: CvtConfigId spec.CVTconfig " .. spec.CVTconfig)
-	
-	-- if XMLCVTaddonFCNv ~= nil then
-		-- spec.CVTconfig = XMLCVTaddonFCNv
-	-- end
 
-	
-	-- print("CVTa:2 CvtConfigId spec.CVTconfig " .. spec.CVTconfig)
-	-- if spec.CVTconfig == nil or 0 then
-		-- spec.CVTconfig = CvtConfigId
-	-- end
-	
  -- to make it easier read with dashbord-live
 	spec.forDBL_pedalpercent = tostring(self.spec_motorized.motor.lastAcceleratorPedal*100)
 	spec.forDBL_rpmrange = 1
@@ -738,13 +671,7 @@ function CVTaddon:onPostLoad(savegame, mission, node, state)
 			spec.forDBL_tmspedal = 1
 		end
 	end
-	-- if spec.CVTCanStart ~= nil then
-		-- if spec.CVTCanStart == 0 then
-			-- spec.forDBL_neutral = 1
-		-- elseif spec.CVTCanStart == 1 then
-			-- spec.forDBL_neutral = 0
-		-- end
-	-- end
+
 	if spec.vOne ~= nil then
 		if spec.vOne == 1 then
 			spec.forDBL_drivinglevel = tostring(2)
@@ -783,6 +710,7 @@ function CVTaddon:onPostLoad(savegame, mission, node, state)
 		end
 	end
 	-- spec.forDBL_
+	
 	
 	-- if self.spec_motorized.motor:getRotInertia() < 0.003 then
 		-- local setRIorigin = self.spec_motorized.motor.peakMotorTorque / 600
@@ -869,36 +797,20 @@ function CVTaddon:saveToXMLFile(xmlFile, key, usedModNames)
 		-- if spec.CVTconfig ~= nil or spec.CVTconfig ~= 0
 		spec.CVTconfig = self.configurations["CVTaddon"] or 1
 		-- #configPart
-		-- spec.cvtexists = self.configurations["CVTaddon"] == 2
-		-- spec.actionsLength = table.getn(spec.actions)
 		if spec.isVarioTM then
 			xmlFile:setValue(key.."#vOne", spec.vOne)
 			xmlFile:setValue(key.."#vTwo", spec.vTwo)
 			xmlFile:setValue(key.."#vThree", spec.vThree)
 			xmlFile:setValue(key.."#CVTCanStart", spec.CVTCanStart)
-			xmlFile:setValue(key.."#vFive", spec.vFive)
 			xmlFile:setValue(key.."#autoDiffs", spec.autoDiffs)
-			-- xmlFile:setValue(key.."#lastDirection", spec.lastDirection)
-			-- xmlFile:setValue(key.."#PedalResolution", spec.PedalResolution)
-			-- xmlFile:setValue(key.."#rpmDmin", spec.rpmDmin)
-			-- xmlFile:setValue(key.."#rpmDmax", spec.rpmDmax)
 			xmlFile:setValue(key.."#CVTdamage", spec.CVTdamage)
 		end
 		xmlFile:setValue(key.."#CvtConfigId", spec.CVTconfig)
 
 		print("CVT_Addon: saved.")
-		-- print("CVT_Addon: saved personal adjustments for "..self:getName())
-		-- print("CVT_Addon: Save Driving Level id: "..tostring(spec.vOne))
-		-- print("CVT_Addon: Save Acceleration Ramp id: "..tostring(spec.vTwo))
-		-- print("CVT_Addon: Save Brake Ramp id: "..tostring(spec.vThree))
-		-- print("CVT_Addon: Save CfgID: "..tostring(spec.CVTconfig))
 	end
 end
------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------
 
-
------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 
 function CVTaddon:BrakeRamps() -- BREMSRAMPEN - Ab kmh X wird die Betriebsbremse automatisch aktiv
@@ -970,6 +882,8 @@ function CVTaddon:BrakeRamps() -- BREMSRAMPEN - Ab kmh X wird die Betriebsbremse
 			print("CVTa BR event: " .. spec.vThree)		
 			print("CVTa BR 4_dbl: " .. spec.forDBL_brakeramp)		
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed * math.pi
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed * math.pi
 	end --g_client
 end -- BrakeRamps
 
@@ -1049,6 +963,8 @@ function CVTaddon:AccRampsToggle() -- BESCHLEUNIGUNGSRAMPEN
 		else
 			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 	end -- g_client
 end -- AccRamps Toggle
 
@@ -1078,6 +994,8 @@ function CVTaddon:AccRampsSet1() -- BESCHLEUNIGUNGSRAMPEN I
 		else
 			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 	end -- g_client
 end -- AccRamps set1
 
@@ -1106,6 +1024,8 @@ function CVTaddon:AccRampsSet2() -- BESCHLEUNIGUNGSRAMPEN II
 		else
 			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 	end -- g_client
 end -- AccRamps set2
 
@@ -1134,6 +1054,8 @@ function CVTaddon:AccRampsSet3() -- BESCHLEUNIGUNGSRAMPEN III
 		else
 			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 	end -- g_client
 end -- AccRamps set3
 
@@ -1162,6 +1084,8 @@ function CVTaddon:AccRampsSet4() -- BESCHLEUNIGUNGSRAMPEN IV
 		else
 			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 	end -- g_client
 end -- AccRamps set4
 
@@ -1243,6 +1167,8 @@ function CVTaddon:AccRamps() -- BESCHLEUNIGUNGSRAMPEN - Motorbremswirkung wird k
 		else
 			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 	end -- g_client
 end -- AccRamps
 function CVTaddon:AccRampsD()
@@ -1322,6 +1248,8 @@ function CVTaddon:AccRampsD()
 		else
 			g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 		end
+		spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+		spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 	end -- g_client
 end -- AccRamps Down
 
@@ -1435,6 +1363,8 @@ function CVTaddon:VarioOne() -- FAHRSTUFE 1 field
 			else
 				g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.isVarioTM, spec.isTMSpedal, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
 			end
+			spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+			spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 		end -- g_client
 		
 	end
@@ -1545,6 +1475,8 @@ function CVTaddon:VarioToggle() -- FAHRSTUFEN WECHSELN
 	elseif spec.vOne == 2 then
 		spec.forDBL_drivinglevel = tostring(1)
 	end
+	spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+	spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 end -- VarioToggle
 
 function CVTaddon:VarioTwo() -- FAHRSTUFE 2 street
@@ -1623,6 +1555,8 @@ function CVTaddon:VarioTwo() -- FAHRSTUFE 2 street
 	elseif spec.vOne == 2 then
 		spec.forDBL_drivinglevel = tostring(1)
 	end
+	spec.forDBL_vmaxforward = self.spec_motorized.motor.maxForwardSpeed
+	spec.forDBL_vmaxbackward = self.spec_motorized.motor.maxBackwardSpeed
 end -- VarioTwo
 
 
@@ -1724,19 +1658,35 @@ end
 function CVTaddon:onLeaveVehicle(wasEntered)
 	local spec = self.spec_CVTaddon
 	if spec.CVTconfig ~= 8 then
-		-- self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm
 		if self.spec_vca ~= nil then
 			if spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
-				self.spec_vca.handbrake = true
-				-- self:raiseDirtyFlags(spec.dirtyFlag)
+				if FS22_AutoDrive ~= nil and FS22_AutoDrive.AutoDrive ~= nil then
+					if (self.ad.stateModule:isActive() ~= nil ) then
+						if (self.ad.stateModule:isActive() == true ) then
+							self.spec_vca.handbrake = false
+						else
+							self.spec_vca.handbrake = true
+						end
+					end
+				else
+					self.spec_vca.handbrake = true
+				end
+				
+				if self.spec_cpAIWorker ~= nil then
+					if (self.rootVehicle:getIsCpActive() ~= nil ) then
+						if (self.rootVehicle:getIsCpActive() == true ) then
+							self.spec_vca.handbrake = false
+						else
+							self.spec_vca.handbrake = true
+						end
+					end
+				else
+					self.spec_vca.handbrake = true
+				end
 			end
 		end
 	end
-	-- if g_server ~= nil then
-		-- g_server:broadcastEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.moveRpmL, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue), nil, nil, self)
-	-- else
-		-- g_client:getServerConnection():sendEvent(SyncClientServerEvent.new(self, spec.vOne, spec.vTwo, spec.vThree, spec.CVTCanStart, spec.vFive, spec.autoDiffs, spec.lastDirection, spec.isVarioTM, spec.isTMSpedal, spec.moveRpmL, spec.CVTconfig, spec.forDBL_warnheat, spec.forDBL_critheat, spec.forDBL_warndamage, spec.forDBL_critdamage, spec.CVTdamage, spec.HandgasPercent, spec.ClutchInputValue))
-	-- end
+	spec.vFive = 0
 end
 
 function CVTaddon:getCanMotorRun(superFunc)
@@ -1755,60 +1705,9 @@ function CVTaddon:getCanMotorRun(superFunc)
 	end
 end
 
---function CVTaddon:getTorqueCurveValue_new(superFunc)
-	-- if self.spec_CVTaddon ~= nil then
-		-- local spec = self.spec_CVTaddon
-		
-		-- if spec.isVarioTM == true then
-			-- local setIPMpwr = 1
-			-- if spec.forDBL_ipmactive == 1 then
-				-- print("ipm new")
-			-- end
-			-- local damage = 1 - (self.vehicle:getVehicleDamage() * (VehicleMotor.DAMAGE_TORQUE_REDUCTION*4))
-			-- return self:getTorqueCurve():get(self.spec_motorized.motor:getLastModulatedMotorRpm()) * damage
-			
-		-- elseif spec.isVarioTM == false then
-			-- return superFunc(self)
-		-- end
-	-- end
--- end
--- functionCVTaddon:getLastModulatedMotorRpm_new(self, superFunc)
-    -- return self.lastMotorRpm
--- end
--- VehicleMotor.getLastModulatedMotorRpm = Utils.overwrittenFunction(VehicleMotor.getLastModulatedMotorRpm, realismAddon_gearbox_overrides.newGetLastModulatedMotorRpm)
--- function CVTaddon:getLastModulatedMotorRpm_new(superFunc)
-	-- local spec = self.spec_CVTaddon
-    -- local modulationIntensity = MathUtil.clamp((self.smoothedLoadPercentage - MODULATION_RPM_MIN_REF_LOAD) / (MODULATION_RPM_MAX_REF_LOAD - MODULATION_RPM_MIN_REF_LOAD), MODULATION_RPM_MIN_INTENSITY, 1)
-    -- local modulationOffset = self.lastModulationPercentage * (MODULATION_RPM_MAX_OFFSET * modulationIntensity) * self.constantRpmCharge
-	-- -- SbSh: no need rpm ducking
-	-- print("test")
-	-- if spec.isVarioTM == true then
-		
-		-- -- apply only if clutch is released since with slipping clutch the rpm is already decreased
-		-- local loadChangeChargeDrop = 0
-		-- if self:getClutchPedal() < 0.1 and self.minGearRatio > 0 then
-			-- local rpmRange = self.maxRpm - self.minRpm
-			-- local dropScale = (self.lastMotorRpm - self.minRpm) / rpmRange * 0.5
-			-- loadChangeChargeDrop = self.loadPercentageChangeCharge * rpmRange * dropScale
-			-- print("dropScale: "..tostring(dropScale))
-		-- else
-			-- self.loadPercentageChangeCharge = 
-			-- print("loadChangeChargeDrop: "..tostring(loadChangeChargeDrop))
-		-- end
-
-		-- return self.lastMotorRpm + modulationOffset - loadChangeChargeDrop
-	-- else
-		-- return superFunc(self)
-	-- end
--- end
--- VehicleMotor.getLastModulatedMotorRpm = Utils.overwrittenFunction(VehicleMotor.getLastModulatedMotorRpm, CVTaddon.getLastModulatedMotorRpm_new)
-
-
 function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected, vehicle)
 	local spec = self.spec_CVTaddon
 	local specMF = self.spec_motorized
-	
-	
 	local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
 	local StI = storeItem.categoryName
 	-- print("CVTa ShopCat: " .. tostring(StI))
@@ -1846,7 +1745,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 			
 			if spec.DTadd >= 1000 and spec.SyncMotorTemperature ~= self.spec_motorized.motorTemperature.valueSend then
 				self:raiseDirtyFlags(spec.dirtyFlag)
-				print("Sync: DirtyFlag")
+				-- print("Sync: DirtyFlag")
 			end
 			
 			if spec.SyncFanEnabled ~= spec.fanEnabledLast then
@@ -1862,14 +1761,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 	
 	
 	if spec.CVTconfig ~= 8 and spec.CVTconfig ~= 0 then
-		-- print("rotInertia: ".. tostring(self.spec_motorized.motor:getRotInertia() ))
-		
-		-- if self.spec_motorized.motor:getRotInertia() < 0.003 then
-			-- local setRIorigin = self.spec_motorized.motor.peakMotorTorque / 600
-			-- self.spec_motorized.motor:setRotInertia(setRIorigin)
-			-- -- print("setRIorigin: ".. tostring(setRIorigin))
-		-- end
-		
 		-- if not self.spec_RealisticDamageSystem.EngineDied then
 		-- -- Secure starting engine
 		if self.getIsEntered ~= nil and self:getIsEntered() and spec.CVTconfig ~= 8 and spec.CVTconfig ~= 0 and spec.CVTconfig ~= 9 and spec.CVTconfig ~= 10 and spec.CVTconfig ~= 11 then
@@ -2203,61 +2094,54 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 		
 		local changeFlag = false
 		local motor = nil
-		-- local lowerfind = Vehicle:getIsLowered(defaultIsLowered)
-		-- print("CVTa:started " .. tostring(self.spec_motorized.isMotorStarted))
-		-- print("CVTa:motorStartTime " .. tostring(self.spec_motorized.motorStartTime))
-		-- print("CVTa:isMotorRunning " .. tostring(self.spec_motorized.isMotorRunning))
-		-- print("CVTa:SmoothedBrakePedal " .. tostring(self.spec_motorized.motor.vehicle.wheelsUtilSmoothedBrakePedal))
-		-- print("CVTa:axisBrake " .. tostring(self.spec_drivable.lastInputValues.axisBrake))
-		-- print("CVTa:lastAcceleratorPedal " .. tostring(self.spec_motorized.motor.lastAcceleratorPedal))
-		
-		
+
 		-- Anbaugeräte ermitteln und prüfen ob abgesenkt Front/Back
 		local moveDownFront = false
 		local moveDownBack = false
 		local object;
-		if #self.spec_attacherJoints.attachedImplements ~= nil then
-			for attachedImplement = 1, #self.spec_attacherJoints.attachedImplements do
-				if self.spec_attacherJoints.attachedImplements[attachedImplement].object ~= nil then
-					object = self.spec_attacherJoints.attachedImplements[attachedImplement].object;
-				end
-				local object_specAttachable = object.spec_attachable
-				if object_specAttachable.attacherVehicle ~= nil then
-					local attacherJointVehicleSpec = object_specAttachable.attacherVehicle.spec_attacherJoints;
-					local implementIndex = object_specAttachable.attacherVehicle:getImplementIndexByObject(object);
-					local implement = attacherJointVehicleSpec.attachedImplements[implementIndex];
-					local jointDescIndex = implement.jointDescIndex;
-					local jointDesc = attacherJointVehicleSpec.attacherJoints[jointDescIndex];
-					
-					if jointDesc.bottomArm ~= nil then
-						-- if math.abs(jointDesc.bottomArm.zScale) == 1 then
-							-- spec.impIsLowered = object:getIsImplementChainLowered();
-						-- end
-						if jointDesc.bottomArm.zScale == 1 then
-							moveDownFront = object:getIsImplementChainLowered();
-						elseif jointDesc.bottomArm.zScale == -1 then
-							moveDownBack = object:getIsImplementChainLowered();
-						end
+		
+		if self.spec_attacherJoints ~= nil and self.spec_attacherJoints.attachedImplements[attachedImplement] ~= nil
+		 and self.spec_attacherJoints.attachedImplements[attachedImplement].object ~= nil then
+		
+			if #self.spec_attacherJoints.attachedImplements ~= nil and g_client ~= nil and g_currentMission.controlledVehicle == self then
+				for attachedImplement = 1, #self.spec_attacherJoints.attachedImplements do
+					if self.spec_attacherJoints.attachedImplements[attachedImplement].object ~= nil then
+						object = self.spec_attacherJoints.attachedImplements[attachedImplement].object;
 					end
-					if moveDownBack == true or moveDownFront == true then
-						spec.impIsLowered = true
+					local object_specAttachable = object.spec_attachable
+					if object_specAttachable.attacherVehicle ~= nil then
+						local attacherJointVehicleSpec = object_specAttachable.attacherVehicle.spec_attacherJoints;
+						local implementIndex = object_specAttachable.attacherVehicle:getImplementIndexByObject(object);
+						local implement = attacherJointVehicleSpec.attachedImplements[implementIndex];
+						local jointDescIndex = implement.jointDescIndex;
+						local jointDesc = attacherJointVehicleSpec.attacherJoints[jointDescIndex];
+						
+						if jointDesc.bottomArm ~= nil then
+							-- if math.abs(jointDesc.bottomArm.zScale) == 1 then
+								-- spec.impIsLowered = object:getIsImplementChainLowered();
+							-- end
+							if jointDesc.bottomArm.zScale == 1 then
+								moveDownFront = object:getIsImplementChainLowered();
+							elseif jointDesc.bottomArm.zScale == -1 then
+								moveDownBack = object:getIsImplementChainLowered();
+							end
+						end
+						if moveDownBack == true or moveDownFront == true then
+							spec.impIsLowered = true
+						else
+							spec.impIsLowered = false
+						end
 					else
 						spec.impIsLowered = false
 					end
-				else
-					spec.impIsLowered = false
 				end
+			else
+				spec.impIsLowered = false
 			end
-		else
-			spec.impIsLowered = false
+			if self:getTotalMass() - self:getTotalMass(true) == 0 then
+				spec.impIsLowered = false
+			end
 		end
-		if self:getTotalMass() - self:getTotalMass(true) == 0 then
-			spec.impIsLowered = false
-		end
-		-- ### war vorher an dieser Stelle ###
-		
-		
-		-- local moveRpmL = 0
 		
 		-- FRONTLADER HYDRAULIK RPM - make wheelloader hydraulic assign to rpm
 		-- if spec.CVTconfig == 7 or isLoader or isWoodWorker or isTractor then
@@ -2273,12 +2157,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				RPMforHydraulics = RPMforHydraulics * 0.5
 				-- RPMforHydraulics = RPMforHydraulics * (  1-(self:getTotalMass() - self:getTotalMass(true))/self:getTotalMass(true)  )
 			end
-			-- local RPMforHydraulics = self.spec_motorized.motor.lastRealMotorRpm/self.spec_motorized.motor:getMaxRpm()
-			-- print("CVTa self.spec_motorized.motor:getLastModulatedMotorRpm(): " .. self.spec_motorized.motor:getLastModulatedMotorRpm())
-			-- print("CVTa self.spec_motorized.motor:getMaxRpm(): " .. self.spec_motorized.motor:getMaxRpm())
-			-- print("CVTa self.spec_motorized.motor.lastMotorRpm: " .. self.spec_motorized.motor.lastMotorRpm)
-			-- print("CVTa self.spec_motorized.motor.equalizedMotorRpm: " .. self.spec_motorized.motor.equalizedMotorRpm)
-			-- print("CVTa Lowered: " .. tostring(spec.impIsLowered))
+
 			if spec.CVTconfig ~= 10 and spec.CVTconfig ~= 8 then
 			
 				for i=1, #self.spec_cylindered.movingTools do
@@ -2294,11 +2173,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					local transSpeed = 0
 					local animSpeed = 0
 					local move = self:getMovingToolMoveValue(tool)
-					-- self:getTotalMass() - self:getTotalMass(true)
-					-- print("self:getTotalMass(): " .. self:getTotalMass() )
-					-- print("att: " .. self:getTotalMass() - self:getTotalMass(true) )
-					-- print("self:getTotalMass(true): " .. self:getTotalMass(true) )
-					-- spec.moveRpmL = 0
+
 					if math.abs(move) > 0 then
 						if move < 0 then
 							move = move * 0.8
@@ -2437,11 +2312,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 		
 		
 		-- BEGIN OF THE MAIN SCRIPT	
-			-- spec.isVarioTM = self.spec_motorized.motor.lastManualShifterActive == false and self.spec_motorized.motor.groupType == 1 and self.spec_motorized.motor.gearType == 1 and self.spec_motorized.motor.forwardGears == nil
-			-- print("CVTa Kat: " .. StI)
-			-- local currentSpeedDrv = tonumber(string.format("%.2f", self:getLastSpeed()))
-			-- spec.HydrostatPedal = math.abs(self.spec_motorized.motor.lastAcceleratorPedal)
-			if spec.isVarioTM and not isPKWLKW then
+			-- if spec.isVarioTM and not isPKWLKW then
+			if spec.isVarioTM then
 				if self.CVTaddon == nil then
 					self.CVTaddon = true
 					if self.spec_motorized ~= nil then
@@ -2526,6 +2398,35 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							end
 						end
 					end
+					if spec.vOne ~= nil then
+						if spec.CVTconfig == 7 then -- always for hst's
+							if self.spec_vca ~= nil then
+								if spec.autoDiffs == 1 then
+									-- awd
+									if self:getLastSpeed() > 16 then
+										self:vcaSetState("diffLockAWD", false)
+									elseif self:getLastSpeed() < 13 then
+										self:vcaSetState("diffLockAWD", true)
+									end
+									-- diff front
+									if self:vcaGetState("diffLockFront") == true and math.abs(self.rotatedTime) > 0.39 then
+										self:vcaSetState("diffLockFront", false)
+									elseif math.abs(self.rotatedTime) < 0.25 then
+										self:vcaSetState("diffLockFront", true)
+									end
+									-- diff rear
+									if self:vcaGetState("diffLockBack") == true and math.abs(self.rotatedTime) > 0.28 then
+										self:vcaSetState("diffLockBack", false)
+									elseif math.abs(self.rotatedTime) < 0.21 then
+										self:vcaSetState("diffLockBack", true)
+									end
+								else
+									self:vcaSetState("diffLockFront", false)
+									self:vcaSetState("diffLockBack", false)
+								end
+							end
+						end
+					end
 				end
 				
 				-- Enhanced Vehicle 
@@ -2591,35 +2492,15 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				if FS22_LessMotorBrakeForce ~= nil then 
 					if printLMBF == false then
 						print("CVT-Addon: FS22_LessMotorBrakeForce found, please uninstall the FS22_LessMotorBrakeForce mod !")
+						print("CVT-Addon: FS22_LessMotorBrakeForce found, please uninstall the FS22_LessMotorBrakeForce mod !")
+						print("CVT-Addon: FS22_LessMotorBrakeForce found, please uninstall the FS22_LessMotorBrakeForce mod !")
 						printLMBF = true
 					end
 				end
 
 				-- get maxForce sum of all tools attached
 				local maxForce = 0
-				--local vehicles = self:getChildVehicles()
-				--[[for _, vehicle in ipairs(vehicles) do
-					if vehicle ~= self then
-						if vehicle.spec_powerConsumer ~= nil then
-							if vehicle.spec_powerConsumer.maxForce ~= nil then
-								local multiplier = vehicle:getPowerMultiplier()
-								if multiplier ~= 0 then
-									maxForce = maxForce + vehicle.spec_powerConsumer.maxForce
-									-- maxForce2 = self.spec_powerConsumer.getTotalConsumedPtoTorque(self.vehicle, nil, nil, true)
-									-- print("CVTa maxForce: " .. maxForce )
-									-- print("CVTa getTotalConsumedPtoTorque: " .. maxForce2 )
-									-- print("CVTa vehicle:getPowerMultiplier(): " .. vehicle:getPowerMultiplier() )
-									-- print("CVTa multiplier: " .. multiplier )
-									-- print("CVTa vehicle.spec_powerConsumer.maxForce: " .. vehicle.spec_powerConsumer.maxForce )
-									-- print("CVTa vehicle.spec_powerConsumer.neededPtoTorque: " .. vehicle.spec_powerConsumer.neededPtoTorque )
-									-- self.spec_motorized.motor.requiredMotorPower
-								end
-							end
-						end
-					end
-				end]]
-				
-				
+
 		-- Boost function e.g. IPM		The exact multiplier number Giants uses is 0.00414, (rounded) =1hp. So target hp x 0.00414 = torque scale value #.
 				if (self.spec_motorized.motor.motorExternalTorque * self.spec_motorized.motor.lastMotorRpm * math.pi / 30) == 0 or self:getLastSpeed() < 15 then
 					peakMotorTorqueOrigin = self.spec_motorized.motor.peakMotorTorque
@@ -2628,13 +2509,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 																		-- 1800 * 0.43 * pi / 30   = 81.053
 																		-- 81.053 / pi * 30 * 1800 = 0.42999
 					if (self.spec_motorized.motor.motorExternalTorque * self.spec_motorized.motor.lastMotorRpm * math.pi / 30) ~= 0 or self:getLastSpeed() >= 14 then
-						-- self.spec_motorized.motor.peakMotorPower = self.spec_motorized.motor.peakMotorPower + 14.7  -- * 1.1337 (110kw) 	-- 14.7 kw = 20 ps
-						-- self.spec_motorized.motor.ptoMotorRpmRatio = self.spec_motorized.motor.ptoMotorRpmRatio * 0.5
-						
-						-- self.spec_motorized.motor.peakMotorPower = self.spec_motorized.motor.peakMotorPower * 100
-						-- print("CVTa: IPM: " .. (25 / math.pi * 30 / self.spec_motorized.motor.lastMotorRpm))
-						-- self:setPtoMotorRpmRatio(2)
-						-- self.spec_motorized.motor.ptoMotorRpmRatio = 6
 						if spec.CVTconfig == 2 then
 							if cvtaDebugCVTxOn then print("CVTa: IPM c15") end
 							self.spec_motorized.motor.motorRotationAccelerationLimit = math.max(self.spec_motorized.motor.motorRotationAccelerationLimit *1.25 , 2)
@@ -2714,7 +2588,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					if self.spec_motorized.motorTemperature ~= nil then
 						if not self.getIsEntered ~= nil and not self:getIsEntered() then
 							if self.spec_motorized.motorTemperature.value < 50 then
-								self.spec_motorized.motorTemperature.heatingPerMS = 3 / 1000
+								self.spec_motorized.motorTemperature.heatingPerMS = 3.0 / 1000
 								self.spec_motorized.motorFan.enabled = false
 							elseif self.spec_motorized.motorTemperature.value >= 50 and self.spec_motorized.motorTemperature.value < 100 then
 								self.spec_motorized.motorTemperature.heatingPerMS = 1.5 / 1000
@@ -2726,8 +2600,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								end
 							elseif self.spec_motorized.motorTemperature.value >= 100 then
 								self.spec_motorized.motorTemperature.heatingPerMS = 0.018
-								self.spec_motorized.motorTemperature.coolingPerMS = 4.0 / 1000
-								self.spec_motorized.motorTemperature.coolingByWindPerMS = 2.00 / 1000
+								-- self.spec_motorized.motorTemperature.coolingPerMS = 3.0 / 1000
+								self.spec_motorized.motorTemperature.coolingByWindPerMS = 1.00 / 1000
 								self.spec_motorized.motorFan.enabled = true
 							end
 						end
@@ -2837,17 +2711,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					-- local spiceMaxSpd = self.spec_motorized.motor.maxForwardSpeed
 					local Nonce = 0
 					
-		-- NEUTRAL
-					-- print("CVTa targetGear : " .. tostring(self.spec_motorized.motor.targetGear))
-					-- print("CVTa currentDirection : " .. tostring(self.spec_motorized.motor.currentDirection))
-					-- print("CVTa movingDirection2 : " .. tostring(self.spec_motorized.motor.vehicle.movingDirection))
-										
-	
-					-- Rückwärts retarder Last
-					-- if self.spec_motorized.motor.currentDirection == -1 then
-						-- self.spec_motorized.motor.rawLoadPercentage = self.spec_motorized.motor.rawLoadPercentage * 1.2
-					-- end
-					
 					if math.abs(self.spec_motorized.motor.lastAcceleratorPedal) <= 0.01 then
 						self.spec_motorized.motor.motorAppliedTorque = 0
 					end
@@ -2862,15 +2725,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 then
 									spec.vOne = 2
 								end
-								if spec.CVTconfig ~= 7 then
-									if self.spec_motorized.motor.smoothedLoadPercentage >= 0.95 then
-										spec.vTwo = 1
-									elseif self.spec_motorized.motor.smoothedLoadPercentage < 0.9 and self.spec_motorized.motor.smoothedLoadPercentage >= 0.7 then
-										spec.vTwo = 2
-									elseif self.spec_motorized.motor.smoothedLoadPercentage < 0.6 then
-										spec.vTwo = 3
-									end
-								end
 							end
 						end
 					end
@@ -2879,17 +2733,6 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							if (self.ad.stateModule:isActive() == true ) then
 								if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 then
 									spec.vOne = 1
-								end
-								if spec.CVTconfig ~= 7 then
-									if self.spec_motorized.motor.smoothedLoadPercentage >= 0.95 then
-										spec.vTwo = 1
-									elseif self.spec_motorized.motor.smoothedLoadPercentage < 0.9 and self.spec_motorized.motor.smoothedLoadPercentage >= 0.7 then
-										spec.vTwo = 2
-									elseif self.spec_motorized.motor.smoothedLoadPercentage < 0.6 then
-										spec.vTwo = 3
-									elseif self.spec_motorized.motor.smoothedLoadPercentage <= 0.5 and (self:getTotalMass() - self:getTotalMass(true)) <= 800 then
-										spec.vTwo = 4
-									end
 								end
 							end
 						end
@@ -2972,6 +2815,10 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										if math.max(0, self.spec_drivable.axisForward) > 0.5 and math.max(0, self.spec_drivable.axisForward) <= 0.9 and self.spec_motorized.motor.rawLoadPercentage < 0.5 then
 											self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.8 * mcRPMvar
 										end
+									elseif self:getLastSpeed() > 15 then
+										if math.max(0, self.spec_drivable.axisForward) > 0.5 and self.spec_motorized.motor.lastMotorRpm < (self.spec_motorized.motor.maxRpm - 400) then
+											self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm * 1.2 * mcRPMvar, self.spec_motorized.motor.maxRpm)
+										end
 									end
 									-- print("smooth: " .. spec.smoother)
 								-- end -- smooth
@@ -3026,7 +2873,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
 								self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm - 10
 								if self.spec_motorized.motorTemperature ~= nil then
-									self.spec_motorized.motorTemperature.heatingPerMS = 0.022 * self.spec_motorized.motor.rawLoadPercentage
+									self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.022 * self.spec_motorized.motor.rawLoadPercentage, 0.0015)
 								end
 								if spec.forDBL_critheat == 1 and spec.forDBL_critdamage == 1 then
 									spec.CVTdamage = math.min(spec.CVTdamage + ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4), 100)
@@ -3073,7 +2920,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 									end
 									self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm -100
 									if self.spec_motorized.motorTemperature ~= nil then
-										self.spec_motorized.motorTemperature.heatingPerMS = 0.0035 * self.spec_motorized.motor.rawLoadPercentage
+										self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0035 * self.spec_motorized.motor.rawLoadPercentage,0.0015)
 									end
 									if self.spec_motorized.motorTemperature.value > 94 and self.spec_motorized.motorTemperature.value <= 105 and spec.forDBL_critheat ~= 1 then
 										spec.forDBL_warnheat = 1
@@ -3105,7 +2952,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 2
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.5 * mcRPMvar
 										if self.spec_motorized.motorTemperature ~= nil then
-											self.spec_motorized.motorTemperature.heatingPerMS = 0.040 * self.spec_motorized.motor.rawLoadPercentage
+											self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.040 * self.spec_motorized.motor.rawLoadPercentage,0.0015)
 										end
 										if spec.forDBL_critheat == 1 and spec.forDBL_critdamage == 1 then
 											spec.CVTdamage = math.min(spec.CVTdamage + ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.5),100)
@@ -3167,7 +3014,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 									local FFeffekt = math.max(self.spec_motorized.motor.rawLoadPercentage * 0.95, 0.5)
 									self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm -100
 									if self.spec_motorized.motorTemperature ~= nil then
-										self.spec_motorized.motorTemperature.heatingPerMS = 0.0030 * self.spec_motorized.motor.rawLoadPercentage
+										self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0030 * self.spec_motorized.motor.rawLoadPercentage, 0.0015)
 									end
 									if self.spec_motorized.motorTemperature.value > 94 and self.spec_motorized.motorTemperature.value <= 105 and spec.forDBL_critheat ~= 1 then
 										spec.forDBL_warnheat = 1
@@ -3200,7 +3047,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 2
 										self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 0.6 * mcRPMvar
 										if self.spec_motorized.motorTemperature ~= nil then
-											self.spec_motorized.motorTemperature.heatingPerMS = 0.0035 * self.spec_motorized.motor.rawLoadPercentage
+											self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0035 * self.spec_motorized.motor.rawLoadPercentage,0.0015)
 										end
 										if self.spec_motorized.motorTemperature.value > 94 and self.spec_motorized.motorTemperature.value <= 105 and spec.forDBL_critheat ~= 1 then
 											spec.forDBL_warnheat = 1
@@ -3253,8 +3100,10 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										if spec.HandgasPercent > 0 then
 											self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm*0.95, self.spec_motorized.motor.maxRpm*spec.HandgasPercent)
 											self.spec_motorized.motor.smoothedLoadPercentage = self.spec_motorized.motor.smoothedLoadPercentage * 0.9
+											-- print("## hier NOT 0")
 										else
-											self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm * 0.95, self.spec_motorized.motor.maxRpm * spec.HandgasPercent)
+											self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm * 0.95, (self.spec_motorized.motor.maxRpm * spec.HandgasPercent) )
+											-- print("## hier 0")
 										end
 									end
 								else
@@ -3263,6 +3112,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 										self.spec_motorized.motor.smoothedLoadPercentage = self.spec_motorized.motor.smoothedLoadPercentage * 0.9
 									else
 										self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.minRpm * 0.95, self.spec_motorized.motor.maxRpm * spec.HandgasPercent)
+										-- print("## hier")
 									end
 								end
 								if self.spec_vca ~= nil then
@@ -3312,6 +3162,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						end
 					end -- HST
 					
+					-- DANGERZONE
 					if debugTable == true then
 						if firstTimeRun == nil then 
 							-- DebugUtil.printTableRecursively(self.spec_frontloaderAttacher, "flA- " , 0, 5)
@@ -3383,9 +3234,10 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							end
 							-- Bei etwas mehr Drehzahl, fördert die WaPu mehr Wasser und die Kühlleistung nimmt zu. Zuviel Drehzahl hat keinen Mehrwert.
 							if self.spec_motorized.motor.lastMotorRpm > self.spec_motorized.motor.minRpm and self.spec_motorized.motor.lastMotorRpm < self.spec_motorized.motor.maxRpm / 1.5 then
-								self.spec_motorized.motorTemperature.coolingPerMS = math.max( math.min( ((sspMOT.maxRpm/100000)*(sspMOT.lastMotorRpm/10000)), 0.0036 ), 0.001)
+								self.spec_motorized.motorTemperature.coolingPerMS = math.max( math.min( ((sspMOT.maxRpm/100000)*(sspMOT.lastMotorRpm/10000)), 0.0034 ), 0.003)
+								-- self.spec_motorized.motorTemperature.coolingPerMS = 2.0 / 1000
 							else
-								self.spec_motorized.motorTemperature.coolingPerMS = 1.00 / 1000
+								self.spec_motorized.motorTemperature.coolingPerMS = 3.0 / 1000
 							end
 						end
 						if self.spec_motorized.motor.smoothedLoadPercentage <= 0.6 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) <= 0.5 then
@@ -3402,8 +3254,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 									end
 								end
 								if self.spec_motorized.motorTemperature.value < 83 then
-									self.spec_motorized.motorTemperature.coolingPerMS = 0.75 / 1000
-									self.spec_motorized.motorTemperature.heatingPerMS = 1.65 / 1000
+									-- self.spec_motorized.motorTemperature.coolingPerMS = 2.0 / 1000
+									self.spec_motorized.motorTemperature.heatingPerMS = 1.5 / 1000
 								end
 							end
 						end
@@ -3427,7 +3279,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						end
 						if self.spec_motorized.motorTemperature.value < 45 then
 							spec.forDBL_motorcoldlamp = 1
-							self:raiseActive()
+							-- self:raiseActive()
 						else
 							spec.forDBL_motorcoldlamp = 0
 						end
@@ -3545,7 +3397,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							  then
 								self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.lastMotorRpm * 0.993 * mcRPMvar, self.spec_motorized.motor.lastPtoRpm*0.6)
 								if self.spec_motorized.motorTemperature ~= nil then
-									self.spec_motorized.motorTemperature.heatingPerMS = 0.0023 * self.spec_motorized.motor.rawLoadPercentage
+									self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0023 * self.spec_motorized.motor.rawLoadPercentage, 0.0015)
 								end
 								if self.spec_motorized.motorTemperature.value > 94 and spec.forDBL_critheat ~= 1 then
 									spec.forDBL_warnheat = 1
@@ -3588,8 +3440,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
 								self.spec_motorized.motor.maxBackwardSpeed = ( self:getLastSpeed() / math.pi ) - 1
 								if self.spec_motorized.motorTemperature ~= nil then
-									self.spec_motorized.motorTemperature.heatingPerMS = 0.0035 * self.spec_motorized.motor.rawLoadPercentage / (1.5-spec.vTwo/10)
-									self.spec_motorized.motorTemperature.coolingPerMS = 0.70 / 1000
+									self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0035 * self.spec_motorized.motor.rawLoadPercentage / (1.5-spec.vTwo/10), 0.0015)
+									-- self.spec_motorized.motorTemperature.coolingPerMS = 0.70 / 1000
 								end
 								if spec.forDBL_critheat == 1 and spec.forDBL_critdamage == 1 then
 									spec.CVTdamage = math.min(spec.CVTdamage + ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4),100)
@@ -3642,8 +3494,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								self.spec_motorized.motor.maxForwardSpeed = ( (self:getLastSpeed()-0.5) / math.pi )
 								self.spec_motorized.motor.maxBackwardSpeed = ( (self:getLastSpeed()-0.5) / math.pi )
 								if self.spec_motorized.motorTemperature ~= nil then
-									self.spec_motorized.motorTemperature.heatingPerMS = (0.0024 + (spec.vTwo^2/10000))
-									self.spec_motorized.motorTemperature.coolingPerMS = 1.2 / 1000
+									self.spec_motorized.motorTemperature.heatingPerMS = math.max((0.0024 + (spec.vTwo^2/10000)), 0.0015)
+									-- self.spec_motorized.motorTemperature.coolingPerMS = 1.2 / 1000
 								end
 								if spec.forDBL_critheat == 1 and spec.forDBL_warndamage == 1 or spec.forDBL_critheat == 1 and spec.forDBL_critdamage == 1 then
 									spec.CVTdamage = math.min(spec.CVTdamage + ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4), 100)
@@ -3686,7 +3538,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								local massDiff = (self:getTotalMass() - self:getTotalMass(true)) / 100
 								if cvtaDebugCVTxOn == true then
 									print("##3 CVTa: II. > " .. (1.222 - (spec.vTwo/9))*100 .. " %r - Mass, AR4, vTwo=" .. spec.vTwo)
-									print("##3 CVTa: II. > " .. (1.222 - (spec.vTwo/9))*100 .. " %r - Mass, AR4, forDBL_warnHeat=" .. spec.forDBL_warnheat)
+									print("##3 CVTa: II. > " .. (1.222 - (spec.vTwo/9))*100 .. " %r - Mass, AR4, forDBL_warnheat=" .. spec.forDBL_warnheat)
 									print("##3 mass("..self:getTotalMass()..") - mass(true)>=mass(true)" .. (self:getTotalMass() - self:getTotalMass(true)) .. " >= " .. (self:getTotalMass(true)))
 								end
 								
@@ -3697,7 +3549,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 											g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 1024)
 										end
 										if self.spec_motorized.motorTemperature ~= nil then
-											self.spec_motorized.motorTemperature.heatingPerMS = 0.0022 * self.spec_motorized.motor.rawLoadPercentage
+											self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0022 * self.spec_motorized.motor.rawLoadPercentage, 0.0015)
 										end
 										-- self.spec_motorized.motorTemperature.coolingPerMS = 0.65 / 1000
 										if self.spec_motorized.motorTemperature.value > 95 and spec.forDBL_critheat ~= 1 then
@@ -3765,7 +3617,8 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 											g_currentMission:showBlinkingWarning(g_i18n:getText("txt_attCVTpressure"), 1024)
 										end
 										if self.spec_motorized.motorTemperature ~= nil then
-											self.spec_motorized.motorTemperature.heatingPerMS = 0.0045 * self.spec_motorized.motor.rawLoadPercentage
+											self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0045 * self.spec_motorized.motor.rawLoadPercentage, 0.0015)
+											-- self.spec_motorized.motorTemperature.heatingPerMS = 0.0045 * self.spec_motorized.motor.rawLoadPercentage -- 30% Last < default
 										end
 										if spec.forDBL_critheat == 1 and spec.forDBL_critdamage == 1 then
 											spec.CVTdamage = math.min(spec.CVTdamage + ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.5),100)
@@ -3817,9 +3670,14 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							-- ToDo: assign with vca.keepspeed
 							-- 			kmh 		> 				max kmh								-						max kmh                     :14
 							--          47							16.87 * 3.141592654 (53) 		    -                 "   (53)/14= 3.786    53-3.786= 49.214 kmh
+							
+							if self:getLastSpeed() > 15 then
+								if ( math.max(0, self.spec_drivable.axisForward) > 0.5 and math.max(0, self.spec_drivable.axisForward) < 0.99 ) and self.spec_motorized.motor.lastMotorRpm < (self.spec_motorized.motor.maxRpm - 400) then
+									self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm * 1.8 * mcRPMvar, self.spec_motorized.motor.maxRpm -50)
+								end
+							end
 							if self:getLastSpeed() > ((self.spec_motorized.motor.maxForwardSpeed*math.pi) - 0.5) then
-						
-						-- Ändert die Drehzahl wenn man sich der vMax nähert  ##here  II. FS2
+							-- Ändert die Drehzahl wenn man sich der vMax nähert  ##here  II. FS2
 								self.spec_motorized.motor.lastMotorRpm = math.min((self.spec_motorized.motor.lastMotorRpm*1.01) + (self:getLastSpeed()/(8*mcRPMvar) ), self.spec_motorized.motor.maxRpm-18)
 								-- self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 
 								-- self.spec_motorized.motor.smoothedLoadPercentage = self.spec_motorized.motor.smoothedLoadPercentage * 1.06
@@ -3955,7 +3813,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							if self.spec_motorized.motor.smoothedLoadPercentage > 0.95 and spec.vTwo > 3 and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)) then
 								self.spec_motorized.motor.lastMotorRpm = math.max(self.spec_motorized.motor.lastMotorRpm * 0.993 * mcRPMvar, self.spec_motorized.motor.lastPtoRpm*0.6)
 								if self.spec_motorized.motorTemperature ~= nil then
-									self.spec_motorized.motorTemperature.heatingPerMS = (0.0011 + (spec.vTwo^2/10000))
+									self.spec_motorized.motorTemperature.heatingPerMS = math.max( (0.0011 + (spec.vTwo^2/10000)) , 0.0015)
 								end
 								self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - (spec.vTwo/2)
 								spec.CVTdamage = math.min(spec.CVTdamage + ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.5),100)
@@ -4006,7 +3864,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							-- Wenn ein Anbaugerät zu schwere Last erzeugt, steigt der Druck je nach Beschleunigungsrampe.
 							if self.spec_motorized.motor.smoothedLoadPercentage > (1.20 - (spec.vTwo/10) ) and (self:getTotalMass() - self:getTotalMass(true)) >= (self:getTotalMass(true)) and spec.vTwo >= 3 and spec.impIsLowered == true then
 								if self.spec_motorized.motorTemperature ~= nil then
-									self.spec_motorized.motorTemperature.heatingPerMS = 0.0031 * self.spec_motorized.motor.rawLoadPercentage   / (1.8-spec.vTwo/10)
+									self.spec_motorized.motorTemperature.heatingPerMS = math.max(0.0031 * self.spec_motorized.motor.rawLoadPercentage   / (1.8-spec.vTwo/10), 0.0015)
 									-- self.spec_motorized.motor.maxForwardSpeed = ( self:getLastSpeed() / math.pi ) - spec.vTwo
 									spec.CVTdamage = math.min(spec.CVTdamage + ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.5),100)
 									if self.spec_RealisticDamageSystem == nil then
@@ -4048,6 +3906,12 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 									print("###2 addDamage: ".. ((self.spec_motorized.motor.smoothedLoadPercentage * ((self:getTotalMass() - self:getTotalMass(true)) / 1000 )) *0.4))
 									print("###2 heatingPerMS.: " .. self.spec_motorized.motorTemperature.heatingPerMS)
 								end
+								end
+							end
+							
+							if self:getLastSpeed() > 15 then
+								if ( math.max(0, self.spec_drivable.axisForward) > 0.5 and math.max(0, self.spec_drivable.axisForward) < 0.99 ) and self.spec_motorized.motor.lastMotorRpm < (self.spec_motorized.motor.maxRpm - 400) then
+									self.spec_motorized.motor.lastMotorRpm = math.min(self.spec_motorized.motor.lastMotorRpm * 1.6 * mcRPMvar, self.spec_motorized.motor.maxRpm -50)
 								end
 							end
 							
@@ -4104,7 +3968,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						-- self.spec_motorized.motor.lastMotorRpm = self.spec_motorized.motor.lastMotorRpm * 1.05 * self.spec_motorized.motor.lastAcceleratorPedal
 					end
 					
-				-- HARVESTER config
+				-- HARVESTER config Erntemaschine
 					if spec.isVarioTM and spec.CVTconfig == 11 then
 
 						-- Planetengetriebe / Hydromotor Übersetzung
@@ -4118,7 +3982,7 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 						-- TMS like
 						-- wenn Tempomat aus, wird die Tempomatgescwindigkeit als Steps der maxSpeed benutzt
 						if spec.isTMSpedal == 0 or 1 then
-							if self.spec_motorized.motor ~= nil and self.spec_motorized.motor.lastAcceleratorPedal > 0.03 then
+							if self.spec_motorized.motor ~= nil and self.spec_motorized.motor.lastAcceleratorPedal > 0.05 then
 								-- if self:getDamageAmount() > 0.7 and spec.forDBL_critdamage == 1 and spec.forDBL_critheat == 1 then
 								if spec.forDBL_critdamage == 1 and spec.forDBL_critheat == 1 then -- Notlauf
 									self.spec_motorized.motor.maxForwardSpeed = self.spec_motorized.motor.maxForwardSpeedOrigin / 2 * self.spec_motorized.motor.lastAcceleratorPedal
@@ -4190,7 +4054,9 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 							if self.spec_motorized.motor.smoothedLoadPercentage < 0.4 then
 								self.spec_motorized.motor.lastMotorRpm = math.max((self.spec_motorized.motor.lastMotorRpm * 1 * mcRPMvar), self.spec_motorized.motor.lastPtoRpm*1)
 								if self.spec_motorized.motorTemperature ~= nil then
-									self.spec_motorized.motorTemperature.heatingPerMS = 0.0015
+									--
+								else
+									self.spec_motorized.motorTemperature.heatingPerMS = 0.0016
 									-- self.spec_motorized.motorTemperature.coolingPerMS = 0.002
 									
 								end
@@ -4261,10 +4127,39 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 					spec.forDBL_cvtwear = 0.00
 					spec.CVTdamage = 0.000
 				end
+				spec.forDBL_cvtclutch = spec.ClutchInputValue
+																							-- self HG
+				if spec.HandgasPercent > 0 then
+					spec.forDBL_handthrottle = spec.HandgasPercent
+					-- print(tostring(spec.forDBL_handthrottle))
+				else
+																							-- VCA
+					if spec.HandgasPercent == 0 then
+						if self.spec_vca ~= nil then
+							if self.spec_vca.handThrottle > 0 then
+								spec.forDBL_handthrottle = self.spec_vca.handThrottle
+								-- print(tostring(spec.forDBL_handthrottle))
+							else
+								spec.forDBL_handthrottle = 0.0
+							end
+						end
+																							-- realismAddon_Gearbox
+						if self.spec_realismAddon_gearbox_inputs ~= nil then
+							if self.spec_realismAddon_gearbox_inputs.handThrottlePercent > 0 then
+								spec.forDBL_handthrottle = self.spec_realismAddon_gearbox_inputs.handThrottlePercent
+								-- print(tostring(spec.forDBL_handthrottle))
+							else
+								spec.forDBL_handthrottle = 0.0
+							end
+						end
+					end
+				end
 				
+				-- spec.groupsSecondSet.currentGroup
 				
+				-- print("raG-HG: ", tostring(self.spec_realismAddon_gearbox_inputs.handThrottlePercent))
 				if spec.autoDiffs == 1 then
-					if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 7 or spec.CVTconfig == 11 then
+					if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 11 then
 						if spec.vOne == 1 then
 							spec.forDBL_autodiffs = 0 -- Vorwahl und inaktiv
 							spec.forDBL_preautodiffs = 1 -- Vorwahl und inaktiv
@@ -4282,6 +4177,11 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 								spec.forDBL_preautodiffs = 1 -- Vorwahl
 							
 							end
+						end
+					elseif spec.CVTconfig == 7 then -- HST I&II
+						if spec.vOne ~= nil then
+							spec.forDBL_autodiffs = 1 -- aktiv
+							spec.forDBL_preautodiffs = 0 -- n.V.
 						end
 					end
 				elseif spec.autoDiffs ~= 1 then
@@ -4340,11 +4240,14 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 				print("spec.forDBL_tmspedalvmax: " .. spec.forDBL_tmspedalvmax)
 				print("spec.forDBL_pedalpercent: " .. spec.forDBL_pedalpercent)
 				print("spec.forDBL_tmspedalvmaxactual: " .. spec.forDBL_tmspedalvmaxactual)
+				print("spec.forDBL_vmaxforward: " .. spec.forDBL_vmaxforward)
+				print("spec.forDBL_vmaxbackward: " .. spec.forDBL_vmaxbackward)
 				print("-------------------------------------------------------------")
 				print("spec.forDBL_digitalhandgasstep: " .. spec.forDBL_digitalhandgasstep)
 				print("spec.vFive: " .. spec.vFive)
 				-- print("spec.RpmInputValue: " .. spec.RpmInputValue)
 				print("spec.HandgasPercent: " .. spec.HandgasPercent)
+				print("spec.forDBL_handthrottle: " .. spec.forDBL_handthrottle)
 				print("-------------------------------------------------------------")
 				print("spec.forDBL_rpmrange: " .. spec.forDBL_rpmrange)
 				print("-------------------------------------------------------------")
@@ -4366,10 +4269,11 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 			
 			-- motor need warmup and show it for manual transmissions.
 			
-			if spec.isVarioTM == false and not isPKWLKW and spec.CVTconfig ~= 8 and spec.CVTconfig ~= 0 then
+			-- if spec.isVarioTM == false and not isPKWLKW and spec.CVTconfig ~= 8 and spec.CVTconfig ~= 0 then
+			if spec.isVarioTM == false and spec.CVTconfig ~= 8 and spec.CVTconfig ~= 0 then
 				if self.spec_motorized.motorTemperature.value < 50 then
 					spec.forDBL_motorcoldlamp = 1
-					self:raiseActive()
+					-- self:raiseActive()
 					if self.spec_motorized.motor.lastMotorRpm > self.spec_motorized.motor.maxRpm / 1.4 then
 						self:addDamageAmount(self.spec_motorized.motor.lastMotorRpm * 0.0000007 * self.spec_motorized.motor.smoothedLoadPercentage, true)
 					end 
@@ -4387,9 +4291,40 @@ function CVTaddon:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSelec
 	end -- if spec.CVTconfig deactivated
 	
 	-- manual shifter set to manual config, if not disabled
-	if not spec.isVarioTM and not isPKWLKW and spec.CVTconfig ~= 8 then
+	-- if not spec.isVarioTM and not isPKWLKW and spec.CVTconfig ~= 8 then
+	if not spec.isVarioTM and spec.CVTconfig ~= 8 then
 		spec.CVTconfig = 9
 	end
+	
+	-- Telemetrie
+	if self.FStelemetryAddonData == nil then
+		self.FStelemetryAddonData = {} -- set the table if not exist
+	end
+	if dt <= 200 then -- don't spam the telemetry server, just reduce it a bit.
+		self.FStelemetryAddonData.CVT_accRamp 		= spec.forDBL_accramp;			-- Beschleunigungsrampe
+		self.FStelemetryAddonData.CVT_drivinglevel 	= spec.forDBL_drivinglevel;		-- Fahrbereich
+		self.FStelemetryAddonData.CVT_handthrottle 	= spec.forDBL_handthrottle;		-- Handgasposition
+		self.FStelemetryAddonData.CVT_motorcanstart = spec.forDBL_motorcanstart;	-- Motor Starterlaubnis(Kupplung, Handbremse, Handgas)
+		self.FStelemetryAddonData.CVT_motorIsCold 	= spec.forDBL_motorcoldlamp;	-- Motor ist noch kalt
+		self.FStelemetryAddonData.CVT_warnHeat 		= spec.forDBL_warnheat;			-- Überhitzungs-Warnung
+		self.FStelemetryAddonData.CVT_warnDamage 	= spec.forDBL_warndamage;		-- Schadenswarnung
+		self.FStelemetryAddonData.CVT_critHeat 		= spec.forDBL_critheat;			-- Überhitzt
+		self.FStelemetryAddonData.CVT_critDamage 	= spec.forDBL_critdamage;		-- Schaden entstanden oder Getriebe-Notlauf
+		self.FStelemetryAddonData.CVT_wear 			= spec.forDBL_cvtwear;			-- Getriebe Verschleiß in %
+		self.FStelemetryAddonData.CVT_autoDiffs 	= spec.forDBL_autodiffs;		-- Automatische Diff-Sperre aktiv
+		self.FStelemetryAddonData.CVT_preAutoDiffs 	= spec.forDBL_preautodiffs;		--  Automatische Diff-Sperre vorgewählt
+		self.FStelemetryAddonData.CVT_Clutch 		= spec.forDBL_cvtclutch;		-- Position des Kupplungspedals
+		self.FStelemetryAddonData.CVT_brakeRamp 	= spec.forDBL_brakeramp;		-- Bremsrampe
+		self.FStelemetryAddonData.CVT_vmaxFw 		= spec.forDBL_vmaxforward;		-- Aktuelle maximale Geschwindigkeit Vorwärts
+		self.FStelemetryAddonData.CVT_vmaxBw 		= spec.forDBL_vmaxbackward;		-- Aktuelle maximale Geschwindigkeit Rückwärts
+		self.FStelemetryAddonData.CVT_IMPisActive 	= spec.forDBL_ipmactive;		-- Intelligent Power Management greift ein
+		self.FStelemetryAddonData.CVT_TMSpadelMode 	= spec.forDBL_tmspedal;			-- TMS Pedal Modus aktiv
+		-- self.FStelemetryAddonData.CVT_ 		= spec.forDBL; 			-- 
+	end
+	
+	-- print("Telemetry Table aR: ".. tostring(self.FStelemetryAddonData.accRamp))
+	-- print("Telemetry Table DL: ".. tostring(self.FStelemetryAddonData.drivinglevel))
+	
 end -- onUpdate
 
 addConsoleCommand("cvtaResetWear", "resetts the cvt wear", "FcvtaResetWear", CVTaddon)
@@ -4488,18 +4423,19 @@ function CVTaddon:cCVTaCVTdgx()
 	end
 end
 
-addConsoleCommand("cvtaDebugTableACHTUNG", "Debug Table print", "cCVTaCVTdTbl", CVTaddon)
-function CVTaddon:cCVTaCVTdTbl()
-	-- local spec = self.spec_CVTaddon
-	if debugTable == true then
-		print("CVTa: debugTable Debug disabled")
-		debugTable = false
-		firstTimeRun = nil
-	elseif debugTable == false then
-		print("CVTa: debugTable Debug enabled")
-		debugTable = true
-	end
-end
+-- DANGERZONE
+-- addConsoleCommand("cvtaDebugTableACHTUNG", "Debug Table print", "cCVTaCVTdTbl", CVTaddon)
+-- function CVTaddon:cCVTaCVTdTbl()
+	-- -- local spec = self.spec_CVTaddon
+	-- if debugTable == true then
+		-- print("CVTa: debugTable Debug disabled")
+		-- debugTable = false
+		-- firstTimeRun = nil
+	-- elseif debugTable == false then
+		-- print("CVTa: debugTable Debug enabled")
+		-- debugTable = true
+	-- end
+-- end
 
 addConsoleCommand("cvtaDebugCVTheat", "Debug CVT-Addon xtra", "cCVTaCVTheat", CVTaddon)
 function CVTaddon:cCVTaCVTheat()
@@ -4569,10 +4505,10 @@ end
 ------------- Should be external in CVT_Addon_HUD.lua, but I can't sync spec between 2 lua's -------------------------			
 function CVTaddon:onDraw(dt)
 	local spec = self.spec_CVTaddon
-	-- fix for the issue with the göweil dlc "and g_currentMission.controlledVehicle ~= nil" thanks glowin
-	if g_client ~= nil and g_currentMission.controlledVehicle ~= nil then
+	-- fix for the issue with the göweil dlc "and g_currentMission.controlledVehicle ~= nil/self" thanks glowin
+	if g_client ~= nil and g_currentMission.controlledVehicle == self then
 		-- motor need warmup and show it for manual transmissions.
-		if g_currentMission.hud.isVisible and spec.isVarioTM == false and not isPKWLKW and spec.CVTconfig ~= 8 and spec.CVTconfig ~= 0 and self.getIsEntered ~= nil and self:getIsEntered() then
+		if g_currentMission.hud.isVisible and spec.isVarioTM == false and spec.CVTconfig ~= 8 and spec.CVTconfig ~= 0 and self.getIsEntered ~= nil and self:getIsEntered() then
 			local TposX = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterX - g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY - 0.02
 			local TposY = g_currentMission.inGameMenu.hud.speedMeter.gaugeCenterY + g_currentMission.inGameMenu.hud.speedMeter.speedIndicatorRadiusY
 			-- COLD
@@ -4590,7 +4526,7 @@ function CVTaddon:onDraw(dt)
 			spec.CVTIconMSok:setPosition(TposX, TposY+0.01)
 			spec.CVTIconMSok:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
 			spec.CVTIconMSok:setScale(0.025*g_gameSettings.uiScale, 0.05*g_gameSettings.uiScale)
-			if self.spec_motorized.motorTemperature.value > 51 and self.spec_motorized.motorTemperature.value < 93 then
+			if self.spec_motorized.motorTemperature.value > 51 and self.spec_motorized.motorTemperature.value < 94 then
 				spec.CVTIconMSok:render()
 			end
 			
@@ -4599,7 +4535,7 @@ function CVTaddon:onDraw(dt)
 			spec.CVTIconMSwarn:setPosition(TposX, TposY+0.01)
 			spec.CVTIconMSwarn:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
 			spec.CVTIconMSwarn:setScale(0.025*g_gameSettings.uiScale, 0.05*g_gameSettings.uiScale)
-			if self.spec_motorized.motorTemperature.value >= 93 and self.spec_motorized.motorTemperature.value < 98 then
+			if self.spec_motorized.motorTemperature.value >= 94 and self.spec_motorized.motorTemperature.value < 98 then
 				spec.CVTIconMSwarn:render()
 			end
 			
@@ -4668,389 +4604,394 @@ function CVTaddon:onDraw(dt)
 				setTextBold(false)
 				
 				-- add background overlay box -
-				if not isPKWLKW then  -- nil in mp at lkw 1661 dHG
-					-- local isPTO = false
-					-- if spec.lastPTORot ~= nil then
-						-- if spec.lastPTORot > self.spec_motorized.motor.minRpm then
-							-- isPTO = true
-						-- end
-					-- end
-					local warnTempC = { 0.4, 1, 0, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
-					local critTempC = { 1, 0, 0.4, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
-					local coldTempC = { 0, 0, 1, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
-					local warnDmgC = { 0, 0.5, 1, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
-					local critDmgC = { 1, 0.3, 0, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
+				-- if not isPKWLKW then  -- nil in mp at lkw 1661 dHG
 					
-					local HgColour = { 0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1) }
+				local warnTempC = { 0.4, 1, 0, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
+				local critTempC = { 1, 0, 0.4, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
+				local coldTempC = { 0, 0, 1, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
+				local warnDmgC = { 0, 0.5, 1, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
+				local critDmgC = { 1, 0.3, 0, math.max(math.min(spec.transparendSpdT, 0.7), 0.1) }
+				
+				local HgColour = { 0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1) }
+				
+				if spec.vFive == nil then -- fix for mp nil at first HG use/unuse
+					spec.vFive = 0
+				end
+				if spec.vFive ~= nil and spec.vFive == 9 then
+					HgColour = { 1, 0.5, 0.2, 1 }
+				-- elseif spec.vFive ~= nil and spec.vFive >= 10 then
 					
-					if spec.vFive == nil then -- fix for mp nil at first HG use/unuse
-						spec.vFive = 0
-					end
-					if spec.vFive ~= nil and spec.vFive == 9 then
-						HgColour = { 1, 0.5, 0.2, 1 }
-					-- elseif spec.vFive ~= nil and spec.vFive >= 10 then
-						
-					end
-					local HgRColour = { 1, 0.2, 0.2, 1 }
-					spec.CVTIconBg:setColor(0.01, 0.01, 0.01, math.max(math.min(spec.transparendSpd, 0.6), 0.2))
-					spec.CVTIconFb:setColor(0, 0, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
-					spec.CVTIconFs1:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
-					spec.CVTIconFs2:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
-					spec.CVTIconPtms:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				end
+				local HgRColour = { 1, 0.2, 0.2, 1 }
+				spec.CVTIconBg:setColor(0.01, 0.01, 0.01, math.max(math.min(spec.transparendSpd, 0.6), 0.2))
+				spec.CVTIconFb:setColor(0, 0, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				spec.CVTIconFs1:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				spec.CVTIconFs2:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
+				spec.CVTIconPtms:setColor(0, 0.9, 0, math.max(math.min(spec.transparendSpdT, 1), 0.7))
 
-					spec.CVTIconHg2:setColor(unpack(HgColour))
-					spec.CVTIconHg3:setColor(unpack(HgColour))
-					spec.CVTIconHg4:setColor(unpack(HgColour))
-					spec.CVTIconHg5:setColor(unpack(HgColour))
-					spec.CVTIconHg6:setColor(unpack(HgColour))
-					spec.CVTIconHg7:setColor(unpack(HgColour))
-					spec.CVTIconHg8:setColor(unpack(HgColour))
-					spec.CVTIconHg9:setColor(unpack(HgColour))
-					if spec.vFive ~= nil and spec.vFive == 9 then
-						spec.CVTIconHg10:setColor(unpack(HgColour))
-					elseif spec.vFive ~= nil and spec.vFive >= 10 then
-						spec.CVTIconHg10:setColor(unpack(HgRColour))
-					end
-										if spec.forDBL_critheat == 1 then
-						spec.CVTIconHEAT:setColor(unpack(critTempC))
-					end
-					if spec.forDBL_warnheat == 1 and spec.forDBL_critheat ~= 1 then
-						spec.CVTIconHEAT:setColor(unpack(warnTempC))
-					end
-					
-					if spec.forDBL_warnheat == 1 and spec.forDBL_critheat == 1 then
-						spec.CVTIconHEAT:setColor(unpack(critTempC))
-					end
-					if self.spec_motorized.motorTemperature.value < 50 then
-						spec.CVTIconHEAT:setColor(unpack(coldTempC))
-					end
-					if spec.forDBL_warndamage == 1 then
-						spec.CVTIconDmg:setColor(unpack(warnDmgC))
-					end
-					if spec.forDBL_critdamage == 1 then
-						spec.CVTIconDmg:setColor(unpack(critDmgC))
-					end
-					if spec.forDBL_warndamage == 1 and spec.forDBL_critdamage == 1 then
-						spec.CVTIconDmg:setColor(unpack(critDmgC))
-					end
-					
-					
-					
-					spec.CVTIconAr1:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1)) 
-					spec.CVTIconAr2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					spec.CVTIconAr3:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					spec.CVTIconAr4:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					
-					spec.CVTIconBr1:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1)) 
-					spec.CVTIconBr2:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					spec.CVTIconBr3:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					spec.CVTIconBr4:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					
-					spec.CVTIconHydro:setColor(0.8, 0.1, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					-- spec.CVTIconN:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					-- spec.CVTIconN2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					
-					spec.CVTIconV:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					spec.CVTIconR:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
-					--
-					spec.CVTIconBg:setPosition(posX-0.01, posY)
-					spec.CVTIconFb:setPosition(posX-0.01, posY)
-					spec.CVTIconFs1:setPosition(posX-0.01, posY)
-					spec.CVTIconFs2:setPosition(posX-0.01, posY)
-					spec.CVTIconPtms:setPosition(posX-0.01, posY)
-					
-					spec.CVTIconHg2:setPosition(posX-0.01, posY)
-					spec.CVTIconHg3:setPosition(posX-0.01, posY)
-					spec.CVTIconHg4:setPosition(posX-0.01, posY)
-					spec.CVTIconHg5:setPosition(posX-0.01, posY)
-					
-					spec.CVTIconDmg:setPosition(posX-0.01, posY+0.012)
-					spec.CVTIconHEAT:setPosition(posX-0.01, posY)
-					
-					spec.CVTIconHg6:setPosition(posX-0.01, posY)
-					spec.CVTIconHg7:setPosition(posX-0.01, posY)
-					spec.CVTIconHg8:setPosition(posX-0.01, posY)
-					spec.CVTIconHg9:setPosition(posX-0.01, posY)
-					spec.CVTIconHg10:setPosition(posX-0.01, posY)
-					
-					spec.CVTIconAr1:setPosition(posX-0.01, posY)
-					spec.CVTIconAr2:setPosition(posX-0.01, posY)
-					spec.CVTIconAr3:setPosition(posX-0.01, posY)
-					spec.CVTIconAr4:setPosition(posX-0.01, posY)
-					
-					spec.CVTIconBr1:setPosition(posX-0.01, posY)
-					spec.CVTIconBr2:setPosition(posX-0.01, posY)
-					spec.CVTIconBr3:setPosition(posX-0.01, posY)
-					spec.CVTIconBr4:setPosition(posX-0.01, posY)
-					
-					spec.CVTIconHydro:setPosition(posX-0.01, posY)
-					-- spec.CVTIconN:setPosition(posX-0.01, posY)
-					-- spec.CVTIconN2:setPosition(posX-0.01, posY)
-					
-					spec.CVTIconV:setPosition(posX-0.01, posY)
-					spec.CVTIconR:setPosition(posX-0.01, posY)
-					--
-					spec.CVTIconBg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconFb:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconFs1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconFs2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconPtms:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					
-					spec.CVTIconHg2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg5:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHEAT:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconDmg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg6:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg7:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg8:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg9:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconHg10:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					
-					spec.CVTIconAr1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconAr2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconAr3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconAr4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					
-					spec.CVTIconBr1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconBr2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconBr3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconBr4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					
-					spec.CVTIconHydro:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					-- spec.CVTIconN:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					-- spec.CVTIconN2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					
-					spec.CVTIconV:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
-					spec.CVTIconR:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg2:setColor(unpack(HgColour))
+				spec.CVTIconHg3:setColor(unpack(HgColour))
+				spec.CVTIconHg4:setColor(unpack(HgColour))
+				spec.CVTIconHg5:setColor(unpack(HgColour))
+				spec.CVTIconHg6:setColor(unpack(HgColour))
+				spec.CVTIconHg7:setColor(unpack(HgColour))
+				spec.CVTIconHg8:setColor(unpack(HgColour))
+				spec.CVTIconHg9:setColor(unpack(HgColour))
+				if spec.vFive ~= nil and spec.vFive == 9 then
+					spec.CVTIconHg10:setColor(unpack(HgColour))
+				elseif spec.vFive ~= nil and spec.vFive >= 10 then
+					spec.CVTIconHg10:setColor(unpack(HgRColour))
+				end
+									if spec.forDBL_critheat == 1 then
+					spec.CVTIconHEAT:setColor(unpack(critTempC))
+				end
+				if spec.forDBL_warnheat == 1 and spec.forDBL_critheat ~= 1 then
+					spec.CVTIconHEAT:setColor(unpack(warnTempC))
+				end
+				
+				if spec.forDBL_warnheat == 1 and spec.forDBL_critheat == 1 then
+					spec.CVTIconHEAT:setColor(unpack(critTempC))
+				end
+				if self.spec_motorized.motorTemperature.value < 50 then
+					spec.CVTIconHEAT:setColor(unpack(coldTempC))
+				end
+				if spec.forDBL_warndamage == 1 then
+					spec.CVTIconDmg:setColor(unpack(warnDmgC))
+				end
+				if spec.forDBL_critdamage == 1 then
+					spec.CVTIconDmg:setColor(unpack(critDmgC))
+				end
+				if spec.forDBL_warndamage == 1 and spec.forDBL_critdamage == 1 then
+					spec.CVTIconDmg:setColor(unpack(critDmgC))
+				end
+				
+				
+				
+				spec.CVTIconAr1:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1)) 
+				spec.CVTIconAr2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconAr3:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconAr4:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				
+				spec.CVTIconBr1:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1)) 
+				spec.CVTIconBr2:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconBr3:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconBr4:setColor(0.6, 0.1, 0.1, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				
+				spec.CVTIconHydro:setColor(0.8, 0.1, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				-- spec.CVTIconN:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				-- spec.CVTIconN2:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				
+				spec.CVTIconV:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				spec.CVTIconR:setColor(0, 0.8, 0, math.max(math.min(spec.transparendSpdT-0.3, 0.5), 0.1))
+				--
+				spec.CVTIconBg:setPosition(posX-0.01, posY)
+				spec.CVTIconFb:setPosition(posX-0.01, posY)
+				spec.CVTIconFs1:setPosition(posX-0.01, posY)
+				spec.CVTIconFs2:setPosition(posX-0.01, posY)
+				spec.CVTIconPtms:setPosition(posX-0.01, posY)
+				
+				spec.CVTIconHg2:setPosition(posX-0.01, posY)
+				spec.CVTIconHg3:setPosition(posX-0.01, posY)
+				spec.CVTIconHg4:setPosition(posX-0.01, posY)
+				spec.CVTIconHg5:setPosition(posX-0.01, posY)
+				
+				spec.CVTIconDmg:setPosition(posX-0.01, posY+0.012)
+				spec.CVTIconHEAT:setPosition(posX-0.01, posY)
+				
+				spec.CVTIconHg6:setPosition(posX-0.01, posY)
+				spec.CVTIconHg7:setPosition(posX-0.01, posY)
+				spec.CVTIconHg8:setPosition(posX-0.01, posY)
+				spec.CVTIconHg9:setPosition(posX-0.01, posY)
+				spec.CVTIconHg10:setPosition(posX-0.01, posY)
+				
+				spec.CVTIconAr1:setPosition(posX-0.01, posY)
+				spec.CVTIconAr2:setPosition(posX-0.01, posY)
+				spec.CVTIconAr3:setPosition(posX-0.01, posY)
+				spec.CVTIconAr4:setPosition(posX-0.01, posY)
+				
+				spec.CVTIconBr1:setPosition(posX-0.01, posY)
+				spec.CVTIconBr2:setPosition(posX-0.01, posY)
+				spec.CVTIconBr3:setPosition(posX-0.01, posY)
+				spec.CVTIconBr4:setPosition(posX-0.01, posY)
+				
+				spec.CVTIconHydro:setPosition(posX-0.01, posY)
+				-- spec.CVTIconN:setPosition(posX-0.01, posY)
+				-- spec.CVTIconN2:setPosition(posX-0.01, posY)
+				
+				spec.CVTIconV:setPosition(posX-0.01, posY)
+				spec.CVTIconR:setPosition(posX-0.01, posY)
+				--
+				spec.CVTIconBg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconFb:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconFs1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconFs2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconPtms:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				
+				spec.CVTIconHg2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg5:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHEAT:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconDmg:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg6:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg7:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg8:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg9:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconHg10:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				
+				spec.CVTIconAr1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconAr2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconAr3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconAr4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				
+				spec.CVTIconBr1:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconBr2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconBr3:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconBr4:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				
+				spec.CVTIconHydro:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				-- spec.CVTIconN:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				-- spec.CVTIconN2:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				
+				spec.CVTIconV:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
+				spec.CVTIconR:setAlignment(Overlay.ALIGN_VERTICAL_MIDDLE, Overlay.ALIGN_HORIZONTAL_LEFT)
 
-					-- :setAlignment(self.alignmentVertical, self.alignmentHorizontal)
-					
-					spec.CVTIconBg:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconFb:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconFs1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconFs2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconPtms:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				-- :setAlignment(self.alignmentVertical, self.alignmentHorizontal)
+				
+				spec.CVTIconBg:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconFb:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconFs1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconFs2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconPtms:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
 
-					spec.CVTIconHg2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg5:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHEAT:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconDmg:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg6:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg7:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg8:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg9:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconHg10:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					
-					spec.CVTIconAr1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconAr2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconAr3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconAr4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					
-					spec.CVTIconBr1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconBr2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconBr3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconBr4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					
-					spec.CVTIconHydro:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					-- spec.CVTIconN:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					-- spec.CVTIconN2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					
-					spec.CVTIconV:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
-					spec.CVTIconR:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg5:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHEAT:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconDmg:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg6:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg7:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg8:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg9:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconHg10:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				
+				spec.CVTIconAr1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconAr2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconAr3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconAr4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				
+				spec.CVTIconBr1:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconBr2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconBr3:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconBr4:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				
+				spec.CVTIconHydro:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				-- spec.CVTIconN:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				-- spec.CVTIconN2:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				
+				spec.CVTIconV:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
+				spec.CVTIconR:setScale(0.04*g_gameSettings.uiScale, 0.094*g_gameSettings.uiScale)
 
-					local hgUVs = {0,0, 0.5,1}
+				local hgUVs = {0,0, 0.5,1}
 
-					spec.CVTIconBg:render()
-					spec.CVTIconFb:render()
-					
-					-- spec.BlinkTimer = spec.BlinkTimer - g_currentDt
-					-- spec.NumberBlinkTimer = math.min(-spec.BlinkTimer / 2000, 0.5)
-					-- spec.AsLongBlink
-					
-					if spec.AN then 
-						spec.CVTIconFs2:render()
-					end
-					if spec.forDBL_critdamage ~= 0 then
-						spec.CVTIconDmg:render()
-					end
-					if self:getIsMotorStarted() then
-						if spec.vOne == 2 then
-							if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 7 or spec.CVTconfig == 10 or spec.CVTconfig == 11 then
-								spec.CVTIconFs1:render()
-							end
-						elseif spec.vOne == 1 then
-							if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig ==  7 or spec.CVTconfig == 10 or spec.CVTconfig == 11 then
-								spec.CVTIconFs2:render()
-							end
-						end
-						-- if spec.vOne >= 1 then
-						if spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
+				spec.CVTIconBg:render()
+				spec.CVTIconFb:render()
+				
+				-- spec.BlinkTimer = spec.BlinkTimer - g_currentDt
+				-- spec.NumberBlinkTimer = math.min(-spec.BlinkTimer / 2000, 0.5)
+				-- spec.AsLongBlink
+				
+				if spec.AN then 
+					spec.CVTIconFs2:render()
+				end
+				if spec.forDBL_critdamage ~= 0 then
+					spec.CVTIconDmg:render()
+				end
+				if self:getIsMotorStarted() then
+					if spec.vOne == 2 then
+						if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 7 or spec.CVTconfig == 10 or spec.CVTconfig == 11 then
 							spec.CVTIconFs1:render()
+						end
+					elseif spec.vOne == 1 then
+						if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig ==  7 or spec.CVTconfig == 10 or spec.CVTconfig == 11 then
 							spec.CVTIconFs2:render()
 						end
-						-- end
-						if spec.isTMSpedal == 1 then
-						local tmsSpeed = string.format("%.1f", math.min((self:getCruiseControlSpeed() ) * math.pi, self.spec_motorized.motor.maxForwardSpeed * math.pi))
-							spec.CVTIconPtms:render()
-							if self:getCruiseControlState() == 0 then
-								renderText(ptmsX+0.006, ptmsY-0.002, size, tmsSpeed)
-							end
-						end
-						
-						-- VCA DiffLocks AutoDiffsAWD
-						if spec.autoDiffs == 1 then
-							if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 7 or spec.CVTconfig == 11 then
-								if spec.vOne == 1 then
-									setTextColor(0.8, 0.8, 0, 0.8)
-									setTextAlignment(RenderText.ALIGN_LEFT)
-									setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
-									setTextBold(false)
-									spec.forDBL_autodiffs = 0 -- Vorwahl und inaktiv
-									spec.forDBL_preautodiffs = 1 -- Vorwahl und inaktiv
-								elseif spec.vOne == 2 then
-									setTextColor(0, 0.95, 0, 0.8)
-									setTextAlignment(RenderText.ALIGN_LEFT)
-									setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
-									setTextBold(false)
-									spec.forDBL_autodiffs = 1 -- aktiv
-									spec.forDBL_preautodiffs = 0 -- aktiv
-								end
-								renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
-							elseif spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
-								if spec.vOne >= 1 then
-									setTextColor(0, 0.95, 0, 0.8)
-									setTextAlignment(RenderText.ALIGN_LEFT)
-									setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
-									setTextBold(false)
-									if self:getLastSpeed() <= 16 then
-										spec.forDBL_autodiffs = 1 -- aktiv
-										spec.forDBL_preautodiffs = 0 -- aktiv
-									else
-										spec.forDBL_autodiffs = 0 -- Vorwahl
-										spec.forDBL_preautodiffs = 1 -- Vorwahl
-									
-									end
-								end
-								renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
-							end
-						elseif spec.autoDiffs ~= 1 then
-							spec.forDBL_autodiffs = 0 -- inaktiv
-							spec.forDBL_preautodiffs = 0 -- inaktiv
-						end
-						
-						-- PTO hud icon changed to warning indicator
-						if spec.forDBL_warnheat ~= 0 or spec.forDBL_critheat ~= 0 then
-							spec.CVTIconHEAT:render()
-						end
-						if self.spec_motorized.motorTemperature.value < 50 and spec.CVTconfig ~= 10 then
-							spec.CVTIconHEAT:render() -- for cold
-						end
-						if spec.forDBL_warndamage ~= 0 then
-							spec.CVTIconDmg:render()
-						end
-						if spec.vFive ~= 0 and spec.vFive ~= nil then
-							if spec.vFive == 1 then
-								spec.CVTIconHg2:render()
-							elseif spec.vFive == 2 then
-								spec.CVTIconHg3:render()
-							elseif spec.vFive == 3 then
-								spec.CVTIconHg4:render()
-							elseif spec.vFive == 4 then
-								spec.CVTIconHg5:render()
-							elseif spec.vFive == 5 then
-								spec.CVTIconHg6:render()
-							elseif spec.vFive == 6 then
-								spec.CVTIconHg7:render()
-							elseif spec.vFive == 7 then
-								spec.CVTIconHg8:render()
-							elseif spec.vFive == 8 then
-								spec.CVTIconHg9:render()
-							elseif spec.vFive >= 9 then
-								spec.CVTIconHg10:render()
-							end
-						end
-											
-						if spec.vTwo == 4 then
-						spec.CVTIconAr4:render()
-						elseif spec.vTwo == 1 then
-							spec.CVTIconAr1:render()
-						elseif spec.vTwo == 2 then
-							spec.CVTIconAr2:render()
-						elseif spec.vTwo == 3 then
-							spec.CVTIconAr3:render()
-						end
-						
-						if spec.vThree ~= 2 then
-							if spec.vThree == 3 then
-								spec.CVTIconBr1:render()
-								local showBrake = 0
-								if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 4 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
-									for showBrake=1, 2 do
-										spec.CVTIconBr1:render()
-										spec.CVTIconBr2:render()
-										spec.CVTIconBr3:render()
-										spec.CVTIconBr4:render()
-										showBrake = showBrake +1;
-									end
-								end
-							elseif spec.vThree == 4 then
-								spec.CVTIconBr2:render()
-								local showBrake = 0
-								if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 8 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
-									for showBrake=1, 2 do
-										spec.CVTIconBr1:render()
-										spec.CVTIconBr2:render()
-										spec.CVTIconBr3:render()
-										spec.CVTIconBr4:render()
-										showBrake = showBrake +1;
-									end
-								end
-							elseif spec.vThree == 5 then
-								spec.CVTIconBr3:render()
-								local showBrake = 0
-								if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 15 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
-									for showBrake=1, 2 do
-										spec.CVTIconBr1:render()
-										spec.CVTIconBr2:render()
-										spec.CVTIconBr3:render()
-										spec.CVTIconBr4:render()
-										showBrake = showBrake +1;
-									end
-								end
-							elseif spec.vThree == 1 then
-								spec.CVTIconBr4:render()
-								if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 17 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
-									local showBrake = 0
-									for showBrake=1, 2 do
-										spec.CVTIconBr1:render()
-										spec.CVTIconBr2:render()
-										spec.CVTIconBr3:render()
-										spec.CVTIconBr4:render()
-										showBrake = showBrake +1;
-									end
-								end
-							end -- rle
-						end
-						
-						-- if spec.CVTCanStart == 0 then
-							-- spec.CVTIconN2:render()
-						-- end
-						if self.spec_motorized.motor.currentDirection == 1 then
-							spec.CVTIconV:render()
-						elseif self.spec_motorized.motor.currentDirection == -1 then
-							spec.CVTIconR:render()
-						end
-						
-						if spec.isHydroState then
-							
-							spec.CVTIconHydro:render()
+					end
+					-- if spec.vOne >= 1 then
+					if spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
+						spec.CVTIconFs1:render()
+						spec.CVTIconFs2:render()
+					end
+					-- end
+					if spec.isTMSpedal == 1 then
+					local tmsSpeed = string.format("%.1f", math.min((self:getCruiseControlSpeed() ) * math.pi, self.spec_motorized.motor.maxForwardSpeed * math.pi))
+						spec.CVTIconPtms:render()
+						if self:getCruiseControlState() == 0 then
+							renderText(ptmsX+0.006, ptmsY-0.002, size, tmsSpeed)
 						end
 					end
+					
+					-- VCA DiffLocks AutoDiffsAWD
+					if spec.autoDiffs == 1 then
+						if spec.CVTconfig == 1 or spec.CVTconfig == 2 or spec.CVTconfig == 3 or spec.CVTconfig == 11 then
+							if spec.vOne == 1 then
+								setTextColor(0.8, 0.8, 0, 0.8)
+								setTextAlignment(RenderText.ALIGN_LEFT)
+								setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
+								setTextBold(false)
+								spec.forDBL_autodiffs = 0 -- Vorwahl und inaktiv
+								spec.forDBL_preautodiffs = 1 -- Vorwahl und inaktiv
+							elseif spec.vOne == 2 then
+								setTextColor(0, 0.95, 0, 0.8)
+								setTextAlignment(RenderText.ALIGN_LEFT)
+								setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
+								setTextBold(false)
+								spec.forDBL_autodiffs = 1 -- aktiv
+								spec.forDBL_preautodiffs = 0 -- aktiv
+							end
+							renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
+						elseif spec.CVTconfig == 4 or spec.CVTconfig == 5 or spec.CVTconfig == 6 then
+							if spec.vOne >= 1 then
+								setTextColor(0, 0.95, 0, 0.8)
+								setTextAlignment(RenderText.ALIGN_LEFT)
+								setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
+								setTextBold(false)
+								if self:getLastSpeed() <= 16 then
+									spec.forDBL_autodiffs = 1 -- aktiv
+									spec.forDBL_preautodiffs = 0 -- aktiv
+								else
+									spec.forDBL_autodiffs = 0 -- Vorwahl
+									spec.forDBL_preautodiffs = 1 -- Vorwahl
+								
+								end
+							end
+							renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
+						elseif spec.CVTconfig == 7 then
+							if spec.vOne ~= nil then
+								setTextColor(0, 0.95, 0, 0.8)
+								setTextAlignment(RenderText.ALIGN_LEFT)
+								setTextVerticalAlignment(RenderText.VERTICAL_ALIGN_TOP)
+								setTextBold(false)
+								spec.forDBL_autodiffs = 1 -- aktiv
+								spec.forDBL_preautodiffs = 0 -- n.V.
+							end
+							renderText( 0.485 * ( VCAposX + VCAwidth + 1 ), VCAposY + 0.2 * VCAheight, VCAl + 0.005, "A" )
+						end
+					elseif spec.autoDiffs ~= 1 then
+						spec.forDBL_autodiffs = 0 -- inaktiv
+						spec.forDBL_preautodiffs = 0 -- inaktiv
+					end
+					
+					-- PTO hud icon changed to warning indicator
+					if spec.forDBL_warnheat ~= 0 or spec.forDBL_critheat ~= 0 then
+						spec.CVTIconHEAT:render()
+					end
+					if self.spec_motorized.motorTemperature.value < 50 and spec.CVTconfig ~= 10 then
+						spec.CVTIconHEAT:render() -- for cold
+					end
+					if spec.forDBL_warndamage ~= 0 then
+						spec.CVTIconDmg:render()
+					end
+					if spec.vFive ~= 0 and spec.vFive ~= nil then
+						if spec.vFive == 1 then
+							spec.CVTIconHg2:render()
+						elseif spec.vFive == 2 then
+							spec.CVTIconHg3:render()
+						elseif spec.vFive == 3 then
+							spec.CVTIconHg4:render()
+						elseif spec.vFive == 4 then
+							spec.CVTIconHg5:render()
+						elseif spec.vFive == 5 then
+							spec.CVTIconHg6:render()
+						elseif spec.vFive == 6 then
+							spec.CVTIconHg7:render()
+						elseif spec.vFive == 7 then
+							spec.CVTIconHg8:render()
+						elseif spec.vFive == 8 then
+							spec.CVTIconHg9:render()
+						elseif spec.vFive >= 9 then
+							spec.CVTIconHg10:render()
+						end
+					end
+										
+					if spec.vTwo == 4 then
+					spec.CVTIconAr4:render()
+					elseif spec.vTwo == 1 then
+						spec.CVTIconAr1:render()
+					elseif spec.vTwo == 2 then
+						spec.CVTIconAr2:render()
+					elseif spec.vTwo == 3 then
+						spec.CVTIconAr3:render()
+					end
+					
+					if spec.vThree ~= 2 then
+						if spec.vThree == 3 then
+							spec.CVTIconBr1:render()
+							local showBrake = 0
+							if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 4 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
+								for showBrake=1, 2 do
+									spec.CVTIconBr1:render()
+									spec.CVTIconBr2:render()
+									spec.CVTIconBr3:render()
+									spec.CVTIconBr4:render()
+									showBrake = showBrake +1;
+								end
+							end
+						elseif spec.vThree == 4 then
+							spec.CVTIconBr2:render()
+							local showBrake = 0
+							if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 8 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
+								for showBrake=1, 2 do
+									spec.CVTIconBr1:render()
+									spec.CVTIconBr2:render()
+									spec.CVTIconBr3:render()
+									spec.CVTIconBr4:render()
+									showBrake = showBrake +1;
+								end
+							end
+						elseif spec.vThree == 5 then
+							spec.CVTIconBr3:render()
+							local showBrake = 0
+							if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 15 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
+								for showBrake=1, 2 do
+									spec.CVTIconBr1:render()
+									spec.CVTIconBr2:render()
+									spec.CVTIconBr3:render()
+									spec.CVTIconBr4:render()
+									showBrake = showBrake +1;
+								end
+							end
+						elseif spec.vThree == 1 then
+							spec.CVTIconBr4:render()
+							if self:getLastSpeed() >= 2 and self:getLastSpeed() <= 17 and math.abs(self.spec_motorized.motor.lastAcceleratorPedal) < 0.01 then
+								local showBrake = 0
+								for showBrake=1, 2 do
+									spec.CVTIconBr1:render()
+									spec.CVTIconBr2:render()
+									spec.CVTIconBr3:render()
+									spec.CVTIconBr4:render()
+									showBrake = showBrake +1;
+								end
+							end
+						end -- rle
+					end
+					
+					-- if spec.CVTCanStart == 0 then
+						-- spec.CVTIconN2:render()
+					-- end
+					if self.spec_motorized.motor.currentDirection == 1 then
+						spec.CVTIconV:render()
+					elseif self.spec_motorized.motor.currentDirection == -1 then
+						spec.CVTIconR:render()
+					end
+					
+					if spec.isHydroState then
+						
+						spec.CVTIconHydro:render()
+					end
 				end
+				-- end
 
 				-- 1337 Back to roots, wer hat das erfunden ?
 				setTextColor(1,1,1,1)

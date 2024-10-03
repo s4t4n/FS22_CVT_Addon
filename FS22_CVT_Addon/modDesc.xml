@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="79">
+<modDesc descVersion="80">
     <author>SbSh</author>
-	<contributor>Glowin, frvetz, AgrarPlay - LUWZ</contributor>
-	<version>1.0.0.01</version>
+	<contributor>Glowin, frvetz, modelleicher, LUWZ</contributor>
+	<version>1.3.0.1</version>
 	<title>
         <en>CVT Addon</en>
     </title>
@@ -23,6 +23,10 @@ Important:
  If you want to drive realistically, you will do this anyway.
  The CVT addon should be actively used and not just a "it runs in the background" mod
  (customise for the respective application)
+ The vehicle XML value "rotInertia" (flywheel) must not be specified,
+ or it must be precisely coordinated.
+ And as a reminder, the engines have to warm up first.
+ If in doubt, please take a look at the tutorials.
 
 Setting options:
  General CVT:
@@ -32,9 +36,7 @@ Setting options:
  -Automatic differential lock can be activated or preselected. This requires the mod
   FS22_VehicleControlAddon or FS22_EnhancedVehicle is required.
  -Efficient working with the machine at maximum power.
- -To be able to start the engine, the clutch must be actuated
-  a button or a clutch pedal must be assigned for this purpose.
-  This may also be the same clutch that is used for manual transmissions.
+ -To be able to start the engine, the clutch must be actuated.
  Classic CVT:
  -2 driving ranges can be shifted here.
  Modern CVT:
@@ -74,7 +76,6 @@ Influence on the functions and functions that create influence:
 
  Starting the engine:
   For continuously variable vehicles, the clutch must be depressed,
-  which must be assigned separately - i.e. the same input,
   which is also the normal clutch. In hydrostatic configuration, if VCA is active
   the handbrake must be applied in order to start the engine.
   In addition, the hand throttle must not be pulled up, it must be set to 0.
@@ -106,9 +107,57 @@ in the Wiki on Github, as well as tutorial videos.
 Almost all values and settings can be used with FS22_DashboardLive.
 More detailed informations about it at the wiki on Github.
 
-Feel free to provide ideas, feedback and reports at <a href"https://github.com/s4t4n/FS22_CVT_Addon">Github: FS22_CVT_Addon</a> please.
+Feel free to provide ideas, feedback and reports at <a href="https://github.com/s4t4n/FS22_CVT_Addon" target="_blank">Github: FS22_CVT_Addon</a> please.
 
+Changelog 1.3.0.0
+  - Fix for TerraLifePlus milk taxi.
+  - HST variant 1 no longer uses gas when accelerating.
+  - Shop config system revised.
+  - Mission vehicles no longer have a CVT addon.
+  - Link in the description corrected.
+  - AutoDiffs activated for HSTs.
 
+Changelog 1.2.9.0
+  - Warmup for wheelloader fixed.
+  - removed danger table dev console command.
+  - Cars and Trucks are configureable.
+  - Issue with handbrake in modern config for AD and CP fixed.
+  - RPM dropping reduced when reaccelerating with throttle.
+
+Changelog 1.2.0.0 (inkl. Hotfix for 1.0.0.1)
+  - changed strucure of Version from 1.0.0.x to 1.x.0.0
+because litte fixes can be better different between github and public.
+  - HOTFIX: vehicle with bigger engines couldn't warmup and cooled down while just standing.
+  - CP & AD, AccRamp has to adjust before start a helper now.
+  - DBL value for handthrottle animation added. Same principle as for the clutch.
+  - Telemetry data transfer added. (Info in DC)
+ 
+Changelog 1.0.0.1
+  - Motor start with config NO fixed
+  - AD/CP was switched back and forth too wildly
+  - DBL parameters adjusted, see Wiki
+  - Boat on the Hof-Bergmann could not be driven.
+  - Wheelbarrow was excluded
+  - Speed curve adjusted for modern config.
+  - New shop configs for harvesters and electric vehicles.
+  - Clutchpedal can be used as inching-pedal for harvesters.
+  - Manual vehicles can now be completely deactivated.
+  - With the CVT clutch you can now coast longer from full speed.
+  - The clutch no longer needs an extra button shortcut, you can use the standard clutch.
+  - Problem that threshers overheated too quickly in HST mode has been fixed.
+  - Heating FS2 reduced
+  - Reduced damage when changing driving ranges when FS22_RealisticDamageSystem is inactive.
+  - Translation texts corrected
+  - Added NL language
+  - Memory function has been revised again, all configs should now load correctly.
+  - Fixed swapped driving areas from the Github hotfix.
+  - The HST and Harvester configurations no longer overwrite the CombineXP Speed reduction.
+  - Help menu has been updated.
+  - VCA hand throttle can only be used in HST 1, However, not full throttle, just turn it up to 99 percent! (The intervention in VCA at this point is hard)
+  - Ramps can now be controlled directly, individually. e.g. for a VarioStick
+  - Most custom shop categories integrated, if yours is not recognized, please let us know.
+  - Compatibility with the Göweil DLC
+  - Clutch value added for DBL
 ]]></en>
         <de>
 <![CDATA[Dieses Skript fügt allen Fahrzeugen mit stufenlosen Getrieben
@@ -125,6 +174,10 @@ Wichtiges:
  Wenn man realistisch fahren möchte, macht man das sowieso.
  Das CVT-Addon sollte aktiv benutzt werden und nicht nur ein "es läuft im Hintergund" Mod
  ( für die jeweilige Anwendung anpassen )
+ Der Fahrzeug-XML-Wert "rotInertia" (Schwungscheibe) darf nicht angegeben sein,
+ oder es muß exakt abgestimmt werden.
+ Und zur Erinnerung, die Motoren müßen erst warmlaufen.
+ Guckt euch im Zweifel bitte die Tutorials an.
 
 Einstellungsmöglichkeiten:
  Allgemein CVT:
@@ -134,10 +187,7 @@ Einstellungsmöglichkeiten:
  -Automatische Differentialsperre kann aktiviert oder oder vorgewählt werden.
   Hierzu ist der Mod FS22_VehicleControlAddon oder FS22_EnhancedVehicle nötig.
  -Effizientes Arbeiten mit der Maschine, bei maximaler Leistung.
- -Um den Motor starten zu können, muß die Kupplung betätigt werden,
-  hierzu muß eine Taste oder ein Kupplungpedal belegt werden.
-  Diese darf auch die gleiche Kupplung sein,
-  die für manuelle Getriebe verwendet wird.
+ -Um den Motor starten zu können, muß die Kupplung betätigt werden.
  
  Klassisches CVT:
  -Hier können 2 Fahrbereiche umgeschalten werden.
@@ -146,7 +196,7 @@ Einstellungsmöglichkeiten:
  -Die Fahrbereiche schalten automatisch.
  -Die Parkbremse wird aktiviert, sobald man sich vom Fahrersitz entfernt.
   FS22_VehicleControlAddon oder FS22_EnhancedVehicle benötigt.
- -Niedrigdrehzahl-Konzept, ermöglicht ein noch efizienteres Arbeiten.
+ -Niedrigdrehzahl-Konzept, ermöglicht ein noch effizienteres Arbeiten.
  -Komfortable Arbeitsweise durch weniger notwendige Einstellungsparameter.
  
  Hydrostat und HST Antrieb:
@@ -221,8 +271,58 @@ im Wiki auf Github, sowie Tutorial Videos.
 So gut wie alle Werte und Einstellungen können mit FS22_DashboardLive verwendet werden.
 Genauere Informationen dazu im Wiki auf Github.
 
-Ideen und Feedback sowie Reports gerne unter <a href"https://github.com/s4t4n/FS22_CVT_Addon">Github: FS22_CVT_Addon</a> bereitstellen.
-]]></de>
+Ideen und Feedback sowie Reports gerne unter <a href="https://github.com/s4t4n/FS22_CVT_Addon" target="_blank">Github: FS22_CVT_Addon</a> bereitstellen.
+
+Changelog 1.3.0.0
+  - Fix für TerraLifePlus Milchtaxi.
+  - HST Variante 1 kein Gas mehr beim beschleunigen.
+  - Shop Configsystem überarbeitet.
+  - Missionsfahrzeuge haben kein CVTaddon mehr.
+  - Link in der Beschreibung korregiert.
+  - AutoDiffs bei HST's aktiviert.
+
+Changelog 1.2.9.0
+  - Motor-Aufwärmen Problem bei Radladern behoben.
+  - Gefährliche Funktion für Dev Konsolenbefehl entfernt.
+  - PKWs und LKWs können nun wieder konfiguriert werden.
+  - Problem mit der Handbremse bei moderner Konfiguration for AD and CP behoben.
+  - RPM Fallen beim wieder gasgeben reduziert. 
+  
+Changelog 1.2.0.0 (inkl. Hotfix für 1.0.0.1)
+  - Versionsstruktur von 1.0.0.x auf 1.x.0.0 geändert,
+um kleine Fixes zwischen Github und Modhub besser unterscheiden zu können.
+  - HOTFIX: Fahrzeuge mit größeren Motoren konnten nicht warmlaufen und kühlten im Stand schnell ab.
+  - CP & AD, Beschleunigungsrampe muss jetzt selbst eingestellt werden, bevor ein Helfer gestartet wird.
+  - DBL-Wert für Handgas Animation hinzugefügt. Gleiches Prinzip wie für die Kupplung.
+  - Telemetriedatenübermittlung hinzugefügt. (Infos dazu im DC)
+ 
+Changelog 1.0.0.1
+  - Motorstart bei Konfig NEIN behoben
+  - AD/CP wurd zu wild hin und her geschaltet
+  - DBL Parameter angepasst, siehe Wiki
+  - Boot auf der Hof-Bergmann konnte nicht gefahren werden.
+  - Schubkarre wurde ausgeschlossen
+  - Drehzahlkurve bei moderner Konfig angepasst.
+  - Neue Shop Konfigs für Erntemaschinen und Elektrofahrzeuge.
+  - Kupplungspedal dient bei Erntemaschinen als Inchingpedal.
+  - Manuelle Fahrzeuge können nun komplett deaktiviert werden.
+  - Mit der CVT Kupplung kann man nun aus voller Fahrt länger rollen lassen.
+  - Die Kupplung braucht nun keine extra Tastenverknüpfung mehr, du kannst die Standard Kupplung verwenden.
+  - Problem daß Drescher zu schnell im HST Betrieb überhitzten, wurde behoben.
+  - Heating FS2 reduziert
+  - Schaden bei Fahrbereichswechsel reduziert, wenn FS22_RealisticDamageSystem inaktiv ist.
+  - Übersetzungstexte korregiert
+  - Sprache NL hinzugefügt
+  - Speicherfunktion wurde nochmal überarbeitet, alle Konfigs sollten nun korrekt geladen werden.
+  - Vertauschte Fahrbereiche aus dem Github Hotfix behoben.
+  - Die Konfigurationen HST und Erntemaschinen überscshreiben nun nicht mehr die CombineXP Geschwindigkeitsreduzierung.
+  - Hilfemenü wurde geupdated.
+  - Handgas von VCA kann nur in HST 1 benutzt werden, allerdings kein Vollgas, nur 99 Prozent aufdrehen! (Der Eingriff in VCA an der Stelle ist hard)
+  - Rampen können nun direkt, einzeln angesteuert werden. z.B. für einen VarioStick
+  - Die meisten Custom-Shop-Kategorien integriert, wenn eure nicht erkannt wird, gerne melden.
+  - Kompatibilität mit dem Göweil DLC
+  - DBL Kupplungswert hinzugefügt
+  ]]></de>
     </description> 
 
     <iconFilename>icon_CVT_Addon.dds</iconFilename>
@@ -236,6 +336,10 @@ Ideen und Feedback sowie Reports gerne unter <a href"https://github.com/s4t4n/FS
 	<actions>
         <action name="LMBF_TOGGLE_RAMP" />
         <action name="LMBF_TOGGLE_RAMPT" />
+        <action name="LMBF_TOGGLE_RAMPS1" />
+        <action name="LMBF_TOGGLE_RAMPS2" />
+        <action name="LMBF_TOGGLE_RAMPS3" />
+        <action name="LMBF_TOGGLE_RAMPS4" />
         <action name="LMBF_TOGGLE_RAMPD" />
 		<action name="LMBF_TOGGLE_BRAMP" />
         <action name="SETVARIOONE" />
@@ -244,7 +348,7 @@ Ideen und Feedback sowie Reports gerne unter <a href"https://github.com/s4t4n/FS
         <!-- <action name="SETVARION" /> -->
         <action name="SETVARIOADIFFS" />
         <action name="SETVARIORPM_AXIS" />
-        <action name="SETVARIOCLUTCH_AXIS" />
+        <!-- <action name="SETVARIOCLUTCH_AXIS" /> -->
         <!-- <action name="SETVARIORPMP" /> -->
         <!-- <action name="SETVARIORPMM" /> -->
         <!-- <action name="SETVARIORPMDMAX" /> -->
@@ -266,6 +370,21 @@ Ideen und Feedback sowie Reports gerne unter <a href"https://github.com/s4t4n/FS
 		<actionBinding action="LMBF_TOGGLE_RAMPT">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
+		
+		<actionBinding action="LMBF_TOGGLE_RAMPS1">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="LMBF_TOGGLE_RAMPS2">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="LMBF_TOGGLE_RAMPS3">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		<actionBinding action="LMBF_TOGGLE_RAMPS4">
+			<binding device="KB_MOUSE_DEFAULT" input="" />
+		</actionBinding>
+		
+		
 		<actionBinding action="LMBF_TOGGLE_RAMPD">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
@@ -281,9 +400,9 @@ Ideen und Feedback sowie Reports gerne unter <a href"https://github.com/s4t4n/FS
 		<actionBinding action="SETVARIORPM_AXIS">
 			<binding device="KB_MOUSE_DEFAULT" input="" />
 		</actionBinding>
-		<actionBinding action="SETVARIOCLUTCH_AXIS">
-			<binding device="KB_MOUSE_DEFAULT" input="" />
-		</actionBinding>
+		<!-- <actionBinding action="SETVARIOCLUTCH_AXIS"> -->
+			<!-- <binding device="KB_MOUSE_DEFAULT" input="" /> -->
+		<!-- </actionBinding> -->
 		<!-- <actionBinding action="SETVARIORPMP"> -->
 			<!-- <binding device="KB_MOUSE_DEFAULT" input="" /> -->
 		<!-- </actionBinding> -->
